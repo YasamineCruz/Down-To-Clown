@@ -3,7 +3,7 @@
 
 ## Database Schema Design
 
-![]()
+![alt text](https://github.com/yasaminecruz/API-project/blob/main/Authenticate-Me-DB-Schema.png?raw=true)
 
 ## API Documentation
 
