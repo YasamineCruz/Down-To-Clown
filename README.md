@@ -1,5 +1,5 @@
 # API-project
-# `<name of application here>`
+# MeetUp Clone
 
 ## Database Schema Design
 
