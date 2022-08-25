@@ -13,4 +13,9 @@ router.post('/test', (req, res) => {
   res.json({ requestBody: req.body });
 });
 
+router.delete('/', (_req, res) => {
+  res.clearCookie('token');
+  return res.json({ message: 'success'})
+})
+
 module.exports = router;
