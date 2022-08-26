@@ -3,7 +3,6 @@
 ## Database Schema Design
 
 ![meetup-dbdiagram]
-API-docs-Meetup
 [meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
 
 ## API Documentation
