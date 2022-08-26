@@ -3,6 +3,11 @@
 ## Database Schema Design
 
 ![meetup-dbdiagram]
+<<<<<<< HEAD
+=======
+
+[meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
+>>>>>>> 3db13c07af52284ff7ca06ff8a9053785268c8d1
 
 [meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
 ## API Documentation
