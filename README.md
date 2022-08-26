@@ -3,7 +3,7 @@
 ## Database Schema Design
 
 ![meetup-dbdiagram]
-<<<<<<< HEAD
+
 =======
 
 [meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
