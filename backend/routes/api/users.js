@@ -21,6 +21,22 @@ const validateSignup = [
         .not()
         .isEmail()
         .withMessage('Username cannot be an email.'),
+    check('firstName')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
+        .withMessage('Please provide a first name with at least 2 characters.'),
+    check('firstName')
+        .not()
+        .isEmail()
+        .withMessage('First name cannot be an email.'),
+    check('lastName')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
+        .withMessage('Please provide a last name with at least 2 characters.'),
+    check('lastName')
+        .not()
+        .isEmail()
+        .withMessage('Last name cannot be an email.'),
     check('password')
         .exists({ checkFalsy: true })
         .isLength({ min: 6 })
@@ -29,8 +45,8 @@ const validateSignup = [
 ]
 
 router.post('/', validateSignup, async(req, res, next) => {
-    const { email, password, username } = req.body;
-    const user = await User.signup({ username, email, password });
+    const { username, email, firstName, lastName, password } = req.body;
+    const user = await User.signup({ username, email, firstName, lastName, password });
 
     await setTokenCookie(res, user);
 
