@@ -2,8 +2,7 @@
 
 ## Database Schema Design
 
-![meetup-dbdiagram]
-[meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
+![alt text](https://github.com/[yasaminecruz][API-project]/blob/[main]/[authenticate-me/assets/meetup_dbdiagram.png]?raw=true)
 
 ## API Documentation
 
