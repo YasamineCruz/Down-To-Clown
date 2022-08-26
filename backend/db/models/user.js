@@ -33,17 +33,18 @@ module.exports = (sequelize, DataTypes) => {
       };
     };
 
-    static async siqnup({ username, email, password}) {
+    static async signup({ username, email, password }) {
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({
         username,
         email,
         hashedPassword
       });
-      return await User.scopt('currentUser').findByPk(user.id);
-    };
+      return await User.scope('currentUser').findByPk(user.id);
+    }
+   
 
-    
+
 
     static associate(models) {
       // define association here
@@ -58,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: [4, 30],
           isNotEmail(value) {
-            if(validator.isEmail(value)) {
+            if(Validator.isEmail(value)) {
               throw new Error('Cannot be an email')
             }
           }
