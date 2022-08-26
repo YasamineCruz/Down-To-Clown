@@ -4,7 +4,7 @@
 
 ![meetup-dbdiagram]
 API-docs-Meetup
-[meetup-dbdiagram]: ../assets/meetup_dbdiagram.png
+[meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
 
 ## API Documentation
 
