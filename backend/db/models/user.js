@@ -6,8 +6,8 @@ const bcrypt = require('bcryptjs');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     toSafeObject() {
-      const { id, username, email, firstName, lastName } = this;
-      return { id, username, email, firstName, lastName };
+      const { id, firstName, lastName, username, email } = this;
+      return { id, firstName, lastName, username, email };
     };
 
     validatePassword(password) {
@@ -33,13 +33,13 @@ module.exports = (sequelize, DataTypes) => {
       };
     };
 
-    static async signup({ username, email, firstName, lastName, password }) {
+    static async signup({ firstName, lastName, username, email, password }) {
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({
-        username,
-        email,
         firstName,
         lastName,
+        username,
+        email,
         hashedPassword
       });
       return await User.scope('currentUser').findByPk(user.id);
@@ -54,28 +54,6 @@ module.exports = (sequelize, DataTypes) => {
 
     };
     User.init({
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          len: [4, 30],
-          isNotEmail(value) {
-            if(Validator.isEmail(value)) {
-              throw new Error('Cannot be an email')
-            }
-          }
-        }
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          len: [3, 256],
-          isEmail: true
-        }
-      },
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -98,6 +76,28 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error('Cannot be an email')
             }
           }
+        }
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          len: [4, 30],
+          isNotEmail(value) {
+            if(Validator.isEmail(value)) {
+              throw new Error('Cannot be an email')
+            }
+          }
+        }
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          len: [3, 256],
+          isEmail: true
         }
       },
       hashedPassword: {
