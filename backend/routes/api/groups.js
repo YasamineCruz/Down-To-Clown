@@ -14,7 +14,7 @@ router.get('/', async(req, res, next) => {
     let groups = await Group.findAll({
         include: [
                  { model: User, attributes: [] }, 
-                 { model: GroupImage, as: "Preview Image" } 
+                 { model: GroupImage, as: "previewImage" } 
                 ],
         attributes: {
             include: [
@@ -27,7 +27,7 @@ router.get('/', async(req, res, next) => {
         group: ['Group.id']
     })
 
-    // let groups = rows
+    
     if(groups){
         res.json(groups)
     } else{
@@ -37,6 +37,10 @@ router.get('/', async(req, res, next) => {
         err.errors = ['There are no groups'];
         return next(err);
     }
+})
+
+router.get('/:groupId', async(req, res, next) => {
+
 })
 
 module.exports = router;
