@@ -11,11 +11,6 @@ const router = express.Router();
 
 router.get('/', async(req, res, next) => {
 
-    // const { count, rows } = await Group.findAll({
-    //     include: [ {model: User, attributes: []}, { model: GroupImage, as: "Preview Image"}]
-    // });
-    //   console.log(count);
-    //   console.log(rows);
     let groups = await Group.findAll({
         include: [
                  { model: User, attributes: [] }, 
