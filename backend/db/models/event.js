@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         models.EventImage,
         { foreignKey: 'eventId' }
       )
-      Event.hasMany(
-        models.Attendance,
-        { foreignKey: 'eventId' }
+      Event.belongsToMany(
+        models.User,
+        { through: models.Attendance, foreignKey: 'eventId', otherKey: 'userId'}
       )
       Event.belongsTo(
         models.Venue,
@@ -31,11 +31,19 @@ module.exports = (sequelize, DataTypes) => {
   Event.init({
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Venues',
+        key: 'id'
+      },
     },
     groupId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Groups',
+        key: 'id'
+      },
     },
     name: {
       type: DataTypes.STRING,
