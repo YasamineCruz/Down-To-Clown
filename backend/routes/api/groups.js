@@ -14,7 +14,7 @@ router.get('/', async(req, res, next) => {
     let groups = await Group.findAll({
         include: [
                  { model: User, attributes: [] }, 
-                 { model: GroupImage, as: "previewImage" } 
+                 { model: GroupImage, attributes: ['url', 'previewImage']} 
                 ],
         attributes: {
             include: [
