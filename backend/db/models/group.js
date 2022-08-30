@@ -4,11 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
       Group.hasMany(
         models.Event,
@@ -31,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
   Group.init({
     organizerId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'Users',
         key: 'id'

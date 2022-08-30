@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Events',
         key: 'id'
       },
+      onDelete: 'cascade'
     },
     userId: {
       type: DataTypes.INTEGER,
@@ -38,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Users',
         key: 'id'
       },
+      onDelete: 'cascade'
     },
     status: {
       type: DataTypes.ENUM('member', 'waitlist', 'pending'),

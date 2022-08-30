@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Users',
         key: 'id'
       },
+      onDelete: 'cascade'
     },
     groupId: {
       type: DataTypes.INTEGER,
@@ -36,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Groups',
         key: 'id'
       },
+      onDelete: 'cascade'
     },
     status: {
       type: DataTypes.ENUM('member', 'pending', 'co-host'),

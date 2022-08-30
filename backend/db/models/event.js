@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Venues',
         key: 'id'
       },
+      onDelete: 'cascade'
     },
     groupId: {
       type: DataTypes.INTEGER,
@@ -44,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Groups',
         key: 'id'
       },
+      onDelete: 'cascade'
     },
     name: {
       type: DataTypes.STRING,
