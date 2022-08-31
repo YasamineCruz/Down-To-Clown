@@ -39,7 +39,7 @@ const validateGroup = [
 ]
 
 
-router.get('/', requireAuth, async(req, res, next) => {
+router.get('/', async(req, res, next) => {
     let payload = [];
     let groups = await Group.findAll({
         include: [
@@ -91,7 +91,7 @@ router.get('/', requireAuth, async(req, res, next) => {
     }
 })
 
-router.get('/current', requireAuth, async(req, res, next) => {
+router.get('/current', async(req, res, next) => {
     const { user } = req;
     let currentUser;
     let currentUserId;
@@ -143,23 +143,38 @@ router.get('/current', requireAuth, async(req, res, next) => {
     } else {
         for(let i = 0; i < currentUserGroups.length; i++){
             let group = currentUserGroups[i]
-          
+            console.log(group.id)
            
                 let previewImage = await GroupImage.findOne({ where: { groupId: group.id }, attributes: ['url'], raw: true})
-               
-                payload.push({
-                    id: group.id,
-                    organizerId: group.organizerId,
-                    name: group.name,
-                    about: group.about,
-                    type: group.type,
-                    private: group.private,
-                    city: group.city,
-                    createdAt: group.createdAt,
-                    updatedAt: group.updatedAt,
-                    numMembers: group.numMembers,
-                    previewImage: previewImage.url
-                })
+                if(previewImage){
+                    payload.push({
+                        id: group.id,
+                        organizerId: group.organizerId,
+                        name: group.name,
+                        about: group.about,
+                        type: group.type,
+                        private: group.private,
+                        city: group.city,
+                        createdAt: group.createdAt,
+                        updatedAt: group.updatedAt,
+                        numMembers: group.numMembers,
+                        previewImage: previewImage.url
+                    })
+                } else {
+                    payload.push({
+                        id: group.id,
+                        organizerId: group.organizerId,
+                        name: group.name,
+                        about: group.about,
+                        type: group.type,
+                        private: group.private,
+                        city: group.city,
+                        createdAt: group.createdAt,
+                        updatedAt: group.updatedAt,
+                        numMembers: group.numMembers,
+                        previewImage: "There is no previewImage for this group."
+                    })
+                }
             
         }
     
@@ -171,23 +186,39 @@ router.get('/current', requireAuth, async(req, res, next) => {
                     if(groupInPayload.id !== group.id){
                         let previewImage = await GroupImage.findOne({ where: { groupId: group.id }, attributes: ['url'], raw: true})
                
-                        payload.push({
-                            id: group.id,
-                            organizerId: group.organizerId,
-                            name: group.name,
-                            about: group.about,
-                            type: group.type,
-                            private: group.private,
-                            city: group.city,
-                            createdAt: group.createdAt,
-                            updatedAt: group.updatedAt,
-                            numMembers: group.numMembers,
-                            previewImage: previewImage.url
-                    })
-                }
-            }               
+                        if(previewImage){
+                            payload.push({
+                                id: group.id,
+                                organizerId: group.organizerId,
+                                name: group.name,
+                                about: group.about,
+                                type: group.type,
+                                private: group.private,
+                                city: group.city,
+                                createdAt: group.createdAt,
+                                updatedAt: group.updatedAt,
+                                numMembers: group.numMembers,
+                                previewImage: previewImage.url
+                            })
+                        } else {
+                            payload.push({
+                                id: group.id,
+                                organizerId: group.organizerId,
+                                name: group.name,
+                                about: group.about,
+                                type: group.type,
+                                private: group.private,
+                                city: group.city,
+                                createdAt: group.createdAt,
+                                updatedAt: group.updatedAt,
+                                numMembers: group.numMembers,
+                                previewImage: "There is no previewImage for this group."
+                            })
+                        }
+            }
+        }               
         }
-    
+        
           return res.json({Groups: payload})
     }
    
@@ -197,72 +228,70 @@ router.get('/current', requireAuth, async(req, res, next) => {
             err.title = 'User error';
             err.errors = ['There was no provided user id'];
             return next(err);
+            
+        }
+    })
+
+
+
+    router.get('/:groupId', requireAuth, async(req, res, next) => {
+    const { groupId } = req.params
+    let payload = [];
+    let groups = await Group.findAll({
+        where: { id: groupId },
+        include: [
+                 { model: User, attributes: []},
+                ],
+        attributes: {
+            include: [
+                [
+                    sequelize.fn("COUNT", sequelize.col("User.id")), 
+                    "numMembers"
+                ]
+             ]
+            },
+        group: ['Group.id'],
+        raw: true
+    })
+
+    console.log(groups)
+
+    
+    for(let i = 0; i < groups.length; i++){
+        let group = groups[i]
+        
+            let previewImage = await GroupImage.findAll({ where: { groupId: group.id }, attributes: ['url'], raw: true})
+            let organizer = await User.findOne({ where: { id: group.organizerId }})
+            let Venues = await Venue.findAll({where: { groupId: group.id}})
+            payload.push({
+                id: group.id,
+                organizerId: group.organizerId,
+                name: group.name,
+                about: group.about,
+                type: group.type,
+                private: group.private,
+                city: group.city,
+                createdAt: group.createdAt,
+                updatedAt: group.updatedAt,
+                numMembers: group.numMembers,
+                GroupImages: previewImage,
+                Organizer: organizer,
+                Venues
+            })
         
     }
+    
+    
+    if(groups){
+        res.json({Groups: payload})
+    } else{
+        const err = new Error('No Groups found');
+        err.status = 401;
+        err.title = 'No Groups';
+        err.errors = ['There are no groups'];
+        return next(err);
+    }
 })
-
-router.get('/:groupId', requireAuth, async(req, res, next) => {
-    console.log(req.params)
-
-    return res.json("testing")
-})
-    // let payload = [];
-    // let groups = await Group.findAll({
-    //     where: { id: groupId },
-    //     include: [
-    //              { model: User, attributes: []},
-    //             ],
-    //     attributes: {
-    //         include: [
-    //             [
-    //                 sequelize.fn("COUNT", sequelize.col("User.id")), 
-    //                 "numMembers"
-    //             ]
-    //          ]
-    //         },
-    //     group: ['Group.id'],
-    //     raw: true
-    // })
-
-    // console.log(groups)
-
-    
-    // for(let i = 0; i < groups.length; i++){
-    //     let group = groups[i]
-    //     console.log(group.id)
-    //     console.log(group.organizer)
-    //         let previewImage = await GroupImage.findAll({ where: { groupId: group.id }, attributes: ['url'], raw: true})
-    //         let organizer = await User.findOne({ where: { id: group.organizer }})
-    //         let Venues = await Venue.findAll({where: { groupId: group.id}})
-    //         payload.push({
-    //             id: group.id,
-    //             organizerId: group.organizerId,
-    //             name: group.name,
-    //             about: group.about,
-    //             type: group.type,
-    //             private: group.private,
-    //             city: group.city,
-    //             createdAt: group.createdAt,
-    //             updatedAt: group.updatedAt,
-    //             numMembers: group.numMembers,
-    //             GroupImages: previewImage,
-    //             Organizer: organizer,
-    //             Venues
-    //         })
-        
-    // }
-    
-    
-    // if(groups){
-    //     res.json({Groups: payload})
-    // } else{
-    //     const err = new Error('No Groups found');
-    //     err.status = 401;
-    //     err.title = 'No Groups';
-    //     err.errors = ['There are no groups'];
-    //     return next(err);
-    // }
-// })
 
 
 router.post('/', requireAuth, validateGroup, async(req, res, next) => {
@@ -285,4 +314,7 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
     return res.json({group})
 
 })
+
+
+
 module.exports = router;
