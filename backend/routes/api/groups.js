@@ -39,6 +39,8 @@ const validateGroup = [
 ]
 
 
+
+
 router.get('/', requireAuth, async(req, res, next) => {
     let payload = [];
     let groups = await Group.findAll({
@@ -63,19 +65,36 @@ router.get('/', requireAuth, async(req, res, next) => {
       
             let previewImage = await GroupImage.findOne({ where: { groupId: group.id }, attributes: ['url'], raw: true})
            
-            payload.push({
-                id: group.id,
-                organizerId: group.organizerId,
-                name: group.name,
-                about: group.about,
-                type: group.type,
-                private: group.private,
-                city: group.city,
-                createdAt: group.createdAt,
-                updatedAt: group.updatedAt,
-                numMembers: group.numMembers,
-                previewImage: previewImage.url
-            })
+            if(previewImage){
+                payload.push({
+                    id: group.id,
+                    organizerId: group.organizerId,
+                    name: group.name,
+                    about: group.about,
+                    type: group.type,
+                    private: group.private,
+                    city: group.city,
+                    createdAt: group.createdAt,
+                    updatedAt: group.updatedAt,
+                    numMembers: group.numMembers,
+                    previewImage: previewImage.url
+                })
+
+            } else {
+                payload.push({
+                    id: group.id,
+                    organizerId: group.organizerId,
+                    name: group.name,
+                    about: group.about,
+                    type: group.type,
+                    private: group.private,
+                    city: group.city,
+                    createdAt: group.createdAt,
+                    updatedAt: group.updatedAt,
+                    numMembers: group.numMembers,
+
+                })
+            }
         
     }
     
@@ -311,7 +330,7 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
         state
     })
 
-    return res.json({group})
+    return res.json(group)
 
 })
 
@@ -338,7 +357,7 @@ router.put('/:groupId', requireAuth, async(req, res, next) => {
 
     if(!name && !about && !type && !private && !city && !city && !state){
         res.status = 400;
-        res,json({
+        res.json({
                 "message": "Validation Error",
                 "statusCode": 400,
                 "errors": {
@@ -352,21 +371,41 @@ router.put('/:groupId', requireAuth, async(req, res, next) => {
         })
     }
 
+   
+
     let group = await Group.findByPk(groupId);
 
-    if(group){
-        group.set({id: groupId});
-        group.update({ name, about, type, private, city, state})
-
-        res.json(group);
-    } else {
-        res.status = 404;
-        res.json({
-            message: "Group couldn't be found",
-            statusCode: 404
-        })
-    }
+        if(group){
+            group.set({id: groupId});
+            group.update({ name, about, type, private, city, state})
+            .then(function(group){
+                res.json(group);
+              }).catch(function (err) {
+                res.status = 400;
+                res.json({
+                    message: "Validation Error",
+                    statusCode: 400,
+                    "errors": {
+                        name: "Name must be 60 characters or less",
+                        about: "About must be 50 characters or more",
+                        type: "Type must be 'Online' or 'In person'",
+                        private: "Private must be a boolean",
+                        city: "City is required",
+                        state: "State is required"
+                    }
+                })
+              });
     
+            
+        } else {
+            res.status = 404;
+            res.json({
+                message: "Group couldn't be found",
+                statusCode: 404
+            })
+        }
+   
+        
     
 })
 
