@@ -14,12 +14,7 @@ router.use('/users', usersRouter);
 router.use('/groups', groupsRouter)
 
 router.post('/test', (req, res) => {
-  const { firstName, lastName } = req.body
 
-
-  if(firstName){
-
-  }
   res.json({ requestBody: req.body });
 });
 

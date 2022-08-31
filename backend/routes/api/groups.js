@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { restoreUser } = require('../../utils/auth');
-const { User, Group, Membership, sequelize, GroupImage } = require('../../db/models');
+const { restoreUser, requireAuth } = require('../../utils/auth');
+const { User, Group, Membership, sequelize, GroupImage, Venue } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -10,8 +10,36 @@ const { Op } = require("sequelize");
 
 const router = express.Router();
 
+const validateGroup = [
+    check('name')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 1, max: 60 })
+        .withMessage('Name must be 60 characters or less'),
+    check('about')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 50 })
+        .withMessage('About must be 50 characters or more'),
+    check('type')
+        .exists({ checkFalsy: true }),
+    check('type')
+        .not()
+        .isISIN('Online', 'In person')
+        .withMessage("Type must be 'Online' or 'In person'"),
+    check('private')
+        .exists({ checkFalsy: true })
+        .isBoolean({ checkFalsy: true})
+        .withMessage('Private must be a boolean'),
+    check('city')
+        .exists({ checkFalsy: true})
+        .withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true })
+        .withMessage('State is required'),
+    handleValidationErrors
+]
 
-router.get('/', async(req, res, next) => {
+
+router.get('/', requireAuth, async(req, res, next) => {
     let payload = [];
     let groups = await Group.findAll({
         include: [
@@ -63,7 +91,7 @@ router.get('/', async(req, res, next) => {
     }
 })
 
-router.get('/current', async(req, res, next) => {
+router.get('/current', requireAuth, async(req, res, next) => {
     const { user } = req;
     let currentUser;
     let currentUserId;
@@ -76,7 +104,7 @@ router.get('/current', async(req, res, next) => {
       currentUserId = currentUser.id;
       
       currentUserOrganizer = await Group.findAll({
-        where: { organizerId: 1},
+        where: { organizerId: currentUserId},
         include: { model: User, attributes: [] },
         attributes: {
             include: [
@@ -93,7 +121,7 @@ router.get('/current', async(req, res, next) => {
 
     currentUserGroups = await Group.findAll({
         include: [
-                 { model: User, where: { id: 1} }, 
+                 { model: User, where: { id: currentUserId} }, 
                 ],
         attributes: {
             include: [
@@ -106,7 +134,7 @@ router.get('/current', async(req, res, next) => {
         group: ['Group.id'],
         raw: true
     })
-    console.log(currentUserGroups)
+
     
     if(currentUserGroups.length < 1 && currentUserOrganizer.length < 1){
         res.json({
@@ -173,4 +201,88 @@ router.get('/current', async(req, res, next) => {
     }
 })
 
+router.get('/:groupId', requireAuth, async(req, res, next) => {
+    console.log(req.params)
+
+    return res.json("testing")
+})
+    // let payload = [];
+    // let groups = await Group.findAll({
+    //     where: { id: groupId },
+    //     include: [
+    //              { model: User, attributes: []},
+    //             ],
+    //     attributes: {
+    //         include: [
+    //             [
+    //                 sequelize.fn("COUNT", sequelize.col("User.id")), 
+    //                 "numMembers"
+    //             ]
+    //          ]
+    //         },
+    //     group: ['Group.id'],
+    //     raw: true
+    // })
+
+    // console.log(groups)
+
+    
+    // for(let i = 0; i < groups.length; i++){
+    //     let group = groups[i]
+    //     console.log(group.id)
+    //     console.log(group.organizer)
+    //         let previewImage = await GroupImage.findAll({ where: { groupId: group.id }, attributes: ['url'], raw: true})
+    //         let organizer = await User.findOne({ where: { id: group.organizer }})
+    //         let Venues = await Venue.findAll({where: { groupId: group.id}})
+    //         payload.push({
+    //             id: group.id,
+    //             organizerId: group.organizerId,
+    //             name: group.name,
+    //             about: group.about,
+    //             type: group.type,
+    //             private: group.private,
+    //             city: group.city,
+    //             createdAt: group.createdAt,
+    //             updatedAt: group.updatedAt,
+    //             numMembers: group.numMembers,
+    //             GroupImages: previewImage,
+    //             Organizer: organizer,
+    //             Venues
+    //         })
+        
+    // }
+    
+    
+    // if(groups){
+    //     res.json({Groups: payload})
+    // } else{
+    //     const err = new Error('No Groups found');
+    //     err.status = 401;
+    //     err.title = 'No Groups';
+    //     err.errors = ['There are no groups'];
+    //     return next(err);
+    // }
+// })
+
+
+router.post('/', requireAuth, validateGroup, async(req, res, next) => {
+    const { name, about, type, private, city, state } = req.body;
+    const { user } = req;
+
+     let currentUser = user.toSafeObject();
+     let currentUserId = currentUser.id;
+
+    const group = await Group.create({
+        organizerId: currentUserId,
+        name,
+        about,
+        type,
+        private,
+        city,
+        state
+    })
+
+    return res.json({group})
+
+})
 module.exports = router;
