@@ -39,7 +39,7 @@ const validateGroup = [
 ]
 
 
-router.get('/', async(req, res, next) => {
+router.get('/', requireAuth, async(req, res, next) => {
     let payload = [];
     let groups = await Group.findAll({
         include: [
@@ -91,7 +91,7 @@ router.get('/', async(req, res, next) => {
     }
 })
 
-router.get('/current', async(req, res, next) => {
+router.get('/current', requireAuth, async(req, res, next) => {
     const { user } = req;
     let currentUser;
     let currentUserId;
@@ -315,6 +315,81 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
 
 })
 
+router.post('/:groupId/images', requireAuth, async(req, res, next) => {
+    const { groupId } = req.params;
+    const { url, preview } = req.body;
+    let group = await Group.findByPk(groupId);
+    if(group){
+        let newImage = await group.createGroupImage({url, preview});
+        res.json({id: newImage.id, url: newImage.url, preview: newImage.preview})
+    } else {
+        res.status = 404
+        res.json({
+            message: "Group couldn't be found",
+            statusCode: 404
+        })
+    }
+})
+
+
+router.put('/:groupId', requireAuth, async(req, res, next) => {
+    const { groupId } = req.params;
+    const { name, about, type, private, city, state } = req.body;
+
+    if(!name && !about && !type && !private && !city && !city && !state){
+        res.status = 400;
+        res,json({
+                "message": "Validation Error",
+                "statusCode": 400,
+                "errors": {
+                  "name": "Name must be 60 characters or less",
+                  "about": "About must be 50 characters or more",
+                  "type": "Type must be 'Online' or 'In person'",
+                  "private": "Private must be a boolean",
+                  "city": "City is required",
+                  "state": "State is required",
+                }
+        })
+    }
+
+    let group = await Group.findByPk(groupId);
+
+    if(group){
+        group.set({id: groupId});
+        group.update({ name, about, type, private, city, state})
+
+        res.json(group);
+    } else {
+        res.status = 404;
+        res.json({
+            message: "Group couldn't be found",
+            statusCode: 404
+        })
+    }
+    
+    
+})
+
+router.delete('/:groupId', async(req, res, next) => {
+    const { groupId } = req.params;
+
+    let group = await Group.findByPk(groupId)
+
+    if(group){
+        await group.destroy()
+
+        res.json({
+            message: "Successfully deleted",
+            statusCode: 200
+        })
+    } else {
+        res.status = 404
+        res.json({
+            message: "Group couldn't be found",
+            statusCode: 404
+        })
+    }
+})
 
 
 module.exports = router;
