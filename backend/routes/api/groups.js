@@ -530,7 +530,6 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
                 { model: Group, attributes: { exclude: ['createdAt', 'updatedAt'] } }, 
                 { model: Venue, attributes: { exclude: ['groupId','createdAt', 'updatedAt'] } },
                 { model: User, attributes: [] },
-                { model: EventImage, attributes: [], where: { preview: true }},
             ],
             attributes: {
                 exclude: ['createdAt', 'updatedAt'] ,
@@ -539,45 +538,46 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
                     sequelize.fn("COUNT", sequelize.col("Users.id")), 
                     "numMembers"
                 ],
-                [
-                    sequelize.col('EventImages.url'),'previewImage'
-                ] 
                   ]
             },
             group: "Event.id",
         })
-
-    let eventNoPreview = await Event.findAll({
-            where: { groupId: groupId},
-            include: [
-                { model: Group, attributes: { exclude: ['createdAt', 'updatedAt'] } }, 
-                { model: Venue, attributes: { exclude: ['groupId','createdAt', 'updatedAt'] } },
-                { model: User, attributes: [] },
-                { model: EventImage, attributes: [], where: { preview: false}},
-            ],
-            attributes: {
-                exclude: ['createdAt', 'updatedAt'] ,
-                include: [
-                    [
-                    sequelize.fn("COUNT", sequelize.col("Users.id")), 
-                    "numMembers"
-                    ]
-                ],
-            },
-            group: "Event.id",
-        })
-
+    
     for(let i = 0; i < events.length; i++){
-        let event = events[i]
-        payload.push(event)
+            let event = events[i]
+            let previewImage = await EventImage.findOne({where: { groupId: group.id}})
+            if(previewImage.preview === true){
+                payload.push({
+                    id: event.id,
+                    organizerId: event.organizerId,
+                    about: event.about,
+                    type: event.type,
+                    private: event.private,
+                    city: event.city,
+                    state: event.state,
+                    createdAt: event.createdAt,
+                    updatedAt: event.updatedAt,
+                    numMembers: event.numMembers,
+                    previewImage: previewImage.url
+                })
+            } else {
+                payload.push({
+                id: event.id,
+                organizerId: event.organizerId,
+                about: event.about,
+                type: event.type,
+                private: event.private,
+                city: event.city,
+                state: event.state,
+                createdAt: event.createdAt,
+                updatedAt: event.updatedAt,
+                numMembers: event.numMembers,
+                previewImage: "No preview image at this time."
+            })
+         }
     }
+    
 
-    for(let i = 0; i < eventNoPreview.length; i++){
-        let event = eventNoPreview[i];
-        payload.push(event)
-    }
-
-    console.log(payload)
 
     if(payload.length >= 1){
         res.json({ Events: payload})
