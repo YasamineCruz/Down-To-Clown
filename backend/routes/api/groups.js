@@ -62,8 +62,22 @@ router.get('/', requireAuth, async(req, res, next) => {
     for(let i = 0; i < groups.length; i++){
         let group = groups[i]
         let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
-
-        payload.push({
+        if(previewImage.preview === true){
+            payload.push({
+                id: group.id,
+                organizerId: group.organizerId,
+                about: group.about,
+                type: group.type,
+                private: group.private,
+                city: group.city,
+                state: group.state,
+                createdAt: group.createdAt,
+                updatedAt: group.updatedAt,
+                numMembers: group.numMembers,
+                previewImage: previewImage.url
+            })
+        } else {
+            payload.push({
             id: group.id,
             organizerId: group.organizerId,
             about: group.about,
@@ -74,8 +88,11 @@ router.get('/', requireAuth, async(req, res, next) => {
             createdAt: group.createdAt,
             updatedAt: group.updatedAt,
             numMembers: group.numMembers,
-            previewImage: previewImage.url
+            previewImage: "No preview image at this time."
         })
+        }
+
+        
     }
 
 
