@@ -545,9 +545,8 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
     
     for(let i = 0; i < events.length; i++){
             let event = events[i]
-            let previewImage = await EventImage.findOne({where: { groupId: event.groupId}})
-            if(previewImage.preview === true){
-                payload.push({
+            let EventImages = await EventImage.findAll({where: { eventId: event.id}})
+                  payload.push({
                     id: event.id,
                     groupId: event.groupId,
                     venueId: event.venueId,
@@ -558,24 +557,11 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
                     startDate: event.startDate,
                     endDate: event.endDate,
                     numAttending: event.numAttending,
-                    previewImage: previewImage.url
-                })
-            } else {
-                payload.push({
-                id: event.id,
-                groupId: event.groupId,
-                venueId: event.venueId,
-                description: event.description,
-                type: event.type,
-                capacity: event.capacity,
-                price: event.price,
-                startDate: event.startDate,
-                endDate: event.endDate,
-                numAttending: event.numAttending,
-                previewImage: "No preview image at this time."
-            })
+                    Group: event.Group,
+                    Venue: event.Venue,
+                    EventImages
+                  })
          }
-    }
     
 
     if(payload.length >= 1){
