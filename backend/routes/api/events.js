@@ -63,15 +63,31 @@ router.get('/:eventId', requireAuth, async(req, res, next) => {
 
     let event = await Event.findByPk(eventId, {
         include: [
-            { model: Group, attributes: { exclude: ['createdAt', 'updatedAt'] } }, 
+            { model: Group, attributes: { exclude: ['createdAt', 'updatedAt', 'organizerId', 'about'] } }, 
             { model: Venue, attributes: { exclude: ['groupId','createdAt', 'updatedAt'] } },
-            { model: EventImage, attributes: { exclude: ['eventId'] } }
+            { model: EventImage, attributes: { exclude: ['eventId', 'createdAt', 'updatedAt'] } }
         ],
         attributes: { exclude: ['createdAt', 'updatedAt'] }
      })
 
     if(event){
-        res.json(event)
+        let numAttending = await Attendance.count({where: {eventId: event.id}})
+        res.json({
+            id: event.id,
+            groupId: event.groupId,
+            venueId: event.venueId,
+            name: event.name,
+            description: event.description,
+            type: event.type,
+            capacity: event.capacity,
+            price: event.price,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            numAttending,
+            Group: event.Group,
+            Venue: event.Venue,
+            EventImages: event.EventImages
+        })
     } else {
         res.status = 404;
         res.json({
