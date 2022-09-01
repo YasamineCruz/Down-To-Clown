@@ -135,7 +135,9 @@ router.get('/current', requireAuth, async(req, res, next) => {
             },
         group: ['Group.id'],
         raw: true
-    });
+        })
+    }
+
     let memberships = [];
    
     let currentMemberships = await Membership.findAll({where: { userId: currentUserId}, raw: true})
@@ -185,7 +187,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 numMembers: group.numMembers,
                 previewImage: "No preview image at this time."
             })
-            }
+         }
+    }
         // adding in groups User is in with and without preview Image
         for(let i = 0; i < memberships.length; i++){
             let group = memberships[i]
@@ -218,8 +221,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 numMembers: group.numMembers,
                 previewImage: "No preview image at this time."
             })
-            }
-        }      
+        }
+    }
         return res.json({Groups: payload})
     }
 })
