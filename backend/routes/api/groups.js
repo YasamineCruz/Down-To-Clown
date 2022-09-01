@@ -527,7 +527,6 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
     let events = await Event.findAll({
         where: { groupId: groupId},
             include: [
-                { model: Venue, attributes: { exclude: ['groupId','createdAt', 'updatedAt'] } },
                 { model: User, attributes: [] },
             ],
             attributes: {
