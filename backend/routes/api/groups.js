@@ -536,7 +536,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
                 include: [
                     [
                     sequelize.fn("COUNT", sequelize.col("Users.id")), 
-                    "numMembers"
+                    "numAttending"
                 ],
                   ]
             },
@@ -545,39 +545,38 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
     
     for(let i = 0; i < events.length; i++){
             let event = events[i]
-            let previewImage = await EventImage.findOne({where: { groupId: group.id}})
+            let previewImage = await EventImage.findOne({where: { groupId: event.groupId}})
             if(previewImage.preview === true){
                 payload.push({
                     id: event.id,
-                    organizerId: event.organizerId,
-                    about: event.about,
+                    groupId: event.groupId,
+                    venueId: event.venueId,
+                    description: event.description,
                     type: event.type,
-                    private: event.private,
-                    city: event.city,
-                    state: event.state,
-                    createdAt: event.createdAt,
-                    updatedAt: event.updatedAt,
-                    numMembers: event.numMembers,
+                    capacity: event.capacity,
+                    price: event.price,
+                    startDate: event.startDate,
+                    endDate: event.endDate,
+                    numAttending: event.numAttending,
                     previewImage: previewImage.url
                 })
             } else {
                 payload.push({
                 id: event.id,
-                organizerId: event.organizerId,
-                about: event.about,
+                groupId: event.groupId,
+                venueId: event.venueId,
+                description: event.description,
                 type: event.type,
-                private: event.private,
-                city: event.city,
-                state: event.state,
-                createdAt: event.createdAt,
-                updatedAt: event.updatedAt,
-                numMembers: event.numMembers,
+                capacity: event.capacity,
+                price: event.price,
+                startDate: event.startDate,
+                endDate: event.endDate,
+                numAttending: event.numAttending,
                 previewImage: "No preview image at this time."
             })
          }
     }
     
-
 
     if(payload.length >= 1){
         res.json({ Events: payload})
