@@ -40,12 +40,6 @@ router.get('/', requireAuth, async(req, res, next) => {
 router.post('/:eventId/images', requireAuth, async(req, res, next) => {
     const { eventId } = req.params;
     const { url, preview } = req.body
-    const { user } = req;
-
-    let currentUser = user.toSafeObject();
-    let currentUserId = currentUser.id;
-    
-    // checkEventAuth(currentUserId);
 
     let event = await Event.findByPk(eventId);
     if(event){

@@ -532,4 +532,56 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
     }
 })
 
+
+router.post('/:groupId/membership', requireAuth, async(req, res, next) => {
+    const { groupId } = req.params
+    const { user } = req;
+
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
+
+    let group = await Group.findByPk(groupId);
+    let currentMemberships = await Membership.findAll({where: { id: { [Op.not] : null } }, raw: true})
+    let check = false;
+
+
+    if(group){
+        let membership = await Membership.create({
+            userId: currentUserId,
+            groupId,
+            status: "pending"
+            })
+        let newMembership = membership.toJSON()
+
+        for(let i = 0; i < currentMemberships.length; i++){
+            let member = currentMemberships[i]
+            let valuesForMember = Object.values(member)
+            let valuesForNewMember = Object.values(newMembership)
+            if(Number(valuesForMember[0]) === Number(valuesForNewMember[0]) 
+            && Number(valuesForMember[1] === Number(valuesForNewMember[1]) 
+            && valuesForMember[2] === valuesForNewMember[2])){
+                res.status = 400;
+                return res.json({
+                    message: "Membership has alread been requested",
+                    statusCode: 400
+            })
+            }
+         }
+        
+        return res.json({
+            groupId: membership.groupId, 
+            memberId: membership.userId,
+            status: membership.status 
+        })
+    } else {
+        res.status = 404;
+        return res.json({
+            message: "Group couldn't be found",
+            statusCode: 404
+        })
+    }
+})
+
+
+
 module.exports = router;
