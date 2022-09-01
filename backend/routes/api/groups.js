@@ -527,7 +527,6 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
     let events = await Event.findAll({
         where: { groupId: groupId},
             include: [
-                { model: Group, attributes: { exclude: ['createdAt', 'updatedAt'] } }, 
                 { model: Venue, attributes: { exclude: ['groupId','createdAt', 'updatedAt'] } },
                 { model: User, attributes: [] },
             ],
@@ -545,6 +544,8 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
     
     for(let i = 0; i < events.length; i++){
             let event = events[i]
+            let group = await Group.findByPk(event.groupId, { attributes: { exclude: ['createdAt', 'updatedAt']}})
+            
             let EventImages = await EventImage.findAll({where: { eventId: event.id}})
                   payload.push({
                     id: event.id,
@@ -557,7 +558,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
                     startDate: event.startDate,
                     endDate: event.endDate,
                     numAttending: event.numAttending,
-                    Group: event.Group,
+                    Group: group,
                     Venue: event.Venue,
                     EventImages
                   })
