@@ -526,19 +526,9 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
   
     let events = await Event.findAll({
         where: { groupId: groupId},
-            include: [
-                { model: User, attributes: [] },
-            ],
             attributes: {
                 exclude: ['createdAt', 'updatedAt'] ,
-                include: [
-                    [
-                    sequelize.fn("COUNT", sequelize.col("Users.id")), 
-                    "numAttending"
-                ],
-                  ]
             },
-            group: "Event.id",
             raw: true
         })
     console.log(events)
@@ -547,6 +537,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
             let group = await Group.findByPk(event.groupId, { attributes: { exclude: ['organizerId','about','createdAt', 'updatedAt', 'type', 'private']}})
             let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private'] } })
             let previewImage = await EventImage.findOne({where: { eventId: event.id}})
+            let numAttending = await Attendance.count({where: {eventId: event.id}})
             if(previewImage.preview === true){
                 payload.push({
                     id: event.id,
@@ -558,7 +549,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
                     price: event.price,
                     startDate: event.startDate,
                     endDate: event.endDate,
-                    numAttending: event.numAttending,
+                    numAttending,
                     previewImage: previewImage.url,
                     Group: group,
                     Venue: venue,
