@@ -42,10 +42,9 @@ const validateGroup = [
 
 router.get('/', requireAuth, async(req, res, next) => {
     let payload = [];
-    let groupsWithPreviewImage = await Group.findAll({
+    let groups= await Group.findAll({
         include: [
                  { model: User, attributes: [] },
-                 { model: GroupImage, attributes: [], where: { preview: true } },
                 ],
         attributes: {
             include: [
@@ -53,44 +52,33 @@ router.get('/', requireAuth, async(req, res, next) => {
                     sequelize.fn("COUNT", sequelize.col("User.id")), 
                     "numMembers"
                 ],
-                [
-                    sequelize.col('GroupImages.url'),'previewImage'
-                ]
             ],
             },
         group: ['Group.id'],
         raw: true
     })
 
-
-    let groupsWithoutPreviewImage = await Group.findAll({
-        include: [
-            { model: User, attributes: [] },
-            { model: GroupImage, attributes: [], where: {preview: false}  },
-           ],
-        attributes: {
-       include: [
-           [
-               sequelize.fn("COUNT", sequelize.col("User.id")), 
-               "numMembers"
-           ]
-       ],
-       },
-   group: ['Group.id'],
-   raw: true
-    })
  
-    for(let i = 0; i < groupsWithPreviewImage.length; i++){
-        let group = groupsWithPreviewImage[i]
+    for(let i = 0; i < groups.length; i++){
+        let group = groups[i]
+        let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
 
-        payload.push(group)
+        payload.push({
+            id: group.id,
+            organizerId: group.organizerId,
+            about: group.about,
+            type: group.type,
+            private: group.private,
+            city: group.city,
+            state: group.state,
+            createdAt: group.createdAt,
+            updatedAt: group.updatedAt,
+            numMembers: group.numMembers,
+            previewImage: previewImage.url
+        })
     }
 
 
-    for(let j = 0; j < groupsWithoutPreviewImage.length; j++){
-        let group = groupsWithoutPreviewImage[j];
-        payload.push(group)
-    }
 
     
     if(payload.length >= 1){
