@@ -371,7 +371,7 @@ router.put('/:groupId', requireAuth, async(req, res, next) => {
    
 
     let group = await Group.findByPk(groupId);
-
+    console.log(group)
         if(group){
             group.set({id: groupId});
             group.update({ name, about, type, private, city, state})
