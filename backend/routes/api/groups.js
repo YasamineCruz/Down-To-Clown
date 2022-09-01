@@ -268,7 +268,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
         
             let previewImage = await GroupImage.findAll({ where: { groupId: group.id }, attributes: ['id','url', 'preview'], raw: true})
             let organizer = await User.findOne({ where: { id: group.organizerId }})
-            let Venues = await Venue.findAll({where: { groupId: group.id}})
+            let Venues = await Venue.findAll({where: { groupId: group.id}, attributes: { exclude: ['createdAt', 'updatedAt'] } })
             payload.push({
                 id: group.id,
                 organizerId: group.organizerId,
