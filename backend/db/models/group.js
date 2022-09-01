@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         models.User,
         { through: models.Membership, foreignKey: 'groupId', otherKey: 'userId'}
       )
+      Group.hasMany(
+        models.Venue,
+        { foreignKey: "groupId"}
+      )
     }
   }
   Group.init({
@@ -79,6 +83,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
+    defaultScope: {
+      attributes: {
+        exclude: ["createdAt", "updatedAt"]
+      }
+    }
   });
   return Group;
 };
