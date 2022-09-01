@@ -113,7 +113,6 @@ router.get('/current', requireAuth, async(req, res, next) => {
     const { user } = req;
     let currentUser;
     let currentUserId;
-    let currentUserGroups;
     let currentUserOrganizer;
     let payload = [];
 
@@ -125,7 +124,6 @@ router.get('/current', requireAuth, async(req, res, next) => {
         where: { organizerId: currentUserId},
         include: [ 
             { model: User, attributes: [] },
-            { model: GroupImage, attributes: [], where: { preview: true } }
             ],
         attributes: {
             include: [
@@ -133,33 +131,21 @@ router.get('/current', requireAuth, async(req, res, next) => {
                     sequelize.fn("COUNT", sequelize.col("User.id")), 
                     "numMembers"
                 ],
-                [
-                    sequelize.col('GroupImages.url'),'previewImage'
-                ]
              ]
             },
         group: ['Group.id'],
         raw: true
     });
+    let memberships = [];
    
-
-    currentUserGroups = await Group.findAll({
-        where: { organizerId: currentUserId},
-        include: [
-                 { model: User, attributes: [] },
-                 { model: GroupImage, attributes: [], where: { preview: false } }
-                ],
-        attributes: {
-            include: [
-                [
-                    sequelize.fn("COUNT", sequelize.col("User.id")), 
-                    "numMembers"
-                ]
-             ]
-            },
-        group: ['Group.id'],
-        raw: true
-    })
+    let currentMemberships = await Membership.findAll({where: { userId: currentUserId}, raw: true})
+    if(currentMemberships){
+        for(let i = 0; i < currentMemberships.length; i++){
+            let membership = currentMemberships[i];
+            let group = await Group.findByPk(membership.groupId)
+            memberships.push(group)
+        }
+    }
 
     
     if(currentUserGroups.length < 1 && currentUserOrganizer.length < 1){
@@ -167,14 +153,71 @@ router.get('/current', requireAuth, async(req, res, next) => {
             message: "The current user has no groups"
         })
     } else {
-        for(let i = 0; i < currentUserGroups.length; i++){
-            let group = currentUserGroups[i]
-            payload.push(group)
-        }
-    
+            // adding in groups User is the organizer of with and without previewImage
         for(let i = 0; i < currentUserOrganizer.length; i++){
             let group = currentUserOrganizer[i]
-            payload.push(group)
+            let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
+            if(previewImage.preview === true){
+                payload.push({
+                    id: group.id,
+                    organizerId: group.organizerId,
+                    about: group.about,
+                    type: group.type,
+                    private: group.private,
+                    city: group.city,
+                    state: group.state,
+                    createdAt: group.createdAt,
+                    updatedAt: group.updatedAt,
+                    numMembers: group.numMembers,
+                    previewImage: previewImage.url
+                })
+            } else {
+                payload.push({
+                id: group.id,
+                organizerId: group.organizerId,
+                about: group.about,
+                type: group.type,
+                private: group.private,
+                city: group.city,
+                state: group.state,
+                createdAt: group.createdAt,
+                updatedAt: group.updatedAt,
+                numMembers: group.numMembers,
+                previewImage: "No preview image at this time."
+            })
+            }
+        // adding in groups User is in with and without preview Image
+        for(let i = 0; i < memberships.length; i++){
+            let group = memberships[i]
+            let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
+            if(previewImage.preview === true){
+                payload.push({
+                    id: group.id,
+                    organizerId: group.organizerId,
+                    about: group.about,
+                    type: group.type,
+                    private: group.private,
+                    city: group.city,
+                    state: group.state,
+                    createdAt: group.createdAt,
+                    updatedAt: group.updatedAt,
+                    numMembers: group.numMembers,
+                    previewImage: previewImage.url
+                })
+            } else {
+                payload.push({
+                id: group.id,
+                organizerId: group.organizerId,
+                about: group.about,
+                type: group.type,
+                private: group.private,
+                city: group.city,
+                state: group.state,
+                createdAt: group.createdAt,
+                updatedAt: group.updatedAt,
+                numMembers: group.numMembers,
+                previewImage: "No preview image at this time."
+            })
             }
         }      
         return res.json({Groups: payload})
