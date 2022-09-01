@@ -115,6 +115,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
     let currentUserId;
     let currentUserOrganizer;
     let payload = [];
+    let payloadGroupIds = [];
 
     if (user) {
       currentUser = user.toSafeObject();
@@ -188,11 +189,17 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 previewImage: "No preview image at this time."
             })
          }
-    }
-        // adding in groups User is in with and without preview Image
+    }       
+        for(i = 0; i < payload.length; i++){
+            let group = payload[i];
+            payloadGroupIds.push(group.id)
+        }
+        
         for(let i = 0; i < memberships.length; i++){
             let group = memberships[i]
+            if(!payloadGroupIds.includes(group.id)){
             let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
+
             if(previewImage.preview === true){
                 payload.push({
                     id: group.id,
@@ -221,6 +228,9 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 numMembers: group.numMembers,
                 previewImage: "No preview image at this time."
             })
+
+          }
+            
         }
     }
         return res.json({Groups: payload})
