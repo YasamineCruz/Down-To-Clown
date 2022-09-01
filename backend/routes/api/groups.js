@@ -40,7 +40,6 @@ const validateGroup = [
 
 
 
-
 router.get('/', requireAuth, async(req, res, next) => {
     let payload = [];
     let groupsWithPreviewImage = await Group.findAll({
@@ -201,7 +200,6 @@ router.get('/current', requireAuth, async(req, res, next) => {
         raw: true
     })
 
-    console.log(groups)
 
     
     for(let i = 0; i < groups.length; i++){
@@ -248,6 +246,8 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
      let currentUser = user.toSafeObject();
      let currentUserId = currentUser.id;
 
+
+
     const group = await Group.create({
         organizerId: currentUserId,
         name,
@@ -257,13 +257,10 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
         city,
         state
     })
-    .then(function(group){
-        res.json(group);
-      })
-    .catch(function (err) {
-        res.status = 400;
-        res.json(err)
-    })
+    console.log(group.id)
+
+    let newMember = await Membership.create({userId: currentUserId, groupId: group.id, status: 'organizer'})
+    console.log(newMember)
 
     return res.json(group)
 
@@ -534,41 +531,34 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
 
 
 router.post('/:groupId/membership', requireAuth, async(req, res, next) => {
-    const { groupId } = req.params
-    const { user } = req;
-
-    let currentUser = user.toSafeObject();
-    let currentUserId = currentUser.id;
+    const { groupId, memberId, status } = req.body
 
     let group = await Group.findByPk(groupId);
     let currentMemberships = await Membership.findAll({where: { id: { [Op.not] : null } }, raw: true})
-    let check = false;
+    for(let i = 0; i < currentMemberships.length; i++){
+        let member = currentMemberships[i]
+        let valuesForMember = Object.values(member)
 
+        if(Number(valuesForMember[1]) === Number(memberId) 
+        && Number(valuesForMember[2] === Number(groupId) 
+        && valuesForMember[3] === "pending")){
+            res.status = 400;
+            return res.json({
+                message: "Membership has alread been requested",
+                statusCode: 400
+        })
+        }
+     }
 
     if(group){
         let membership = await Membership.create({
-            userId: currentUserId,
+            userId: memberId,
             groupId,
-            status: "pending"
+            status
             })
-        let newMembership = membership.toJSON()
-
-        for(let i = 0; i < currentMemberships.length; i++){
-            let member = currentMemberships[i]
-            let valuesForMember = Object.values(member)
-            let valuesForNewMember = Object.values(newMembership)
-            if(Number(valuesForMember[0]) === Number(valuesForNewMember[0]) 
-            && Number(valuesForMember[1] === Number(valuesForNewMember[1]) 
-            && valuesForMember[2] === valuesForNewMember[2])){
-                res.status = 400;
-                return res.json({
-                    message: "Membership has alread been requested",
-                    statusCode: 400
-            })
-            }
-         }
         
         return res.json({
+            id: membership.id,
             groupId: membership.groupId, 
             memberId: membership.userId,
             status: membership.status 
@@ -582,6 +572,87 @@ router.post('/:groupId/membership', requireAuth, async(req, res, next) => {
     }
 })
 
+
+router.put('/:groupId/membership', requireAuth, async(req, res, next) => {
+    const { groupId } = req.params
+    const { memberId, status } = req.body;
+    const { user } = req;
+
+     let currentUser = user.toSafeObject();
+     let currentUserId = currentUser.id;
+
+    
+
+    let membership = await Membership.findOne({where: { [Op.and]: [ {userId: memberId}, {groupId} ] } })
+
+    let group = await Group.findByPk(groupId)
+
+    let checkUser = await User.findByPk(currentUserId)
+    let currentUserMembership = await Membership.findOne({where: { [Op.and]: [ {userId: currentUserId}, {groupId} ] } })
+
+
+    if(status === "pending"){
+        res.status = 400;
+        return res.json({
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                status: "Cannot change a membership status to pending"
+            }
+        })
+    }
+
+    if(!group){
+        res.status = 400;
+        return res.json({
+            message: "Group couldn't be found",
+            statusCode: 404,
+        })
+    }
+
+    if(!checkUser){
+        res.status = 404;
+        return res.json({
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                memberId: "User couldn't be found"
+            }
+        })
+    }
+
+    if(!membership){
+        res.status = 404;
+        return res.json({
+            message: "Membership between the user and the group does not exist",
+            statusCode: 404
+        })
+    }
+
+    if(currentUserMembership.status === "organizer"){
+        membership.update({status})
+        return res.json({
+            id: membership.id,
+            groupId: membership.groupId,
+            memberId: membership.userId,
+            status: membership.status
+        })
+    } else if ( currentUserMembership.status === 'co-host'){
+        membership.update(status)
+        return res.json({
+            id: membership.id,
+            groupId: membership.groupId,
+            memberId: membership.userId,
+            status: membership.status
+        })
+    } else {
+        res.status = 400;
+        return res.json({
+            message: "User must have correct permissions",
+            statusCode: 400
+        })
+    }
+})
 
 
 module.exports = router;
