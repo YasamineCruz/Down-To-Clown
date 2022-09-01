@@ -150,7 +150,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
     }
 
     
-    if(currentUserGroups.length < 1 && currentUserOrganizer.length < 1){
+    if(memberships.length < 1 && currentUserOrganizer.length < 1){
         res.json({
             message: "The current user has no groups"
         })
