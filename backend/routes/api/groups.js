@@ -535,7 +535,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
     for(let i = 0; i < events.length; i++){
             let event = events[i]
             let group = await Group.findByPk(event.groupId, { attributes: { exclude: ['organizerId','about','createdAt', 'updatedAt', 'type', 'private']}})
-            let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private'] } })
+            let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private', 'lat', 'lng', 'address'] } })
             let previewImage = await EventImage.findOne({where: { eventId: event.id}})
             let numAttending = await Attendance.count({where: {eventId: event.id}})
             if(previewImage.preview === true){
