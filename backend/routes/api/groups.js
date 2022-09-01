@@ -540,28 +540,47 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
                   ]
             },
             group: "Event.id",
+            raw: true
         })
-    
+    console.log(events)
     for(let i = 0; i < events.length; i++){
             let event = events[i]
-            let group = await Group.findByPk(event.groupId, { attributes: { exclude: ['createdAt', 'updatedAt']}})
-            
-            let EventImages = await EventImage.findAll({where: { eventId: event.id}})
-                  payload.push({
+            let group = await Group.findByPk(event.groupId, { attributes: { exclude: ['organizerId','about','createdAt', 'updatedAt', 'type', 'private']}})
+            let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private'] } })
+            let previewImage = await EventImage.findOne({where: { eventId: event.id}})
+            if(previewImage.preview === true){
+                payload.push({
                     id: event.id,
                     groupId: event.groupId,
                     venueId: event.venueId,
-                    description: event.description,
+                    name: event.description,
                     type: event.type,
                     capacity: event.capacity,
                     price: event.price,
                     startDate: event.startDate,
                     endDate: event.endDate,
                     numAttending: event.numAttending,
+                    previewImage: previewImage.url,
                     Group: group,
-                    Venue: event.Venue,
-                    EventImages
+                    Venue: venue,
                   })
+            } else {
+                  payload.push({
+                    id: event.id,
+                    groupId: event.groupId,
+                    venueId: event.venueId,
+                    name: event.description,
+                    type: event.type,
+                    capacity: event.capacity,
+                    price: event.price,
+                    startDate: event.startDate,
+                    endDate: event.endDate,
+                    numAttending: event.numAttending,
+                    previewImage: "There is no preview Image for this event",
+                    Group: group,
+                    Venue: venue,
+                  })
+            }
          }
     
 
