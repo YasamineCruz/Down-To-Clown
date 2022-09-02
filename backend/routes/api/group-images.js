@@ -28,20 +28,26 @@ router.delete('/:imageId', requireAuth, async(req, res, next) => {
         })
     }
 
-    let validateAuthorization = await Membership.findOne({ where: { [Op.and]: [ {userId: currentUserId}, { groupId: image.groupId} ] }})
-    if(validateAuthorization.status === "co-host" || validateAuthorization.status === "organizer"){
-        await image.destroy();
-        return res.json({
-            message: "Successfully deleted",
-            statusCode: 200
-        })
-    }
+    // let validateAuthorization = await Membership.findOne({ where: { [Op.and]: [ {userId: currentUserId}, { groupId: image.groupId} ] }})
+    // if(validateAuthorization.status === "co-host" || validateAuthorization.status === "organizer"){
+    //     await image.destroy();
+    //     return res.json({
+    //         message: "Successfully deleted",
+    //         statusCode: 200
+    //     })
+    // }
 
-    res.status = 403;
-    res.json({
-        message: "Current User is not authorized to delete a image",
-        statusCode: 403
+    await image.destroy()
+    return res.json({
+        message: "Successfully deleted",
+        statusCode: 200
     })
+
+    // res.status = 403;
+    // res.json({
+    //     message: "Current User is not authorized to delete a image",
+    //     statusCode: 403
+    // })
 })
 
 module.exports = router;

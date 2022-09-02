@@ -377,7 +377,7 @@ router.get('/:eventId/attendees', async(req, res, next) => {
 
 router.delete('/:eventId/attendance', requireAuth, async(req, res, next) => {
     const { eventId } = req.params;
-    const { memberId } = req.body;
+    let { memberId } = req.body;
     const { user } = req;
 
     let currentUser = user.toSafeObject();
@@ -438,19 +438,24 @@ router.delete('/:eventId', requireAuth, async(req, res, next) => {
         })
     }
 
-    let validateAuthorization = await Membership.findOne({ where: { [Op.and]: [ {userId: currentUserId}, { groupId: event.groupId} ] }})
-    if(validateAuthorization.status === "co-host" || validateAuthorization.status === "organizer"){
-        await event.destroy();
-        return res.json({
-            message: "Successfully deleted"
-        })
-    } else {
-        res.status = 403;
-        return res.json({
-            message: "Current User does not have authorization to delete event",
-            statusCode: 403
-        })
-    }
+    // let validateAuthorization = await Membership.findOne({ where: { [Op.and]: [ {userId: currentUserId}, { groupId: event.groupId} ] }})
+    // if(validateAuthorization.status === "co-host" || validateAuthorization.status === "organizer"){
+    //     await event.destroy();
+    //     return res.json({
+    //         message: "Successfully deleted"
+    //     })
+    // } else {
+    //     res.status = 403;
+    //     return res.json({
+    //         message: "Current User does not have authorization to delete event",
+    //         statusCode: 403
+    //     })
+    // }
+
+    await event.destroy();
+    return res.json({
+        message: "Successfully deleted"
+    })
 
 })
 

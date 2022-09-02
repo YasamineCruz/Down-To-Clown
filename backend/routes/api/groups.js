@@ -764,7 +764,10 @@ router.get('/:groupId/members', async(req, res, next) => {
 
 router.delete('/:groupId/membership', requireAuth, async(req, res, next) => {
     const { groupId } = req.params;
-    const { memberId } = req.body;
+    const { user } = req;
+
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
 
     let checkGroup = await Group.findByPk(groupId)
     if(!checkGroup){
@@ -775,7 +778,7 @@ router.delete('/:groupId/membership', requireAuth, async(req, res, next) => {
         })
     }
 
-    let checkUser = await User.findByPk(memberId)
+    let checkUser = await User.findByPk(currentUserId)
     if(!checkUser){
         res.status = 404;
         return res.json({
@@ -787,7 +790,7 @@ router.delete('/:groupId/membership', requireAuth, async(req, res, next) => {
         })
     }
 
-    let member = await Membership.findOne({where: { [Op.and]: [ { userId: memberId }, { groupId } ] }}) 
+    let member = await Membership.findOne({where: { [Op.and]: [ { userId: currentUserId }, { groupId } ] }}) 
     if(member){
         await member.destroy();
         return res.json({
