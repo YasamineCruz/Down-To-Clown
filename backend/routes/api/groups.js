@@ -711,4 +711,45 @@ router.put('/:groupId/membership', requireAuth, async(req, res, next) => {
 })
 
 
+router.get('/:groupId/members', async(req, res, next) => {
+    const { groupId } = req.params;
+    const { user } = req;
+
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
+    let payload = [];
+
+    let currentUserMembership = await Membership.findOne({where: { [Op.and]: [ {userId: currentUserId}, {groupId} ] } })
+
+    if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host'){
+        let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
+        for(let i = 0; i < members.length; i++){
+            let member = members[i];
+            let membership = await Membership.findOne({ where: { userId: member.id}, attributes: ['status']})
+            payload.push({
+                id: member.id,
+                firstName: member.firstName,
+                lastName: member.lastName,
+                Membership: membership
+            })
+        }
+       
+        return res.json({Members: payload})
+    } else {
+        let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
+        for(let i = 0; i < members.length; i++){
+            let member = members[i];
+            let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {status: { [Op.in]: ['member', 'co-host', 'organizer'] } } ] }, attributes: ['status']})
+            payload.push({
+                id: member.id,
+                firstName: member.firstName,
+                lastName: member.lastName,
+                Membership: membership
+            })
+        }
+       
+        return res.json({Members: payload})
+    }
+})
+
 module.exports = router;
