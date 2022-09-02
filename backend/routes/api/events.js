@@ -25,6 +25,7 @@ let checkEventAuth = async(userId) => {
 }
 
 router.get('/', requireAuth, async(req, res, next) => {
+    let payload = [];
     const events = await Event.findAll({
         include: [
             { model: Group, attributes: { exclude: ['createdAt', 'updatedAt'] } }, 
@@ -32,8 +33,57 @@ router.get('/', requireAuth, async(req, res, next) => {
         ],
         attributes: { exclude: ['createdAt', 'updatedAt']}
     })
+    for(let i = 0; i < events.length; i++){
+        let event = events[i]
+        let numAttending = await Attendance.count({where: {eventId: event.id}})
+        console.log(numAttending)
+        let previewImage = await EventImage.findOne({ where: { [Op.and]: [ {eventId: event.id}, {preview: true} ]}})
+        if(previewImage){  
+        payload.push({
+            id: event.id,
+            groupId: event.groupId,
+            venueId: event.venueId,
+            name: event.name,
+            description: event.description,
+            type: event.type,
+            capacity: event.capacity,
+            price: event.price,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            previewImage: previewImage.url,
+            numAttending,
+            Group: event.Group,
+            Venue: event.Venue 
+            }
+        )
+            
+    } else {
+        payload.push({
+    
+            id: event.id,
+            groupId: event.groupId,
+            venueId: event.venueId,
+            name: event.name,
+            description: event.description,
+            type: event.type,
+            capacity: event.capacity,
+            price: event.price,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            previewImage: "Event does not have a preview Image",
+            numAttending,
+            Group: event.Group,
+            Venue: event.Venue  
+        })
+      }
+    }
 
-    res.json({Events: events})
+    if(!events){
+        res.status = 404;
+        return res.json("There are no events")
+    }
+
+    return res.json({Events: payload})
 })
 
 router.post('/:eventId/images', requireAuth, async(req, res, next) => {

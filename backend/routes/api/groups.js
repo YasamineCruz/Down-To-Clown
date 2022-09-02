@@ -166,6 +166,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 payload.push({
                     id: group.id,
                     organizerId: group.organizerId,
+                    name: group.name,
                     about: group.about,
                     type: group.type,
                     private: group.private,
@@ -180,6 +181,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 payload.push({
                 id: group.id,
                 organizerId: group.organizerId,
+                name: group.name,
                 about: group.about,
                 type: group.type,
                 private: group.private,
@@ -206,6 +208,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 payload.push({
                     id: group.id,
                     organizerId: group.organizerId,
+                    name: group.name,
                     about: group.about,
                     type: group.type,
                     private: group.private,
@@ -220,6 +223,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 payload.push({
                 id: group.id,
                 organizerId: group.organizerId,
+                name: group.name,
                 about: group.about,
                 type: group.type,
                 private: group.private,
@@ -241,14 +245,10 @@ router.get('/current', requireAuth, async(req, res, next) => {
 
 
 
-    router.get('/:groupId', requireAuth, async(req, res, next) => {
+router.get('/:groupId', requireAuth, async(req, res, next) => {
     const { groupId } = req.params
-    const { user } = req;
-    let currentUser = user.toSafeObject();
-    let currentUserId = currentUser.id;
-    let payload = [];
     
-    let groups = await Group.findAll({
+    let group = await Group.findOne({
         where: { id: groupId },
         include: {model: User, attributes: []},
         attributes: {
@@ -264,40 +264,33 @@ router.get('/current', requireAuth, async(req, res, next) => {
     })
 
 
+    let previewImage = await GroupImage.findAll({ where: { groupId: group.id }, attributes: ['id','url', 'preview'], raw: true})
+    let organizer = await User.findOne({ where: { id: group.organizerId }, attributes: { exclude: ['username'] } })
+    let Venues = await Venue.findAll({where: { groupId: group.id}, attributes: { exclude: ['createdAt', 'updatedAt'] } })
+    let payload = {
+        id: group.id,
+        organizerId: group.organizerId,
+        name: group.name,
+        about: group.about,
+        type: group.type,
+        private: group.private,
+        city: group.city,
+        createdAt: group.createdAt,
+        updatedAt: group.updatedAt,
+        numMembers: group.numMembers,
+        GroupImages: previewImage,
+        Organizer: organizer,
+        Venues
+        }
     
-    for(let i = 0; i < groups.length; i++){
-        let group = groups[i]
-        
-            let previewImage = await GroupImage.findAll({ where: { groupId: group.id }, attributes: ['id','url', 'preview'], raw: true})
-            let organizer = await User.findOne({ where: { id: group.organizerId }, attributes: { exclude: ['username'] } })
-            let Venues = await Venue.findAll({where: { groupId: group.id}, attributes: { exclude: ['createdAt', 'updatedAt'] } })
-            payload.push({
-                id: group.id,
-                organizerId: group.organizerId,
-                name: group.name,
-                about: group.about,
-                type: group.type,
-                private: group.private,
-                city: group.city,
-                createdAt: group.createdAt,
-                updatedAt: group.updatedAt,
-                numMembers: group.numMembers,
-                GroupImages: previewImage,
-                Organizer: organizer,
-                Venues
-            })
-        
-    }
-    
-    
-    if(groups){
-        res.json({Groups: payload})
+    if(group){
+        res.json(payload)
     } else{
-        const err = new Error('No Groups found');
-        err.status = 401;
-        err.title = 'No Groups';
-        err.errors = ['There are no groups'];
-        return next(err);
+        res.status = 404;
+        res.json({
+        message: "Group couldn't be found",
+        statusCode: 404
+        })
     }
 })
 
@@ -322,8 +315,7 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
     })
     console.log(group.id)
 
-    let newMember = await Membership.create({userId: currentUserId, groupId: group.id, status: 'organizer'})
-    console.log(newMember)
+    await Membership.create({userId: currentUserId, groupId: group.id, status: 'organizer'});
 
     return res.json(group)
 
@@ -373,7 +365,7 @@ router.put('/:groupId', requireAuth, async(req, res, next) => {
    
 
     let group = await Group.findByPk(groupId);
-    console.log(group)
+
         if(group){
             group.set({id: groupId});
             group.update({ name, about, type, private, city, state})
@@ -540,6 +532,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
             let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private', 'lat', 'lng', 'address'] } })
             let previewImage = await EventImage.findOne({where: { eventId: event.id}})
             let numAttending = await Attendance.count({where: {eventId: event.id}})
+        
             if(previewImage.preview === true){
                 payload.push({
                     id: event.id,
@@ -731,32 +724,38 @@ router.get('/:groupId/members', async(req, res, next) => {
             statusCode: 404
         })
     }
+    let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
 
     if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host'){
-        let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
         for(let i = 0; i < members.length; i++){
             let member = members[i];
-            let membership = await Membership.findOne({ where: { userId: member.id}, attributes: ['status']})
-            payload.push({
+            let membership = await Membership.findOne({ where: { [Op.and]: [ {userId: member.id}, {groupId}]}, attributes: ['status']})
+            if(membership){
+                payload.push({
                 id: member.id,
                 firstName: member.firstName,
                 lastName: member.lastName,
                 Membership: membership
-            })
+             })
+            }
+           
         }
        
         return res.json({Members: payload})
     } else {
-        let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
+
         for(let i = 0; i < members.length; i++){
             let member = members[i];
-            let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {status: { [Op.in]: ['member', 'co-host', 'organizer'] } } ] }, attributes: ['status']})
-            payload.push({
+            let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId}, {status: { [Op.in]: ['member', 'co-host', 'organizer'] } } ] }, attributes: ['status']})
+            if(membership){
+                payload.push({
                 id: member.id,
                 firstName: member.firstName,
                 lastName: member.lastName,
                 Membership: membership
-            })
+            }) 
+            }
+          
         }
        
         return res.json({Members: payload})
