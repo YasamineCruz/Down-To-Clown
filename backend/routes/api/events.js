@@ -7,7 +7,6 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { Op } = require("sequelize");
-const groupimage = require('../../db/models/groupimage');
 
 const router = express.Router();
 
@@ -326,6 +325,84 @@ router.get('/:eventId/attendees', async(req, res, next) => {
     
 })
 
+router.delete('/:eventId/attendance', requireAuth, async(req, res, next) => {
+    const { eventId } = req.params;
+    const { memberId } = req.body;
+    const { user } = req;
 
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
+
+    let eventCheck = await Event.findByPk(eventId);
+    if(!eventCheck) {
+        res.status = 404;
+        return res.json({
+            message: "Event couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    let checkAuthorization = await Group.findOne({
+        where: {id: eventCheck.groupId},
+        include: { model: User, where: { id: currentUserId}}
+    })
+
+
+    if(checkAuthorization ||  memberId === currentUserId){
+         let member = await Attendance.findOne({ where: { [Op.and]: [ {eventId}, {userId: memberId } ] } });
+
+        if(member){
+        await member.destroy
+        return res.json({
+            message: "Successfully deleted attendance from event"
+        })
+         } else {
+            res.status = 404;
+            return res.json({
+            message: "Attendance does not exist for this User",
+            statusCode: 404
+            })
+        }
+    }
+    
+    res.status = 403;
+    return res.json({
+        message: "Only the User or organizer may delete an Attendance",
+        statusCode: 403
+    })
+
+})
+
+router.delete('/:eventId', requireAuth, async(req, res, next) => {
+    const { eventId } = req.params;
+    const { user } = req;
+
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
+
+    let event = await Event.findByPk(eventId)
+    if(!event){
+        res.status = 404;
+        return res.json({
+            message: "Event couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    let validateAuthorization = await Membership.findOne({ where: { [Op.and]: [ {userId: currentUserId}, { groupId: event.groupId} ] }})
+    if(validateAuthorization.status === "co-host" || validateAuthorization.status === "organizer"){
+        await event.destroy();
+        return res.json({
+            message: "Successfully deleted"
+        })
+    } else {
+        res.status = 403;
+        return res.json({
+            message: "Current User does not have authorization to delete event",
+            statusCode: 403
+        })
+    }
+
+})
 
 module.exports = router;

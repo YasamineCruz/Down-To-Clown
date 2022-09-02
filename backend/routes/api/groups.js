@@ -763,4 +763,45 @@ router.get('/:groupId/members', async(req, res, next) => {
     }
 })
 
+router.delete('/:groupId/membership', requireAuth, async(req, res, next) => {
+    const { groupId } = req.params;
+    const { memberId } = req.body;
+
+    let checkGroup = await Group.findByPk(groupId)
+    if(!checkGroup){
+        res.status = 404;
+        return res.json({
+            message: "Group couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    let checkUser = await User.findByPk(memberId)
+    if(!checkUser){
+        res.status = 404;
+        return res.json({
+            message: "Validation Error",
+            statusCode: 404,
+            errors: {
+                memberId: "User couldn't be found"
+            }
+        })
+    }
+
+    let member = await Membership.findOne({where: { [Op.and]: [ { userId: memberId }, { groupId } ] }}) 
+    if(member){
+        await member.destroy();
+        return res.json({
+            message: "Successfully deleted membership from group"
+        })
+    } else {
+         res.status = 400;
+    return res.json({
+        message: "Membership does not exist for this User",
+        statusCode: 404,
+    })
+    }
+   
+})
+
 module.exports = router;
