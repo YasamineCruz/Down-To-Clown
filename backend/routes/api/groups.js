@@ -719,7 +719,16 @@ router.get('/:groupId/members', async(req, res, next) => {
     let currentUserId = currentUser.id;
     let payload = [];
 
+
     let currentUserMembership = await Membership.findOne({where: { [Op.and]: [ {userId: currentUserId}, {groupId} ] } })
+
+    if(!currentUserMembership){
+        res.status = 404;
+        return res.json({
+            message: "Group couldn't be found",
+            statusCode: 404
+        })
+    }
 
     if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host'){
         let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
