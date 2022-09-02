@@ -208,11 +208,58 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next) => {
     }
 })
 
-//body in postman
-// {
-//     "eventId": {{eventId}},
-//     "userId": {{userId}},
-//     "status": "pending"
-// }
+router.put('/:eventId/attendance', requireAuth, async(req, res, next) => {
+    const { eventId } = req.params;
+    const { userId, status } = req.body;
+    const { user } = req;
+
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
+
+    let event = await Event.findByPk(eventId)
+    if(!event){
+        res.status = 404;
+        return res.json({
+            message: "Event couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    let checkAuthorization = await Membership.findOne({ where: { [Op.and]: [{ userId: currentUserId}, { groupId: event.groupId}]}})
+    if(!checkAuthorization){
+        res.status = 401;
+        return res.json({
+            message: "The current user does not have authorization",
+            status: 401
+        })
+    }
+
+    if(status === "pending") {
+        res.status = 400;
+        return res.json({
+            message: "Cannot change an attendance status to pending",
+            statusCode: 400
+        })
+    }
+
+    let attendee = await Attendance.findOne({ where: { [Op.and]: [{eventId}, {userId}]}});
+    if(!attendee){
+        res.status = 404;
+        return res.json({
+            message: "Attendance between the user and the event does not exist",
+            statusCodeL: 404
+        })
+    } 
+
+    await attendee.update({status})
+    return res.json({
+        id: attendee.id,
+        eventId: attendee.eventId,
+        userId: attendee.userId,
+        status: attendee.status
+    })
+})
+
+
 
 module.exports = router;
