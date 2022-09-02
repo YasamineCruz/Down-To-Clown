@@ -152,8 +152,10 @@ router.get('/current', requireAuth, async(req, res, next) => {
 
     
     if(memberships.length < 1 && currentUserOrganizer.length < 1){
-        res.json({
-            message: "The current user has no groups"
+        res.status = 404;
+        return res.json({
+            message: "The current user has no groups",
+            status: 404
         })
     } else {
             // adding in groups User is the organizer of with and without previewImage
@@ -531,7 +533,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
             },
             raw: true
         })
-    console.log(events)
+
     for(let i = 0; i < events.length; i++){
             let event = events[i]
             let group = await Group.findByPk(event.groupId, { attributes: { exclude: ['organizerId','about','createdAt', 'updatedAt', 'type', 'private']}})

@@ -247,7 +247,7 @@ router.put('/:eventId/attendance', requireAuth, async(req, res, next) => {
         res.status = 404;
         return res.json({
             message: "Attendance between the user and the event does not exist",
-            statusCodeL: 404
+            statusCode: 404
         })
     } 
 
@@ -258,6 +258,72 @@ router.put('/:eventId/attendance', requireAuth, async(req, res, next) => {
         userId: attendee.userId,
         status: attendee.status
     })
+})
+
+router.get('/:eventId/attendees', async(req, res, next) => {
+    const { eventId } = req.params;
+    const { user } = req;
+
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
+    let payload = [];
+
+    let checkEvent = await Event.findByPk(eventId)
+
+    if(!checkEvent){
+        res.status = 404;
+        return res.json({
+            message: "Event couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    let attendees = await User.findAll({
+        attributes: ['id', 'firstName', 'lastName'],
+        raw: true
+    },)
+
+    let currentUserStatus = await User.findByPk(currentUserId)
+
+    if(currentUserStatus.status === "organizer" || currentUserStatus.status === "co-host"){
+        for(let i = 0; i < attendees.length; i++){
+            let attendee = attendees[i];
+            let attendance = await Attendance.findOne({ where: { [Op.and]: [ {eventId}, {userId: attendee.id} ]}, attributes: ['status']})
+            if(attendance){
+                payload.push({
+                    id: attendee.id,
+                    firstName: attendee.firstName,
+                    lastName: attendee.lastName,
+                    Attendance: attendance
+                })
+            }
+        }
+    } else {
+        for(let i = 0; i < attendees.length; i++){
+            let attendee = attendees[i];
+            let attendance = await Attendance.findOne({ where: { [Op.and]: [ {eventId}, {userId: attendee.id}, {status: { [Op.in]: ['member', 'waitlist'] }} ]}, attributes: ['status']})
+            if(attendance){
+                 payload.push({
+                id: attendee.id,
+                firstName: attendee.firstName,
+                lastName: attendee.lastName,
+                Attendance: attendance
+            })
+            }
+           
+        }
+    }
+    if(payload.length >= 1){
+         return res.json({Attendees: payload})  
+    } else {
+        res.status = 404;
+        return res.json({
+            message: "No Attendees were found for this event",
+            statusCode: 404
+        })
+    }
+ 
+    
 })
 
 
