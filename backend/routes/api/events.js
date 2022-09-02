@@ -343,16 +343,15 @@ router.delete('/:eventId/attendance', requireAuth, async(req, res, next) => {
     }
 
     let checkAuthorization = await Group.findOne({
-        where: {id: eventCheck.groupId},
-        include: { model: User, where: { id: currentUserId}}
+        where: { organizerId: currentUserId},
     })
-
+    
 
     if(checkAuthorization ||  memberId === currentUserId){
          let member = await Attendance.findOne({ where: { [Op.and]: [ {eventId}, {userId: memberId } ] } });
-
+        console.log(member)
         if(member){
-        await member.destroy
+        await member.destroy()
         return res.json({
             message: "Successfully deleted attendance from event"
         })
