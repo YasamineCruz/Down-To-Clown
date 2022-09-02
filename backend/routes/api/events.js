@@ -152,4 +152,67 @@ router.put('/:eventId', requireAuth, async(req, res, next) => {
     }
 })
 
+router.post('/:eventId/attendance', requireAuth, async(req, res, next) => {
+    const { eventId } = req.params;
+    const { userId, status } = req.body;
+    const { user } = req;
+
+    let currentUser = user.toSafeObject();
+    let currentUserId = currentUser.id;
+
+    let event = await Event.findByPk(eventId)
+
+    if(!event){
+        res.status = 404;
+        return res.json({
+            message: "Event couldn't be found"
+        })
+    }
+
+    let checkAuthorization = await Membership.findOne({ where: { [Op.and]: [{ userId: currentUserId}, { groupId: event.groupId}]}})
+    let checkAttendance = await Attendance.findOne({where: { [Op.and]: [{ userId }, { eventId}]}})
+
+    if(checkAttendance){
+          if(checkAttendance.status === "pending"){
+        res.status = 400;
+        return res.json({
+            message: "Attendance has already been requested",
+            statusCode: 400
+        })
+    }
+
+    if(checkAttendance.status === "member"){
+        res.status = 400;
+        return res.json({
+            message: "User is already an attendee of the event",
+            statusCode: 400
+        })
+    }
+
+    }
+  
+
+    if(checkAuthorization){
+        let newAtt = await Attendance.create({eventId, userId, status: "pending"})
+        res.json({
+            id: newAtt.id,
+            userId: newAtt.userId,
+            status
+        })
+    } else {
+        res.status = 404;
+        return res.json({
+            message: "User is not a current member of this group",
+            statusCode: 404
+        })
+    }
+})
+
+//body in postman
+// {
+//     "eventId": {{eventId}},
+//     "userId": {{userId}},
+//     "status": "pending"
+// }
+
 module.exports = router;
