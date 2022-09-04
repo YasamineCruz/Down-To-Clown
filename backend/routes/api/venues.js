@@ -1,13 +1,9 @@
 const express = require('express');
 
-const { restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Group, Membership, sequelize, GroupImage, Venue, Attendance } = require('../../db/models');
-
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { requireAuth } = require('../../utils/auth');
+const { Venue } = require('../../db/models');
 
 const { Op } = require("sequelize");
-const groupimage = require('../../db/models/groupimage');
 
 const router = express.Router();
 
@@ -22,7 +18,7 @@ router.put('/:venueId', requireAuth, async(req, res, next) => {
         venue.set({id: venueId})
         venue.update({address, city, state, lat, lng })
         .then(function(venue){
-            res.json({
+            return res.json({
                 id: venue.id,
                 groupId: venue.groupId,
                 address: venue.address,
@@ -34,17 +30,7 @@ router.put('/:venueId', requireAuth, async(req, res, next) => {
           })
         .catch(function (err) {
             res.status = 400;
-            res.json({
-                message: "Validation Error",
-                statusCode: 400,
-                "errors": {
-                    address: "Street address is required",
-                    city: "City is required",
-                    state: "State is required",
-                    late: "Latitude is not valid",
-                    lng: "Longitude is not valid"
-                }
-            })
+            return checkErrors(res, err)
           });
     } else {
         res.status = 404

@@ -34,35 +34,50 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        len: {
+          args: [1, 200],
+          msg: "Street address is required"
+        }
       }
     },
     city: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        len: {
+          args: [1, 200],
+          msg: "City is required"
+        }
       }
     },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        len: {
+          args: [1,200],
+          msg: "State is required"
+        }
       }
     },
     lat: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: {
+          args: true,
+          msg: "Latitude is not valid"
+        }   
       }
     },
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: {
+          args: true,
+          msg: "Longitude is not valid"
+        }
       }
     }
   }, {

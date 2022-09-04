@@ -1,10 +1,7 @@
 const express = require('express');
 
-const { restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Group, Membership, sequelize, GroupImage, Venue, Attendance, EventImage, Event } = require('../../db/models');
-
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { requireAuth } = require('../../utils/auth');
+const { GroupImage } = require('../../db/models');
 
 const { Op } = require("sequelize");
 
@@ -14,10 +11,10 @@ const router = express.Router();
 router.delete('/:imageId', requireAuth, async(req, res, next) => {
     const { imageId } = req.params;
 
-    const { user } = req;
+    // const { user } = req;
 
-    let currentUser = user.toSafeObject();
-    let currentUserId = currentUser.id;
+    // let currentUser = user.toSafeObject();
+    // let currentUserId = currentUser.id;
 
     let image = await GroupImage.findByPk(imageId)
     if(!image){

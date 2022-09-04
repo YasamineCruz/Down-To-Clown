@@ -1,12 +1,13 @@
 const express = require('express');
 
-const { restoreUser, requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { User, Group, Membership, sequelize, GroupImage, Venue, Attendance, Event, EventImage } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { Op } = require("sequelize");
+
 
 const router = express.Router();
 
@@ -38,6 +39,21 @@ const validateGroup = [
     handleValidationErrors
 ]
 
+const checkErrors = async(res, err) => {
+        let errorList = err.errors;
+        let errors = {};
+        for(let i = 0; i < errorList.length; i++){
+            let err = errorList[i]
+            let name = err.path
+            let msg = err.message
+            errors[name] = msg 
+        }
+        res.json({
+            message: "Validation Error",
+            statusCode: 400,
+            errors: errors
+        })
+}
 
 
 router.get('/', requireAuth, async(req, res, next) => {
@@ -95,9 +111,6 @@ router.get('/', requireAuth, async(req, res, next) => {
         
     }
 
-
-
-    
     if(payload.length >= 1){
         res.json({Groups: payload})
     } else{
@@ -111,14 +124,14 @@ router.get('/', requireAuth, async(req, res, next) => {
 
 router.get('/current', requireAuth, async(req, res, next) => {
     const { user } = req;
-    let currentUser;
+
     let currentUserId;
     let currentUserOrganizer;
     let payload = [];
     let payloadGroupIds = [];
 
     if (user) {
-      currentUser = user.toSafeObject();
+      let currentUser = user.toSafeObject();
       currentUserId = currentUser.id;
       
       currentUserOrganizer = await Group.findAll({
@@ -267,7 +280,9 @@ router.get('/:groupId', requireAuth, async(req, res, next) => {
     let previewImage = await GroupImage.findAll({ where: { groupId: group.id }, attributes: ['id','url', 'preview'], raw: true})
     let organizer = await User.findOne({ where: { id: group.organizerId }, attributes: { exclude: ['username'] } })
     let Venues = await Venue.findAll({where: { groupId: group.id}, attributes: { exclude: ['createdAt', 'updatedAt'] } })
-    let payload = {
+
+    if(group){
+        return res.json({
         id: group.id,
         organizerId: group.organizerId,
         name: group.name,
@@ -281,10 +296,7 @@ router.get('/:groupId', requireAuth, async(req, res, next) => {
         GroupImages: previewImage,
         Organizer: organizer,
         Venues
-        }
-    
-    if(group){
-        res.json(payload)
+        })
     } else{
         res.status = 404;
         res.json({
@@ -302,8 +314,6 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
      let currentUser = user.toSafeObject();
      let currentUserId = currentUser.id;
 
-
-
     const group = await Group.create({
         organizerId: currentUserId,
         name,
@@ -313,7 +323,6 @@ router.post('/', requireAuth, validateGroup, async(req, res, next) => {
         city,
         state
     })
-    console.log(group.id)
 
     await Membership.create({userId: currentUserId, groupId: group.id, status: 'organizer'});
 
@@ -326,12 +335,12 @@ router.post('/:groupId/images', requireAuth, async(req, res, next) => {
     const { url, preview } = req.body;
     let group = await Group.findByPk(groupId);
     if(group){
-        let newImage = await group.createGroupImage({url, preview});
-        res.json({
+        let newImage = await group.createGroupImage({url, preview})
+        return res.json({
             id: newImage.id,
             url: newImage.url,
             preview: newImage.preview
-        })
+            })
     } else {
         res.status = 404
         res.json({
@@ -346,23 +355,6 @@ router.put('/:groupId', requireAuth, async(req, res, next) => {
     const { groupId } = req.params;
     const { name, about, type, private, city, state } = req.body;
 
-    if(!name && !about && !type && !private && !city && !city && !state){
-        res.status = 400;
-        res.json({
-                message: "Validation Error",
-                statusCode: 400,
-                errors: {
-                  name: "Name must be 60 characters or less",
-                  about: "About must be 50 characters or more",
-                  type: "Type must be 'Online' or 'In person'",
-                  private: "Private must be a boolean",
-                  city: "City is required",
-                  state: "State is required",
-                }
-        })
-    }
-
-   
 
     let group = await Group.findByPk(groupId);
 
@@ -374,31 +366,15 @@ router.put('/:groupId', requireAuth, async(req, res, next) => {
               })
             .catch(function (err) {
                 res.status = 400;
-                res.json({
-                    message: "Validation Error",
-                    statusCode: 400,
-                    "errors": {
-                        name: "Name must be 60 characters or less",
-                        about: "About must be 50 characters or more",
-                        type: "Type must be 'Online' or 'In person'",
-                        private: "Private must be a boolean",
-                        city: "City is required",
-                        state: "State is required"
-                    }
-                })
+                return checkErrors(res, err)
               });
-    
-            
         } else {
             res.status = 404;
             res.json({
                 message: "Group couldn't be found",
                 statusCode: 404
-            })
-        }
-   
-        
-    
+            });
+        };
 })
 
 router.delete('/:groupId', async(req, res, next) => {
@@ -430,7 +406,7 @@ router.post('/:groupId/venues', requireAuth, async(req, res, next) => {
     if(group){
         let venue = await group.createVenue({address, city, state, lat, lng})
         .then(function(venue){
-            res.json({
+            return res.json({
                 id: venue.id,
                 groupId: venue.groupId,
                 address: venue.address,
@@ -438,21 +414,11 @@ router.post('/:groupId/venues', requireAuth, async(req, res, next) => {
                 state: venue.state,
                 lat: venue.lat,
                 lng: venue.lng
-            });
+            })
           })
         .catch(function (err) {
             res.status = 400;
-            res.json({
-                message: "Validation Error",
-                statusCode: 400,
-                "errors": {
-                    address: "Street address is required",
-                    city: "City is required",
-                    state: "State is required",
-                    late: "Latitude is not valid",
-                    lng: "Longitude is not valid"
-                }
-            })
+            return checkErrors(res, err)
         })
     } else {
         res.status = 404;
@@ -468,6 +434,7 @@ router.post('/:groupId/events', requireAuth, async(req, res, next) => {
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 
     let group = await Group.findByPk(groupId);
+
 
     if(group){
         let event = await group.createEvent({ venueId, name, type, capacity, price, description, startDate, endDate})
@@ -486,27 +453,23 @@ router.post('/:groupId/events', requireAuth, async(req, res, next) => {
             });
           })
         .catch(function (err) {
-            res.status = 400;
-            res.json({
-                message: "Validation Error",
+           res.statusCode = 400;
+           if(!err.errors){
+            return res.json({
+                messag: 'Validation Error',
                 statusCode: 400,
-                "errors": {
-                    venueId: "Venue does not exist",
-                    name: "Name must be at least 5 characters",
-                    type: "Type must be Online or In person",
-                    capacity: "Capacity must be an integer",
-                    price: "Price is invalid",
-                    description: "Description is required",
-                    startDate: "Start date must be in the future",
-                    endDate: "End date is less than start date",
+                errors: {
+                    venueId: "Venue does not exist"
                 }
             })
+           }
+           return checkErrors(res, err)
           });
     } else {
         res.status = 404
         res.json({
            message: "Group couldn't be found",
-           stautCode: 404
+           statusCode: 404
         })
     }
 })
@@ -532,7 +495,7 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
             let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private', 'lat', 'lng', 'address'] } })
             let previewImage = await EventImage.findOne({where: { eventId: event.id}})
             let numAttending = await Attendance.count({where: {eventId: event.id}})
-        
+            console.log(previewImage)
             if(previewImage.preview === true){
                 payload.push({
                     id: event.id,
@@ -595,7 +558,7 @@ router.post('/:groupId/membership', requireAuth, async(req, res, next) => {
         && valuesForMember[3] === "pending")){
             res.status = 400;
             return res.json({
-                message: "Membership has alread been requested",
+                message: "Membership has already been requested",
                 statusCode: 400
         })
         }
@@ -607,13 +570,18 @@ router.post('/:groupId/membership', requireAuth, async(req, res, next) => {
             groupId,
             status
             })
-        
-        return res.json({
+        .then(function(membership){
+          return res.json({
             id: membership.id,
             groupId: membership.groupId, 
             memberId: membership.userId,
             status: membership.status 
+            })  
         })
+        .catch(function (err) {
+            res.status = 400;
+            return checkErrors(res, err)
+          }); 
     } else {
         res.status = 404;
         return res.json({
@@ -682,12 +650,18 @@ router.put('/:groupId/membership', requireAuth, async(req, res, next) => {
 
     if(currentUserMembership.status === "organizer"){
         membership.update({status})
-        return res.json({
+        .then(function(membership){
+            return res.json({
             id: membership.id,
             groupId: membership.groupId,
             memberId: membership.userId,
             status: membership.status
+         }) 
         })
+        .catch(function (err) {
+            res.status = 400;
+            return checkErrors(res, err)
+        });
     } else if ( currentUserMembership.status === 'co-host'){
         membership.update(status)
         return res.json({

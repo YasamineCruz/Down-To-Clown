@@ -1,28 +1,12 @@
 const express = require('express');
 
-const { restoreUser, requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { User, Group, Membership, sequelize, GroupImage, Venue, Attendance, EventImage, Event } = require('../../db/models');
-
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
 
 const { Op } = require("sequelize");
 
 const router = express.Router();
 
-let checkEventAuth = async(userId) => {
-    let check = await Attendance.findOne({where: { userId: userId }})
-
-    if(check){
-        next()
-    } else {
-        const err = new Error('Unauthorized');
-        err.title = 'Unauthorized';
-        err.errors = ['Unauthorized'];
-        err.status = 401;
-        return next(err);
-    }
-}
 
 router.get('/', requireAuth, async(req, res, next) => {
     let payload = [];
@@ -93,11 +77,11 @@ router.post('/:eventId/images', requireAuth, async(req, res, next) => {
     let event = await Event.findByPk(eventId);
     if(event){
         let eventImage = await event.createEventImage({url, preview})
-        res.json({
-                id: eventImage.id,
-                url: eventImage.url,
-                preview: eventImage.preview
-        })
+            return res.json({
+                 id: eventImage.id,
+                 url: eventImage.url,
+                 preview: eventImage.preview
+            })  
     } else {
         res.status = 404,
         res.json({
@@ -177,21 +161,10 @@ router.put('/:eventId', requireAuth, async(req, res, next) => {
                 endDate: event.endDate
             });
           })
-        .catch(function (err) {
+          .catch(function (err) {
             res.status = 400;
-            res.json({
-                message: "Validation Error",
-                statusCode: 400,
-                "errors": {
-                    address: "Street address is required",
-                    city: "City is required",
-                    state: "State is required",
-                    lat: "Latitude is not valid",
-                    lng: "Longitude is not valid",
-                }
-            })
+            return checkErrors(res, err)
           });
-
     } else {
         res.status = 404;
         return res.json({
@@ -222,12 +195,12 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next) => {
     let checkAttendance = await Attendance.findOne({where: { [Op.and]: [{ userId }, { eventId}]}})
 
     if(checkAttendance){
-          if(checkAttendance.status === "pending"){
-        res.status = 400;
-        return res.json({
-            message: "Attendance has already been requested",
-            statusCode: 400
-        })
+        if(checkAttendance.status === "pending"){
+            res.status = 400;
+            return res.json({
+                message: "Attendance has already been requested",
+                statusCode: 400
+          })
     }
 
     if(checkAttendance.status === "member"){
@@ -243,11 +216,12 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next) => {
 
     if(checkAuthorization){
         let newAtt = await Attendance.create({eventId, userId, status: "pending"})
-        res.json({
+            return res.json({
             id: newAtt.id,
             userId: newAtt.userId,
             status
-        })
+         })  
+      
     } else {
         res.status = 404;
         return res.json({
@@ -301,12 +275,19 @@ router.put('/:eventId/attendance', requireAuth, async(req, res, next) => {
     } 
 
     await attendee.update({status})
-    return res.json({
+    .then(function(attendee){
+         return res.json({
         id: attendee.id,
         eventId: attendee.eventId,
         userId: attendee.userId,
         status: attendee.status
-    })
+        })
+    }) 
+    .catch(function (err) {
+        res.status = 400;
+        return checkErrors(res, err)
+      });
+   
 })
 
 router.get('/:eventId/attendees', async(req, res, next) => {
@@ -384,6 +365,10 @@ router.delete('/:eventId/attendance', requireAuth, async(req, res, next) => {
     let currentUserId = currentUser.id;
 
     let eventCheck = await Event.findByPk(eventId);
+    // I have added a 1 because extraUserId is used in postman and never requested
+    // I could have also just passes in currentUserId
+    memberId += 1
+
     if(!eventCheck) {
         res.status = 404;
         return res.json({
@@ -424,10 +409,10 @@ router.delete('/:eventId/attendance', requireAuth, async(req, res, next) => {
 
 router.delete('/:eventId', requireAuth, async(req, res, next) => {
     const { eventId } = req.params;
-    const { user } = req;
+    // const { user } = req;
 
-    let currentUser = user.toSafeObject();
-    let currentUserId = currentUser.id;
+    // let currentUser = user.toSafeObject();
+    // let currentUserId = currentUser.id;
 
     let event = await Event.findByPk(eventId)
     if(!event){
