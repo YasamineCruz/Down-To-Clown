@@ -12,7 +12,7 @@ const validateSignup = [
     check('email')
         .exists({ checkFalsy: true })
         .isEmail()
-        .withMessage('Please provide a valid email.'),
+        .withMessage('Invalid email'),
     check('username')
         .exists({ checkFalsy: true })
         .isLength({ min: 4 })
@@ -24,7 +24,7 @@ const validateSignup = [
     check('firstName')
         .exists({ checkFalsy: true })
         .isLength({ min: 2 })
-        .withMessage('Please provide a first name with at least 2 characters.'),
+        .withMessage('First Name is required'),
     check('firstName')
         .not()
         .isEmail()
@@ -32,7 +32,7 @@ const validateSignup = [
     check('lastName')
         .exists({ checkFalsy: true })
         .isLength({ min: 2 })
-        .withMessage('Please provide a last name with at least 2 characters.'),
+        .withMessage('Last name is required'),
     check('lastName')
         .not()
         .isEmail()

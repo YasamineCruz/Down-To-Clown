@@ -366,7 +366,7 @@ router.delete('/:eventId/attendance', requireAuth, async(req, res, next) => {
 
     let eventCheck = await Event.findByPk(eventId);
     // I have added a 1 because extraUserId is used in postman and never requested
-    // I could have also just passes in currentUserId
+    // I could have also just passed in currentUserId
     memberId += 1
 
     if(!eventCheck) {
