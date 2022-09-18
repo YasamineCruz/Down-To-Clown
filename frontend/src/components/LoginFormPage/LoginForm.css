@@ -1,0 +1,40 @@
+form {
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+}
+
+
+div {
+    width: 75vw;
+}
+
+label {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+input {
+    margin-bottom: 20px;
+    height: 20px;
+    padding-left: 5px;
+}
+
+button {
+    height: 20px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+    margin-top: 19px;
+    background-color: #f65858;
+    border-color: #f65858;
+    fill: #ffff;
+    color: #ffff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
