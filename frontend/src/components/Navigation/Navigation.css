@@ -1,0 +1,26 @@
+
+nav {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.NavLinks {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-content: center;
+    width: fit-content;
+    height: fit-content;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-decoration: none;
+}
+
+.fa-user-circles {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+}
+
