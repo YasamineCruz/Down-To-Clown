@@ -10,7 +10,6 @@ function LoginForm() {
   const [errors, setErrors] = useState([]);
   const [passwordType, setPasswordType] = useState('password');
   const [checked, setChecked] = useState(false);
-  const [demoUser] = useState(true);
     
   useEffect(()=> {
     if(checked) setPasswordType('text')
@@ -20,9 +19,6 @@ function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(demoUser === true){
-        return dispatch(sessionActions.login({credential: 'demo@user.io', password: 'password'}))
-    }
     setErrors([]);
     return dispatch(sessionActions.login({ credential, password })).catch(
       async (res) => {
@@ -31,6 +27,9 @@ function LoginForm() {
       }
     );
   };
+  const handleSubmitDemoUser = (e) => {
+    return dispatch(sessionActions.login({credential: 'demo@user.io', password: 'password'}))
+  } 
 
   return (
     <form onSubmit={handleSubmit}>
@@ -45,7 +44,7 @@ function LoginForm() {
       <div className='LogInWords'>Log In</div>
       <div className='DemoUserDiv'>
         <i id='fa-user-circle' className="fas fa-user-circle fa-2x" />
-        <button type='submit' onClick={(e)=> handleSubmit(e)} value={demoUser} className='DemoUserButton'>
+        <button type='submit' onClick={(e) => handleSubmitDemoUser(e)} className='DemoUserButton'>
         Demo User
        </button>
        </div>
