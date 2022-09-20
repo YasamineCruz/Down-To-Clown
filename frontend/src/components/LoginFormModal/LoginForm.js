@@ -10,6 +10,7 @@ function LoginForm() {
   const [errors, setErrors] = useState([]);
   const [passwordType, setPasswordType] = useState('password');
   const [checked, setChecked] = useState(false);
+  const [demoUser] = useState(true);
     
   useEffect(()=> {
     if(checked) setPasswordType('text')
@@ -19,6 +20,9 @@ function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(demoUser === true){
+        return dispatch(sessionActions.login({credential: 'demo@user.io', password: 'password'}))
+    }
     setErrors([]);
     return dispatch(sessionActions.login({ credential, password })).catch(
       async (res) => {
@@ -33,12 +37,19 @@ function LoginForm() {
       <ul>
         {errors.map((error, idx) => (
           <li key={idx}>{error}</li>
-        ))}
-        <div className='meetupIcon'>
-            <i className="fa-brands fa-meetup fa-5x"></i>  
-        </div>
-      <div>Log In</div>
-      </ul>
+        ))} 
+     </ul>
+     <div className='meetupIcon'>
+        <i className="fa-brands fa-meetup fa-5x"></i>  
+     </div>
+      <div className='LogInWords'>Log In</div>
+      <div className='DemoUserDiv'>
+        <i id='fa-user-circle' className="fas fa-user-circle fa-2x" />
+        <button type='submit' onClick={(e)=> handleSubmit(e)} value={demoUser} className='DemoUserButton'>
+        Demo User
+       </button>
+       </div>
+      <div className='LoginContent'>
       <label className='loginlabel'>
         Email
         <input
@@ -65,7 +76,8 @@ function LoginForm() {
           onChange={() => setChecked(!checked)} 
           checked={checked}/>
           </label>
-      <button type="submit" className='loginButton'>Log In</button>
+        <button type="submit" className='loginButton'>Log In</button>
+    </div>
     </form>
   );
 }
