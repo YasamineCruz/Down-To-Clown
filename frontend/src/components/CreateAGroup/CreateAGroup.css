@@ -29,3 +29,29 @@
     font-weight: bold;
     align-items: center;
 }
+
+.BackButton {
+    position: fixed;
+    top: 92%;
+    right: 75%;
+    left: 0%;
+    bottom: 0;
+    height: 40px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+    margin-top: 19px;
+    background-color: white;
+    border-color: rgb(180, 176, 176);
+    fill: rgb(180, 176, 176);
+    color: rgb(145, 142, 142);
+    border-radius: 8px;
+    border-width: 1px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 15px;
+    font-weight: bold;
+    align-items: center;
+}
