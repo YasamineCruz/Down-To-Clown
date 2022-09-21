@@ -4,7 +4,10 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
+import CreateAGroupButton from './CreateAGroupButton'
+
 import './Navigation.css';
+
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
@@ -12,8 +15,12 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <ProfileButton user={sessionUser} />
-    );
+        <>
+        <ProfileButton user={sessionUser} />
+        <CreateAGroupButton />
+        </>
+        
+    )
   } else {
     sessionLinks = (
       <nav className='NavLinks'>

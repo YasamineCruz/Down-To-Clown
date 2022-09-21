@@ -1,7 +1,7 @@
-import { GroupContext } from "../../context/CreateGroupContext";
+import { useGroupContext } from "../../context/GroupContext";
 
 const BackButton = () => {
-    const { page, setPage} = useContext(GroupContext);
+    const { page, setPage} = useGroupContext();
     
     return (
         <>

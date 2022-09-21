@@ -1,53 +1,34 @@
-import { useContext } from "react";
-import { Route, Switch } from "react-router-dom";
-import { GroupContext } from '../../context/CreateGroupContext'
-import GroupDescription from "./CreateAGroupDescription";
-import GroupName from "./CreateAGroupName";
-import GroupGuideLines from "./CreateAGroupPageGuidelines";
-import GroupPlan from "./CreateAGroupPlan";
-import GroupPrivate from "./CreateAGroupPrivate";
+import { Redirect } from "react-router-dom";
 
-const MultipleFormCreateAGroup = () => {
-    const {page, setPage} = useContext(GroupContext);
-    
+const MultipleFormCreateAGroup = ({page}) => {
 
     switch(page){
         case 1:
             return (
-                <Route path='/start/location'>
-                    <GroupLocation />
-                </Route>
+                <Redirect to='/start/location'/>
             );
         case 2:
             return (
-              <Route path='/start/name'>
-                <GroupName />
-                </Route>
+                <Redirect to='/start/name'/>
             );
         case 3:
             return (
-                <Route path='/start/description'>
-                    <GroupDescription />
-                </Route>
+                <Redirect to='/start/description'/>
          );
         case 4:
             return (
-                <Route path='/start/private'>
-                    <GroupPrivate />
-                </Route>
+                <Redirect to='/start/private'/>
             );
         case 5:
             return (
-                <Route path='/start/guidelines'>
-                    <GroupGuideLines />
-                </Route>
+                <Redirect to='/start/guidelines'/>
             )
         case 6: 
             return (
-                <Route path='/start/plans'>
-                    <GroupPlan />
-            </Route> 
-            )
+                <Redirect to='/start/plans'/>
+            );
+        default:
+            return ( <Redirect to='/start/location' />)
     }           
         
 }
