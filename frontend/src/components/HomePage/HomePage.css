@@ -1,0 +1,31 @@
+.homepage1 {
+    position: absolute;
+    display: block;
+    top: 70%;
+}
+
+.homepage2 {
+    position: absolute;
+    display: block;
+    top: 25%;
+    left: 10%;
+    height: 750px;
+    width: 750px;
+}
+
+.homepage3 {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 50%;
+    height: 600px;
+    width: 600px;
+}
+
+.homepage4 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    left: 60%;
+    top: 30%;
+}

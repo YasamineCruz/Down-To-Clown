@@ -13,6 +13,7 @@ import GroupGuideLines from "./components/CreateAGroup/CreateAGroupPageGuideline
 import GroupPlan from "./components/CreateAGroup/CreateAGroupPlan";
 import { useGroupContext } from './context/GroupContext'
 import MultipleFormCreateAGroup from "./components/CreateAGroup";
+import HomePage from "./components/HomePage/HomePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +29,9 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path='/'>
+            <HomePage />
+          </Route>
           <Route path="/signup">
             <SignupFormPage />
           </Route>
