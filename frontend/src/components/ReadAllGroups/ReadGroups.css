@@ -1,0 +1,10 @@
+.GroupsDiv {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+.GroupImages {
+    width: 100px;
+    height: 100px;
+}

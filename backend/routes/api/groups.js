@@ -78,23 +78,10 @@ router.get('/', requireAuth, async(req, res, next) => {
     for(let i = 0; i < groups.length; i++){
         let group = groups[i]
         let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
-        if(previewImage.preview === true){
-            payload.push({
-                id: group.id,
-                organizerId: group.organizerId,
-                about: group.about,
-                type: group.type,
-                private: group.private,
-                city: group.city,
-                state: group.state,
-                createdAt: group.createdAt,
-                updatedAt: group.updatedAt,
-                numMembers: group.numMembers,
-                previewImage: previewImage.url
-            })
-        } else {
+        if(previewImage === null) {
             payload.push({
             id: group.id,
+            name: group.name,
             organizerId: group.organizerId,
             about: group.about,
             type: group.type,
@@ -105,10 +92,40 @@ router.get('/', requireAuth, async(req, res, next) => {
             updatedAt: group.updatedAt,
             numMembers: group.numMembers,
             previewImage: "No preview image at this time."
-        })
+        }) }
+        else if(previewImage.preview === true){
+            payload.push({
+                id: group.id,
+                name: group.name,
+                organizerId: group.organizerId,
+                about: group.about,
+                type: group.type,
+                private: group.private,
+                city: group.city,
+                state: group.state,
+                createdAt: group.createdAt,
+                updatedAt: group.updatedAt,
+                numMembers: group.numMembers,
+                previewImage: previewImage.url,
+                img: previewImage.url
+            })
+        } else {
+            payload.push({
+                id: group.id,
+                name: group.name,
+                organizerId: group.organizerId,
+                about: group.about,
+                type: group.type,
+                private: group.private,
+                city: group.city,
+                state: group.state,
+                createdAt: group.createdAt,
+                updatedAt: group.updatedAt,
+                numMembers: group.numMembers,
+                previewImage: "No preview image at this time.",
+                img: previewImage.url
+            })
         }
-
-        
     }
 
     if(payload.length >= 1){
@@ -175,6 +192,22 @@ router.get('/current', requireAuth, async(req, res, next) => {
         for(let i = 0; i < currentUserOrganizer.length; i++){
             let group = currentUserOrganizer[i]
             let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
+            if(previewImage === null) {
+                payload.push({
+                    id: group.id,
+                    organizerId: group.organizerId,
+                    name: group.name,
+                    about: group.about,
+                    type: group.type,
+                    private: group.private,
+                    city: group.city,
+                    state: group.state,
+                    createdAt: group.createdAt,
+                    updatedAt: group.updatedAt,
+                    numMembers: group.numMembers,
+                    previewImage: "No preview image at this time."
+                })
+            }
             if(previewImage.preview === true){
                 payload.push({
                     id: group.id,
@@ -188,7 +221,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
                     createdAt: group.createdAt,
                     updatedAt: group.updatedAt,
                     numMembers: group.numMembers,
-                    previewImage: previewImage.url
+                    previewImage: previewImage.url,
+                    img: previewImage.url
                 })
             } else {
                 payload.push({
@@ -203,7 +237,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 createdAt: group.createdAt,
                 updatedAt: group.updatedAt,
                 numMembers: group.numMembers,
-                previewImage: "No preview image at this time."
+                previewImage: "No preview image at this time.",
+                img: previewImage.url
             })
          }
     }       
@@ -217,6 +252,22 @@ router.get('/current', requireAuth, async(req, res, next) => {
             if(!payloadGroupIds.includes(group.id)){
             let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
 
+            if(previewImage === null) {
+                payload.push({
+                    id: group.id,
+                    organizerId: group.organizerId,
+                    name: group.name,
+                    about: group.about,
+                    type: group.type,
+                    private: group.private,
+                    city: group.city,
+                    state: group.state,
+                    createdAt: group.createdAt,
+                    updatedAt: group.updatedAt,
+                    numMembers: group.numMembers,
+                    previewImage: "No preview image at this time."
+                })
+            }
             if(previewImage.preview === true){
                 payload.push({
                     id: group.id,
@@ -230,7 +281,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
                     createdAt: group.createdAt,
                     updatedAt: group.updatedAt,
                     numMembers: group.numMembers,
-                    previewImage: previewImage.url
+                    previewImage: previewImage.url,
+                    img: previewImage.url
                 })
             } else {
                 payload.push({
@@ -245,7 +297,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
                 createdAt: group.createdAt,
                 updatedAt: group.updatedAt,
                 numMembers: group.numMembers,
-                previewImage: "No preview image at this time."
+                previewImage: "No preview image at this time.",
+                img: previewImage.url
             })
 
           }
@@ -495,7 +548,24 @@ router.get('/:groupId/events', requireAuth, async(req, res, next) => {
             let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private', 'lat', 'lng', 'address'] } })
             let previewImage = await EventImage.findOne({where: { eventId: event.id}})
             let numAttending = await Attendance.count({where: {eventId: event.id}})
-            console.log(previewImage)
+            
+            if(previewImage === null ){
+                payload.push({
+                    id: event.id,
+                    groupId: event.groupId,
+                    venueId: event.venueId,
+                    name: event.description,
+                    type: event.type,
+                    capacity: event.capacity,
+                    price: event.price,
+                    startDate: event.startDate,
+                    endDate: event.endDate,
+                    numAttending: event.numAttending,
+                    previewImage: "There is no preview Image for this event",
+                    Group: group,
+                    Venue: venue,
+                  })
+            }
             if(previewImage.preview === true){
                 payload.push({
                     id: event.id,

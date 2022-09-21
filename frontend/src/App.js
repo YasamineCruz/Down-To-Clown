@@ -14,11 +14,18 @@ import GroupPlan from "./components/CreateAGroup/CreateAGroupPlan";
 import { useGroupContext } from './context/GroupContext'
 import MultipleFormCreateAGroup from "./components/CreateAGroup";
 import HomePage from "./components/HomePage/HomePage";
+import TestPage from "./components/ReadAllGroups";
+import GroupPage from "./components/ReadAllGroups/GroupPages";
+import CreateAGroupImage from "./components/CreateAGroup/CreateAGroupImage";
+import CurrentUsersGroups from "./components/GetCurrentUsersGroups";
+
+
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const {page} = useGroupContext();
+ 
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
@@ -31,6 +38,7 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <HomePage />
+            <TestPage />
           </Route>
           <Route path="/signup">
             <SignupFormPage />
@@ -59,6 +67,15 @@ function App() {
             <GroupPlan />
             <MultipleFormCreateAGroup page={page}/>
           </Route> 
+          <Route exact path='/start/groupimage'>
+            <CreateAGroupImage />
+          </Route>
+          <Route path='/groups/:groupId'>
+            <GroupPage />
+          </Route>
+          <Route path='/testing'>
+            <CurrentUsersGroups />
+          </Route>
         </Switch>
       )}
     </>

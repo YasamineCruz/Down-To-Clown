@@ -12,6 +12,7 @@ export const GroupProvider = ({children}) => {
     const [city, setCity] = useState('');
     const [type, setType] = useState('');
     const [private_key, setPrivate_key] = useState('');
+  
 
     return (
         <GroupContext.Provider
@@ -28,7 +29,7 @@ export const GroupProvider = ({children}) => {
                 type,
                 setType,
                 private_key,
-                setPrivate_key 
+                setPrivate_key
                 }}>
             {children}
         </GroupContext.Provider>
