@@ -35,7 +35,6 @@ const TestPage = () => {
                         <>
                         <img className='GroupImages' src={group.previewImage} alt=''/>
                         <div id={group.id}>{group.name}</div>
-                        
                         </>
                     )  
                     })}</div>

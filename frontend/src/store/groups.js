@@ -3,7 +3,7 @@ import { csrfFetch } from './csrf';
 const CREATE_GROUP = 'groups/createGroup';
 // const REMOVE_GROUP = 'groups/removeGroup';
 const GET_GROUPS = 'groups/getGroups';
-// const UPDATE_GROUP = 'groups/updateGroup'
+const UPDATE_GROUP = 'groups/updateGroup'
 const CREATE_GROUPIMG = 'groups/createGroupImg'
 // const GET_CURRENTUSERSGROUPS = 'groups/getCurrentUserGroups'
 
@@ -26,6 +26,13 @@ const createGroup = (group) => {
 //         type: REMOVE_GROUP,
 //     }
 // }
+
+const editGroup = (group) => {
+    return {
+        type: UPDATE_GROUP,
+        payload: group,
+    }
+}
 
 const createGroupImg = (groupImg) => {
     return {
@@ -115,6 +122,10 @@ const groupReducer = (state = initialState, action) => {
      case CREATE_GROUPIMG:
         newState = Object.assign({}, state);
         newState.groupImg = action.payload;
+        return newState;
+     case UPDATE_GROUP:
+        newState = Object.assign({},state);
+        newState.group = action.payload;
         return newState;
       default:
         return state;
