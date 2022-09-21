@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
-import CreateAGroupButton from './CreateAGroupButton'
 
 import './Navigation.css';
 
@@ -17,7 +16,7 @@ function Navigation({ isLoaded }){
     sessionLinks = (
         <>
         <ProfileButton user={sessionUser} />
-        <CreateAGroupButton />
+        <NavLink className='NavLinks' to='/start/location'>Create a Group</NavLink>
         </>
         
     )
@@ -32,8 +31,10 @@ function Navigation({ isLoaded }){
 
   return (
     <nav className='NavLinks'>
-    <ul className='NavLinks'> 
-        <NavLink className='NavLinks' exact to="/">Home</NavLink>
+      <NavLink className='MeetupLogo' exact to="/">
+          <img className='MeetupLogo' src='https://www.meetup.com/mu_static/en-US/logo--script.257d0bb1.svg' alt='text'/>
+        </NavLink>
+    <ul className='NavLinks'>
         {isLoaded && sessionLinks}
     </ul>
     </nav>

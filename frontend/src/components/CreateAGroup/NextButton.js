@@ -1,19 +1,17 @@
 import { useGroupContext } from "../../context/GroupContext";
+import './CreateAGroup.css'
 
-const NextButton = () => {
+const NextButton = ({clickable}) => {
     const { page, setPage} = useGroupContext();
-    console.log(page)
+
     if(page === 5) {
         return (
-            <>
-            <button onClick={()=> setPage(page + 1)} className='NextButton'>Agree and Continue</button>
-            </>
+            <button className='NextButton' onClick={()=> setPage(page + 1)} disabled={clickable}>Agree and Continue</button>
         )
-    }    
+    } 
+
     return (
-        <>
-        <button onClick={()=> setPage(page + 1)} className='NextButton'>Next</button>
-        </>
+        <button className='NextButton' onClick={()=> setPage(page + 1)}  disabled={clickable}>Next</button>
     )
 }
 

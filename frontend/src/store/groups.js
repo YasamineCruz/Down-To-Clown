@@ -39,7 +39,7 @@ export const createAGroup = (group) => async(dispatch) => {
     return response
 }
 
-const initialState = { page: 1 };
+const initialState = { group: null };
 
 const groupReducer = (state = initialState, action) => {
     let newState;
@@ -47,7 +47,7 @@ const groupReducer = (state = initialState, action) => {
     switch (action.type) {
       case CREATE_GROUP:
         newState = Object.assign({}, state);
-        newState.user = action.payload;
+        newState.group = action.payload;
         return newState;
       default:
         return state;
