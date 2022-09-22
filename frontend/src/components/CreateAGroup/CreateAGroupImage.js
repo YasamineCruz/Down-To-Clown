@@ -13,7 +13,7 @@ const CreateAGroupImage = () => {
     const group = useSelector(state => state.group.group)
     let groupId
     if(group) groupId = group.id
-    console.log(groupId)
+
 
     const onSubmit = (e) => {
         e.preventDefault();

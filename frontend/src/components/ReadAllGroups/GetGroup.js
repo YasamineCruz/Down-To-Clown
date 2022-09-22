@@ -1,31 +1,26 @@
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import * as groupActions from "../../store/groups";
+
+
+const check = (id, id2) => {
+    if(id === id2) return true;
+    return false
+}
 
 const GroupPage = () => {
     const params = useParams();
     const { groupId } = params;
     const dispatch = useDispatch();
-    const groups = useSelector(state => state.group.groups);
+    const group = useSelector(state => state.group.group);
     const sessionUser = useSelector(state => state.session.user);
-    const [ edit, setEdit] = useState(false);
-    let groupArr;
+    console.log(group)
 
     useEffect(()=> {
-       dispatch(groupActions.getAllGroups())
-    }, [dispatch]) 
-    console.log(groups)
-    if(groups){
-        groupArr = groups.Groups
-    }
-
-    if(sessionUser.id === group.organizerId) setEdit(true)
-
-    let group;
-
-    if(groupArr) group = groupArr.find(group => group.id === +groupId)
+       dispatch(groupActions.getAGroup(groupId))
+    }, [dispatch, groupId]) 
 
 
     return (
@@ -35,11 +30,14 @@ const GroupPage = () => {
                 <h1>{group.name}</h1>
                 <h3>{group.city}</h3>
                 <h3>{group.state}</h3>
-                <img src={group.img} alt='https://ensia.com/wp-content/uploads/2022/03/Voices_nature-positive_main-scaled.jpg'/>
+                <img src={group.url} alt=''/>
                 <p>{group.about}</p>
                 <h3>{group.type}</h3>
-                {edit === true (
-                    <Link to={`/groups/${group.id}/edit`}></Link>
+                { check(sessionUser.id, group.organizerId) && (
+                    <>
+                    <Link to={`/groups/${group.id}/edit`}>Edit Group</Link>
+                    <Link to={`/groups/${group.id}/delete`}>Delete Group</Link>
+                    </>
                 )}
             </div>
         )}

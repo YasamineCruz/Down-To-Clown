@@ -25,7 +25,7 @@ const TestPage = () => {
                     if(group.previewImage === 'No preview image at this time.') {
                         return (
                             <>
-                            <img className='GroupImages' src='https://ensia.com/wp-content/uploads/2022/03/Voices_nature-positive_main-scaled.jpg' alt=''/>
+                            <img className='GroupImages' src='https://www.elegantthemes.com/blog/wp-content/uploads/2021/01/how-to-host-a-meetup-featured-image.jpg' alt=''/>
                             <div id={group.id}>{group.name}</div>
                             <Link to={`/groups/${group.id}`}>Read More</Link>
                             </>
