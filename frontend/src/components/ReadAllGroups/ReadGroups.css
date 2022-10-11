@@ -8,8 +8,6 @@
     display: flex;
     flex-direction: column;
     padding-left: 20px;
-    position: absolute;
-    z-index: 1;
     justify-content: center;
 }
 
