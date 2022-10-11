@@ -14,15 +14,15 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-        <>
+        <div className='divForLinks'>
+        <NavLink className='createAGroupText' to='/start/location'>Create a Group</NavLink>
         <ProfileButton user={sessionUser} />
-        <NavLink className='NavLinks' to='/start/location'>Create a Group</NavLink>
-        </>
+        </div>
         
     )
   } else {
     sessionLinks = (
-      <nav className='NavLinks'>
+      <nav className='navLinks'>
         <LoginFormModal />
         <NavLink className='NavLinks' to="/signup">Sign Up</NavLink>
       </nav>
@@ -30,13 +30,13 @@ function Navigation({ isLoaded }){
   }
 
   return (
-    <nav className='NavLinks'>
+    <nav className='navLinks'>
       <NavLink className='MeetupLogo' exact to="/">
           <img className='MeetupLogo' src='https://www.meetup.com/mu_static/en-US/logo--script.257d0bb1.svg' alt='text'/>
         </NavLink>
-    <ul className='NavLinks'>
+    <div>
         {isLoaded && sessionLinks}
-    </ul>
+    </div>
     </nav>
   );
 }

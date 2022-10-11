@@ -1,13 +1,14 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
-  
+  const sessionUser = useSelector(state => state.session.user);
+
   const openMenu = () => {
     if (showMenu) return;
     setShowMenu(true);
@@ -32,10 +33,17 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button className='fa-user-circles' onClick={openMenu}>
-        <i id='fa-user-circle' className="fas fa-user-circle fa-2x" />
+    <div className='button-Container'>
+      <div className='outerCircle'></div>
+      <button className="circles" onClick={openMenu}>
+        { sessionUser && (
+          <div className='sessionUserInitial'>
+            {sessionUser.firstName[0]}
+          </div>
+        )}
       </button>
       <div>
+      </div>
       {showMenu && (
         <ul className="profile-dropdown">
           <li>{user.username}</li>

@@ -45,7 +45,9 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path='/'>
-            <HomePage />
+            <HomePage /> 
+          </Route>
+          <Route exact path='/groups'>
             <TestPage />
           </Route>
           <Route path="/signup">
