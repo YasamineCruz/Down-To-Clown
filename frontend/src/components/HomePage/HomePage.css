@@ -2,6 +2,7 @@
     position: absolute;
     display: block;
     top: 70%;
+    z-index: 0;
 }
 
 .homepage2 {
@@ -11,6 +12,7 @@
     left: 10%;
     height: 750px;
     width: 750px;
+    z-index: 0;
 }
 
 .homepage3 {
@@ -20,12 +22,14 @@
     left: 50%;
     height: 600px;
     width: 600px;
+    z-index: 0;
 }
 
 .homepage4 {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     left: 60%;
     top: 30%;
+    z-index: 0;
 }

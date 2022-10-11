@@ -1,10 +1,69 @@
+.GroupsMaster {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 .GroupsDiv {
     display: flex;
     flex-direction: column;
     padding-left: 20px;
+    position: absolute;
+    z-index: 1;
+    justify-content: center;
 }
 
-.GroupImages {
-    width: 100px;
+.GroupsTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.GroupsImages {
+    width: 175px;
     height: 100px;
+    box-sizing: border-box;
+    border: 0 solid;
+    border-radius: .5rem;
+    text-decoration: none;
+}
+
+
+
+.GroupsLink {
+    text-decoration: none;
+    border-top: 1px solid lightgray;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.GroupDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.GroupsInfo {
+    margin-left: 20px;
+    font-family: 'Roboto', sans-serif;
+    padding-bottom: 1.25rem
+}
+
+.GroupsName {
+    text-decoration: none;
+    line-height: 1.75rem;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.GroupsCityAndState {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+}
+
+.GroupsAbout {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    padding-bottom: .25rem;
+    margin-top: 1.25rem;
 }

@@ -28,7 +28,6 @@ const GroupPlan = () => {
           dispatch(groupActions.createAGroup({ organizerId, name, description, type, private_key, city, state}))
           .catch(async (res) => {
             const data = await res.json();
-            console.log(data)
             if(data && data.errors) setErrors(data.errors)
         })
 

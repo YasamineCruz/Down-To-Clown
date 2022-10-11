@@ -27,6 +27,7 @@ function LoginForm() {
       }
     );
   };
+  
   const handleSubmitDemoUser = (e) => {
     return dispatch(sessionActions.login({credential: 'demo@user.io', password: 'password'}))
   } 

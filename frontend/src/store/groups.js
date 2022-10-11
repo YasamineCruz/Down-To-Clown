@@ -1,11 +1,12 @@
 import { csrfFetch } from './csrf';
 
 const CREATE_GROUP = 'groups/createGroup';
-// const REMOVE_GROUP = 'groups/removeGroup';
+const REMOVE_GROUP = 'groups/removeGroup';
 const GET_GROUPS = 'groups/getGroups';
 const UPDATE_GROUP = 'groups/updateGroup'
 const CREATE_GROUPIMG = 'groups/createGroupImg'
-// const GET_CURRENTUSERSGROUPS = 'groups/getCurrentUserGroups'
+const GET_CURRENTUSERSGROUPS = 'groups/getCurrentUserGroups'
+const GET_GROUP = 'groups/getGroup'
 
 const createGroup = (group) => {
     return {
@@ -14,20 +15,27 @@ const createGroup = (group) => {
     }
 }
 
-// const getCurrentUserGroups = (groups) => {
-//     return {
-//         type: GET_CURRENTUSERSGROUPS,
-//         payload: groups
-//     }
-// }
+const getCurrentUserGroups = (groups) => {
+    return {
+        type: GET_CURRENTUSERSGROUPS,
+        payload: groups
+    }
+}
 
-// const removeGroup = () => {
-//     return {
-//         type: REMOVE_GROUP,
-//     }
-// }
+const removeGroup = () => {
+    return {
+        type: REMOVE_GROUP,
+    }
+}
 
-const editGroup = (group) => {
+const getGroup = (group) => {
+    return {
+        type: GET_GROUP,
+        payload: group
+    }
+}
+
+const updateGroup = (group) => {
     return {
         type: UPDATE_GROUP,
         payload: group,
@@ -84,23 +92,54 @@ export const createAGroupImg = (groupImg, groupId) => async(dispatch) => {
     return response
 } 
 
-// export const getCurrentUsersGroups = (sessionUser) => async(dispatch) => {
-//     const response = await csrfFetch('/api/groups/current', {
-//         method: 'GET',
-//         user: sessionUser,
-//     })
-//     const data = await response.json()
-//     dispatch(getCurrentUserGroups(data))
-//     return response
-// };
+export const getCurrentUsersGroups = () => async(dispatch) => {
+    const response = await csrfFetch('/api/groups/current')
+    const data = await response.json()
+    dispatch(getCurrentUserGroups(data))
+    return response
+};
 
 export const getAllGroups = () => async(dispatch) => {
-    const response = await csrfFetch('/api/groups', {
-        method: 'GET'
-    })
+    const response = await csrfFetch('/api/groups')
     const data = await response.json()
     dispatch(getGroups(data))
     return response
+}
+
+export const getAGroup = (groupId) => async(dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`)
+    const data = await response.json();
+    dispatch(getGroup(data))
+    return response
+}
+
+export const editAGroup = (group, groupId) => async(dispatch) => {
+    const {name, description, type, private_key, city, state} = group;
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            name,
+            about: description,
+            type,
+            private: private_key,
+            city,
+            state
+        })
+    })
+    const data = await response.json();
+    dispatch(updateGroup(data));
+    return response;
+}
+
+
+
+export const deleteGroup = (groupId) => async(dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: 'DELETE'
+    })
+    await response.json();
+    dispatch(removeGroup());
+    return response;
 }
 
 
@@ -124,7 +163,19 @@ const groupReducer = (state = initialState, action) => {
         newState.groupImg = action.payload;
         return newState;
      case UPDATE_GROUP:
-        newState = Object.assign({},state);
+        newState = Object.assign({}, state);
+        newState.group = action.payload;
+        return newState;
+     case GET_GROUP:
+        newState = Object.assign({}, state);
+        newState.group = action.payload;
+        return newState;
+     case GET_CURRENTUSERSGROUPS:
+        newState = Object.assign({}, state);
+        newState.currentUserGroups = action.payload.Groups;
+        return newState;
+     case REMOVE_GROUP:
+        newState = Object.assign({}, state);
         newState.group = action.payload;
         return newState;
       default:

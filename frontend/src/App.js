@@ -1,4 +1,3 @@
-// frontend/src/App.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
@@ -15,9 +14,18 @@ import { useGroupContext } from './context/GroupContext'
 import MultipleFormCreateAGroup from "./components/CreateAGroup";
 import HomePage from "./components/HomePage/HomePage";
 import TestPage from "./components/ReadAllGroups";
-import GroupPage from "./components/ReadAllGroups/GroupPages";
 import CreateAGroupImage from "./components/CreateAGroup/CreateAGroupImage";
-import CurrentUsersGroups from "./components/GetCurrentUsersGroups";
+import EditGroup from "./components/EditGroup/EditGroup";
+import GroupPage from "./components/ReadAllGroups/GetGroup";
+import CurrentUsersGroups2 from "./components/GetCurrentUsersGroups/GetCurrent";
+import DeleteGroup from "./components/DeleteGroup/DeleteGroup";
+import CreateEvent from "./components/CreateAEvent";
+import CreateVenue from "./components/CreateVenue";
+import GetEvents from "./components/GetEvents";
+import GetEventsByGroup from "./components/GetEventByGroup";
+import GetAGroup from "./components/GetAEvent";
+import DeleteEvent from "./components/DeleteEvent";
+import EditEvent from "./components/EditEvent";
 
 
 
@@ -70,11 +78,38 @@ function App() {
           <Route exact path='/start/groupimage'>
             <CreateAGroupImage />
           </Route>
-          <Route path='/groups/:groupId'>
+          <Route exact path='/groups/:groupId'>
             <GroupPage />
           </Route>
-          <Route path='/testing'>
-            <CurrentUsersGroups />
+          <Route exact path='/groups/:groupId/edit'>
+            <EditGroup />
+          </Route>
+          <Route exact path='/groups/:groupId/newEvent'>
+            <CreateEvent />
+          </Route>
+          <Route exact path ='/groups/:groupId/delete'>
+            <DeleteGroup />
+          </Route>
+          <Route exact path='/groups/:groupId/newVenue'>
+            <CreateVenue />
+          </Route>
+          <Route exact path='/groups/:groupId/events'>
+            <GetEventsByGroup />
+          </Route>
+          <Route exact path='/events'>
+            <GetEvents />
+          </Route>
+          <Route exact path='/events/:eventId'>
+            <GetAGroup />
+          </Route>
+          <Route exact path='/events/:eventId/edit'>
+            <EditEvent />
+          </Route>
+          <Route exact path='/events/:eventId/delete'>
+            <DeleteEvent />
+          </Route>
+          <Route exact path='/user/groups'>
+            <CurrentUsersGroups2 />
           </Route>
         </Switch>
       )}

@@ -22,7 +22,12 @@ const GroupPrivate = () => {
             setValidationErrors([])
             setClickable(false)
            }
+           console.log(private_key)
+           console.log(type)
     }, [type, private_key])
+
+    if(type === '') setType('Online')
+
 
     if(!sessionUser) return (<Redirect to='/'/>)
  
@@ -37,17 +42,16 @@ const GroupPrivate = () => {
             </ul>
             )}        
                 <h1>Select Type</h1>
-                <input onChange={(e) => setType(e.target.value)} type='radio' value='Online' name='type' required/>
+                <input onChange={(e) => setType(e.target.value)} type='radio' value='Online' name='type' required checked={type === 'Online'}/>
                 <label for='online'>Online</label>
-                <input onChange={(e) => setType(e.target.value)} type='radio' value='In person' name='type' required/>
+                <input onChange={(e) => setType(e.target.value)} type='radio' value='In person' name='type' required checked={type === 'In person'}/>
                 <label for='in person'>In person</label>
-               
             </form> 
             <form>
                 <h1>Select Private or Public</h1>
-                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required/>
+                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
                 <label for='online'>Private</label>
-                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required/>
+                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
                 <label for='in person'>Public</label>
             </form>
              <div>

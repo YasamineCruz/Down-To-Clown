@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as groupActions from '../../store/groups';
 import { useHistory } from "react-router-dom";
+import * as venueActions from '../../store/venues'
 
 
 const CreateAGroupImage = () => {
@@ -23,6 +24,13 @@ const CreateAGroupImage = () => {
             const data = await res.json();
             if(data && data.errors) setErrors(data.errors)
         })
+
+        dispatch(venueActions.createAVenue(groupId, { address: 'Online', city: 'NA', state: 'NA', lat: 0, lng: 0}))
+        .catch(async (res) => {
+          const data = await res.json();
+          if(data && data.errors) setErrors(data.errors)
+        }
+      )
 
         if(errors.length <= 0) {
             setUrl('')

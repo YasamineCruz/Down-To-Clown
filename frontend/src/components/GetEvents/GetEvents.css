@@ -1,0 +1,7 @@
+.EventCard {
+    border: 1px solid black;
+    margin: 5px;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+}
