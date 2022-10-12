@@ -61,7 +61,6 @@ const CreateEvent = () => {
         })
 
         if(errors.length <= 0) {
-            console.log(errors)
             setVenueId('');
             setName('');
             setDescription('');

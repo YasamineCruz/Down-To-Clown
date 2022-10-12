@@ -22,7 +22,7 @@ const GroupPage = () => {
     useEffect(()=> {
        dispatch(groupActions.getAGroup(groupId))
     }, [dispatch, groupId]) 
-    console.log(group)
+  
 
     return (
         <>

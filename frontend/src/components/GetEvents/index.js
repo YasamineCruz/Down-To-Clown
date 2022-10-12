@@ -10,7 +10,7 @@ const GetEvents = () => {
     useEffect(() => {
         dispatch(eventActions.getAllEvents())
     },[dispatch])
-
+    
     return (
         <>
         {events && (

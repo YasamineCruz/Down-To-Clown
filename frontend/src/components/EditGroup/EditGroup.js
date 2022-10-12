@@ -23,7 +23,6 @@ const EditGroup = () => {
     const [type, setType] = useState(group.type)
     const [private_key, setPrivate_key] = useState(group.private)
     const [organizerId, setOrganizerId] = useState(group.organizerId)
-    console.log(private_key)
 
     useEffect(()=>{
         dispatch(groupActions.getAGroup(groupId))

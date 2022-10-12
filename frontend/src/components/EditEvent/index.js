@@ -47,9 +47,6 @@ const EditEvent = () => {
         dispatch(eventActions.getAEvent(eventId))
     },[dispatch, eventId])
 
-    console.log('startDate', startDate)
-    console.log('endDate', endDate)
-
     const onSubmit = async(e) => {
         e.preventDefault();
 
@@ -75,7 +72,6 @@ const EditEvent = () => {
         setValidationErrors(errors)
         
         if(errors.length <= 0) {
-            console.log(errors)
             setVenueId('');
             setName('');
             setDescription('');

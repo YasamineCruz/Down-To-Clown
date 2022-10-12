@@ -22,8 +22,6 @@ const GroupPrivate = () => {
             setValidationErrors([])
             setClickable(false)
            }
-           console.log(private_key)
-           console.log(type)
     }, [type, private_key])
 
     if(type === '') setType('Online')

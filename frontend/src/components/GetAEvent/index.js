@@ -21,13 +21,12 @@ const GetAGroup = () => {
 
     let groupId;
     if(event) groupId = event.groupId
-    console.log('----groupId----', groupId)
+
     useEffect(() => {
         dispatch(eventActions.getAEvent(eventId))
         dispatch(groupActions.getAGroup(groupId))
     }, [dispatch, eventId, groupId])
-   console.log('---group----', group)
-   console.log('----sessionUser----', sessionUser)
+
     return (
         <>
         {event && (
