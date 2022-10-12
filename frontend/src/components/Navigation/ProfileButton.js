@@ -34,7 +34,7 @@ function ProfileButton({ user }) {
   return (
     <>
     <div className='button-Container'>
-      <div className='outerCircle'></div>
+      <div className='outerCircle' onClick={openMenu}></div>
       <button className="circles" onClick={openMenu}>
         { sessionUser && (
           <div className='sessionUserInitial'>
@@ -42,6 +42,7 @@ function ProfileButton({ user }) {
           </div>
         )}
       </button>
+      <i class="fa-solid fa-angle-up navArrow" onClick={openMenu}></i>
       <div>
       </div>
       {showMenu && (

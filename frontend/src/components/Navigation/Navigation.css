@@ -10,15 +10,17 @@ nav {
     justify-content: space-between;
     flex-direction: row;
     align-content: center;
-    height: fit-content;
+    height: 60px;
     padding-left: 5px;
     padding-right: 5px;
     text-decoration: none;
     align-items: center;
-    border-bottom: solid grey 1px;
 }
 
 .circles {
+    position: absolute;
+    left: 95%;
+    bottom: 94.2%;
     width: 48px;
     height: 48px;
     display: flex;
@@ -33,23 +35,31 @@ nav {
 }
 
 .outerCircle {
+    position: absolute;
+    left: 94.8%;
+    bottom: 94.2%;
     width: 48px;
     height: 48px;
     background-color: none;
     border-radius: 50%;
-    left: 1762.9px;
-    bottom: 92.3%;
     border: solid black 1.5px;
-    position: absolute;
+    z-index: 1;
 }
+
+
 
 .MeetupLogo {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 80px;
-    height: 80px;
+    width: 95px;
+    height: 65px;
+    margin-top: none;
+    margin-left: 20px;
+    position: absolute;
+    bottom: 87%;
+    left: 0%
 }
 
 .sessionUserInitial {
@@ -59,6 +69,9 @@ nav {
 }
 
 .createAGroupText {
+    position: absolute;
+    left: 1600.9px;
+    bottom: 96%;
     text-decoration: none;
     margin-right: 20px;
 }
@@ -69,4 +82,18 @@ nav {
     flex-direction: row;
     justify-items: space-evenly;
     align-items: center;
+}
+
+.profile-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 1%;
+}
+
+.navArrow {
+    position: absolute;
+    left: 98.2%;
+    bottom: 95.8%;
+    z-index: 1;
 }
