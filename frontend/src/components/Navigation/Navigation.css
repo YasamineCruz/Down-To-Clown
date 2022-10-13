@@ -70,10 +70,13 @@ nav {
 
 .createAGroupText {
     position: absolute;
-    left: 1600.9px;
+    left: 83%;
     bottom: 96%;
     text-decoration: none;
     margin-right: 20px;
+    z-index: 1;
+    color: #008294;
+    font-size: 15px;
 }
 
 
@@ -89,6 +92,16 @@ nav {
     flex-direction: column;
     position: absolute;
     right: 1%;
+    bottom: 67%;
+    z-index: 1;
+    border: 1px solid rgb( 217, 217, 217, 1);
+    padding: 10px 15px 5px;
+    border-radius: 0.25rem;
+    width: 160px;
+    background-color: white;
+    height: 225px;
+    box-shadow: 1px 10px 10px 2px rgb( 217, 217, 217, 1);
+    font-weight: 500;
 }
 
 .navArrow {
@@ -96,4 +109,26 @@ nav {
     left: 98.2%;
     bottom: 95.8%;
     z-index: 1;
+    color: rgb(184, 180, 180);
+}
+
+.navGroupLink {
+    text-decoration: none;
+    color: black;
+    width: auto;
+}
+
+.profile-dropdown-text {
+    font-size: 16px;
+    text-align: left;
+    width: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-weight: 300;
+}
+
+.line {
+    background: currentColor;
+    border: .5px solid  rgb(216, 216, 216);
+    height: .5px;
 }

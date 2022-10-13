@@ -7,11 +7,16 @@ import * as sessionActions from '../../store/session';
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const [arrow, setArrow] = useState('fa-solid fa-angle-up navArrow')
   const sessionUser = useSelector(state => state.session.user);
 
   const openMenu = () => {
-    if (showMenu) return;
+    if (showMenu) {
+      setArrow('fa-solid fa-angle-up navArrow')
+      return
+    };
     setShowMenu(true);
+    setArrow("fa-sharp fa-solid fa-angle-down navArrow")
   };
   
   useEffect(() => {
@@ -42,20 +47,21 @@ function ProfileButton({ user }) {
           </div>
         )}
       </button>
-      <i class="fa-solid fa-angle-up navArrow" onClick={openMenu}></i>
+      <i class={arrow} onClick={openMenu}></i>
       <div>
       </div>
       {showMenu && (
-        <ul className="profile-dropdown">
-          <li>{user.username}</li>
-          <li>{user.email}</li>
-          <li>
-            <Link to='/user/groups'>View Your Groups</Link>
-          </li>
-          <li>
-            <button onClick={logout}>Log Out</button>
-          </li>
-        </ul>
+        <div className="profile-dropdown">
+          <div className='profile-dropdown-text'>
+            <Link className='navGroupLink' to='/user/groups'>Your groups</Link>
+          </div>
+          <div className='line'></div>
+          <div className='profile-dropdown-text'>{user.username}</div>
+          <div className='profile-dropdown-text'>{user.email}</div>
+          <div className='profile-dropdown-text'>
+            <div onClick={logout}>Log Out</div>
+          </div>
+        </div>
       )}
       </div>
     </>

@@ -19,19 +19,25 @@ const CurrentUsersGroups2 = () => {
             <div key={groups} className='GroupsDiv'>{groups.map(group => {
                     if(group.previewImage === 'No preview image at this time.') {
                         return (
-                            <>
-                            <img key={group.id} className='GroupImages' src='https://www.elegantthemes.com/blog/wp-content/uploads/2021/01/how-to-host-a-meetup-featured-image.jpg' alt=''/>
+                            <div className='GroupsDiv'>
+                            <Link className='navGroupLink' key={group.city} to={`/groups/${group.id}`}>
+                            <img key={group.id} className='GroupsImages' src='https://www.elegantthemes.com/blog/wp-content/uploads/2021/01/how-to-host-a-meetup-featured-image.jpg' alt=''/>
+                            <div className='GroupsInfo'>
                             <div key={group.name}>{group.name}</div>
-                            <Link key={group.city} to={`/groups/${group.id}`}>Read More</Link>
-                            </>
+                            </div>
+                            </Link>
+                            </div>
                         )
                     } else {
                       return (
-                        <>
-                        <img key={group.id} className='GroupImages' src={group.previewImage} alt=''/>
-                        <div key={group.name}>{group.name}</div>
-                        <Link key={group.city} to={`/groups/${group.id}`}>Read More</Link>
-                        </>
+                        <div className='GroupsDiv'>
+                        <Link className='navGroupLink' key={group.city} to={`/groups/${group.id}`}>
+                        <img key={group.id} className='GroupsImages' src={group.previewImage} alt=''/>
+                        <div className='GroupsInfo'>
+                         <div key={group.name}>{group.name}</div>   
+                        </div>
+                        </Link>
+                        </div>
                     )    
                     }
                     })}</div>
