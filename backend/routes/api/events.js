@@ -35,10 +35,26 @@ router.get('/', requireAuth, async(req, res, next) => {
     for(let i = 0; i < events.length; i++){
         let event = events[i]
         let numAttending = await Attendance.count({where: {eventId: event.id}})
-        console.log(numAttending)
-        let previewImage = await EventImage.findOne({ where: { [Op.and]: [ {eventId: event.id}, {preview: true} ]}})
-        if(previewImage){  
-        payload.push({
+        let previewImage = await EventImage.findOne({ where: { [Op.and]: [ {eventId: event.id} ]}})
+        if(previewImage === null || !previewImage){  
+            payload.push({
+                id: event.id,
+                groupId: event.groupId,
+                venueId: event.venueId,
+                name: event.name,
+                description: event.description,
+                type: event.type,
+                capacity: event.capacity,
+                price: event.price,
+                startDate: event.startDate,
+                endDate: event.endDate,
+                previewImage: "Event does not have a preview Image",
+                numAttending,
+                Group: event.Group,
+                Venue: event.Venue  
+            })
+         } else if(previewImage.preview === true) {
+            payload.push({
             id: event.id,
             groupId: event.groupId,
             venueId: event.venueId,
@@ -55,10 +71,8 @@ router.get('/', requireAuth, async(req, res, next) => {
             Venue: event.Venue 
             }
         )
-            
-    } else {
+      } else {
         payload.push({
-    
             id: event.id,
             groupId: event.groupId,
             venueId: event.venueId,
@@ -70,10 +84,12 @@ router.get('/', requireAuth, async(req, res, next) => {
             startDate: event.startDate,
             endDate: event.endDate,
             previewImage: "Event does not have a preview Image",
+            url: previewImage.url,
             numAttending,
             Group: event.Group,
-            Venue: event.Venue  
-        })
+            Venue: event.Venue 
+            }
+        )
       }
     }
 
@@ -106,7 +122,7 @@ router.post('/:eventId/images', requireAuth, async(req, res, next) => {
     }
 })
 
-router.get('/:eventId', requireAuth, async(req, res, next) => {
+router.get('/:eventId', async(req, res, next) => {
     const { eventId } = req.params;
 
     let event = await Event.findByPk(eventId, {

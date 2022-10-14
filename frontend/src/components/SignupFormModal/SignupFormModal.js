@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import './SignupForm.css'
 
-const SignupFormPage = () => {
+
+const SignupForm = () => {
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user)
     const [email, setEmail] = useState('');
@@ -21,11 +20,6 @@ const SignupFormPage = () => {
       if(checked) setPasswordType('text')
       else setPasswordType('password')
     }, [passwordType, checked])
-
-    if(sessionUser) return(
-        <Redirect to='/'/>
-    );
-
 
     
     const handleSubmit = (e) => {
@@ -47,6 +41,9 @@ const SignupFormPage = () => {
             <ul>
                 {errors.map((errors, idx) => <li key={idx}>{errors}</li>)}
             </ul>
+            <div className='meetupIcon'>
+                <i className="fa-brands fa-meetup fa-5x"></i>  
+            </div>
           <label className='signupLabel'>
             Username
             <input
@@ -125,4 +122,4 @@ const SignupFormPage = () => {
     )
 };
 
-export default SignupFormPage;
+export default SignupForm;

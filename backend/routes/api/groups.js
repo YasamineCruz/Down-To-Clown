@@ -192,7 +192,6 @@ router.get('/current', requireAuth, async(req, res, next) => {
         for(let i = 0; i < currentUserOrganizer.length; i++){
             let group = currentUserOrganizer[i]
             let previewImage = await GroupImage.findOne({where: { groupId: group.id}})
-            console.log(previewImage)
             if(previewImage === null) {
                 payload.push({
                     id: group.id,

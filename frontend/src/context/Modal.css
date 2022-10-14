@@ -47,7 +47,7 @@
     flex-direction: row;
     justify-content: center;
     height: 20px;
-    width: 55px;
+    width: 70px;
     margin-top: 19px;
     background-color:#f65858;
     border-color: #f65858;
@@ -57,8 +57,13 @@
 } 
 
 .ModalLoginButton {
+    font-size: 14px;
     height: fit-content;
-    width: fit-content
+    width: fit-content;
+    position: absolute;
+    left: 93%;
+    bottom: 96%;
+    z-index: 1;
 }
 
 .fa-brands {
@@ -113,4 +118,66 @@
     flex-direction: column;
     justify-content: left;
     align-items: center;
+}
+
+.signupForm {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+}
+
+
+.signupDiv {
+    width: 200vw;
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+}
+
+.signupLabel {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.signupInput {
+    margin-bottom: 20px;
+    height: 20px;
+    padding-left: 5px;
+}
+
+.signupButton {
+    height: fit-content;
+    width: 55px;
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+    margin-top: 19px;
+    background-color:#f65858;
+    border-color: #f65858;
+    fill: #ffff;
+    color: #ffff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.togglePassword {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.signup {
+    font-size: 14px;
+    height: fit-content;
+    width: fit-content;
+    position: absolute;
+    left: 96%;
+    bottom: 96%;
+    text-decoration: none;
+    color: black;
+    z-index: 1;
 }

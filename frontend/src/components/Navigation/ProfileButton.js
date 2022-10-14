@@ -7,16 +7,16 @@ import * as sessionActions from '../../store/session';
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
-  const [arrow, setArrow] = useState('fa-solid fa-angle-up navArrow')
+  const [arrow, setArrow] = useState("fa-sharp fa-solid fa-angle-down navArrow")
   const sessionUser = useSelector(state => state.session.user);
 
   const openMenu = () => {
     if (showMenu) {
-      setArrow('fa-solid fa-angle-up navArrow')
+      setArrow("fa-sharp fa-solid fa-angle-down navArrow")
       return
     };
     setShowMenu(true);
-    setArrow("fa-sharp fa-solid fa-angle-down navArrow")
+    setArrow('fa-solid fa-angle-up navArrow')
   };
   
   useEffect(() => {

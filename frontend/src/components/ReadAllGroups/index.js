@@ -18,15 +18,20 @@ const TestPage = () => {
     }
 
     return (
-        <>
-        <h2 className='GroupsTitle'>Groups</h2>
+        <div className='EGWrapper'>
+        <div className='EGTitles'>
+         <h2>
+            <Link className='EGTitle EGTitleColorGrey' to='/events'>Events</Link>
+        </h2>
+        <h2 className='EGTitle EGTitleColorBlue'>Groups</h2>   
+        </div>
         <div className='GroupsMaster'>
         {groupArr && (
             <div className='GroupsDiv'>{groupArr.map(group => {
                     if(group.previewImage === 'No preview image at this time.') {
                         return (
                             <Link className='GroupsLink' key={group.id} to={`/groups/${group.id}`}>
-                            <div className='GroupsDiv'>
+                            <div className='GroupDiv'>
                             <img className='GroupsImages' src='https://www.elegantthemes.com/blog/wp-content/uploads/2021/01/how-to-host-a-meetup-featured-image.jpg' alt=''/>
                             <div className='GroupsInfo'>
                                <div className='GroupsName'>{group.name}</div>
@@ -39,7 +44,7 @@ const TestPage = () => {
                     }
                     return (
                         <Link className='GroupsLink' key={group.id} to={`/groups/${group.id}`}>
-                        <div className='GroupsDiv'>
+                        <div className='GroupDiv'>
                         <img className='GroupsImages' src={group.previewImage} alt=''/>
                         <div className='GroupsInfo'>
                             <div className='GroupsName'>{group.name}</div>
@@ -52,7 +57,7 @@ const TestPage = () => {
                     })}</div>
         )}
         </div>      
-        </>
+        </div>
     )
 }
 
