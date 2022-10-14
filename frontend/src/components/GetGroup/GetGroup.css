@@ -1,0 +1,155 @@
+.EGContainer {
+    border-top: 2px solid rgba(46, 62, 72, 0.12);
+    margin-top: 20px;
+}
+
+.EGInfoContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.EGInfoWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.EGUpperDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: .5%;
+    height: 380px;
+}
+
+.EGImgDiv {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20.5%;
+    padding-top: 20px;
+    height: 400px;
+    width: 50%;
+}
+
+.EGImg {
+    border-radius: .5rem;
+    height: 340px;
+    width: 610px;
+}
+
+.EG-state-city-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.icon {
+    width: 10px;
+    height: 10px;
+}
+
+.EGTextContainer {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 63%;
+}
+
+.EGLowerDiv {
+    border-top: 1px solid rgba(46, 62, 72, 0.12);
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+}
+
+.EgLinkContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: fit-content;
+    width: 80%;
+    margin-left: 1%;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.EGLink {
+    text-decoration: none;
+    color: black;
+    margin-left: 15px;
+    margin-right: 20px;
+    font-family: 'Lato', sans-serif;
+}
+
+.aboutText {
+    color: #00a2c7;
+}
+
+.aboutText2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.aboutDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 50%;
+    height: 20%;
+    margin-left: 20%;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.memberStuff {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    margin-right: 25%;
+    font-family: 'Lato', sans-serif;
+}
+
+.AboutAndMemberDiv {
+    display: flex;
+    flex-direction: row;
+    padding-top: 2%;
+    min-height: 40vh;
+    background-color: #f6f7f8;
+    font-family: 'Lato', sans-serif;
+}
+
+.EGCreatorInfo {
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.organizer {
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.EGCreatorName {
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    padding-bottom: 5px;
+    font-weight: 500;
+}
+
+.EGMembers {
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dot {
+    height: 40px;
+    width: 37px;
+}

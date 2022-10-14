@@ -32,7 +32,7 @@ const TestPage = () => {
                         return (
                             <Link className='GroupsLink' key={group.id} to={`/groups/${group.id}`}>
                             <div className='GroupDiv'>
-                            <img className='GroupsImages' src='https://www.elegantthemes.com/blog/wp-content/uploads/2021/01/how-to-host-a-meetup-featured-image.jpg' alt=''/>
+                            <img className='GroupsImages' src='https://media.istockphoto.com/photos/coming-soon-neon-sign-the-banner-shining-light-signboard-collection-picture-id1332167985?b=1&k=20&m=1332167985&s=170667a&w=0&h=O-084eNJBhGZGJbJvNvUC1P6d4aSo6XkV4Kom7ZZcIQ=' alt=''/>
                             <div className='GroupsInfo'>
                                <div className='GroupsName'>{group.name}</div>
                                <div className='GroupsCityAndState'>{group.city}, {group.state}</div>
