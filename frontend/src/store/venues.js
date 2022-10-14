@@ -57,7 +57,7 @@ export const editAVenue = (venue, venueId) => async(dispatch) => {
 }
 
 
-const initialState = { venue: null,};
+const initialState = { venue: null};
 
 const venueReducer = (state = initialState, action) => {
     let newState;

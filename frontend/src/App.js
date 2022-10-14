@@ -15,7 +15,7 @@ import HomePage from "./components/HomePage/HomePage";
 import TestPage from "./components/ReadAllGroups";
 import CreateAGroupImage from "./components/CreateAGroup/CreateAGroupImage";
 import EditGroup from "./components/EditGroup/EditGroup";
-import GroupPage from "./components/ReadAllGroups/GetGroup";
+import GroupPage from "./components/GetGroup/GetGroup";
 import CurrentUsersGroups2 from "./components/GetCurrentUsersGroups/GetCurrent";
 import DeleteGroup from "./components/DeleteGroup/DeleteGroup";
 import CreateEvent from "./components/CreateAEvent";
