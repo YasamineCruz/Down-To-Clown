@@ -802,9 +802,11 @@ router.get('/:groupId/members', async(req, res, next) => {
     let payload = [];
 
 
+    let group = await Group.findByPk(groupId)
+
     let currentUserMembership = await Membership.findOne({where: { [Op.and]: [ {userId: currentUserId}, {groupId} ] } })
 
-    if(!currentUserMembership){
+    if(!group){
         res.status = 404;
         return res.json({
             message: "Group couldn't be found",
@@ -813,27 +815,13 @@ router.get('/:groupId/members', async(req, res, next) => {
     }
     let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
 
-    if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host'){
+    if(currentUserMembership === null){
         for(let i = 0; i < members.length; i++){
             let member = members[i];
-            let membership = await Membership.findOne({ where: { [Op.and]: [ {userId: member.id}, {groupId}]}, attributes: ['status']})
-            if(membership){
-                payload.push({
-                id: member.id,
-                firstName: member.firstName,
-                lastName: member.lastName,
-                Membership: membership
-             })
-            }
-           
-        }
-       
-        return res.json({Members: payload})
-    } else {
-
-        for(let i = 0; i < members.length; i++){
-            let member = members[i];
-            let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId}, {status: { [Op.in]: ['member', 'co-host', 'organizer'] } } ] }, attributes: ['status']})
+            console.log('this is groupId in if statement', groupId)
+            let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId}, {status: { [Op.in]: ['member', 'co-host', 'pending'] } } ] }, attributes: ['status']})
+            console.log('this is member in if statement', member)
+            console.log('this is memebership in if statement', membership)
             if(membership){
                 payload.push({
                 id: member.id,
@@ -844,7 +832,40 @@ router.get('/:groupId/members', async(req, res, next) => {
             }
           
         }
+        return res.json({Members: payload})
+     } else if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host') {
+         for(let i = 0; i < members.length; i++){
+             let member = members[i];
+             let membership = await Membership.findOne({ where: { [Op.and]: [ {userId: member.id}, {groupId}]}, attributes: ['status']})
+             console.log('this is member in else if statement', member)
+             console.log('this is memebership in else if statement', membership)
+            if(membership){
+                payload.push({
+                id: member.id,
+                firstName: member.firstName,
+                lastName: member.lastName,
+                Membership: membership
+             })
+            }
+        }
        
+        return res.json({Members: payload})
+    } else {
+        for(let i = 0; i < members.length; i++){
+            let member = members[i];
+            let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId}, {status: { [Op.in]: ['member', 'co-host', 'organizer'] } } ] }, attributes: ['status']})
+            console.log('this is member in else statement', member)
+            console.log('this is memebership in else statement', membership)
+            if(membership){
+                payload.push({
+                id: member.id,
+                firstName: member.firstName,
+                lastName: member.lastName,
+                Membership: membership
+            }) 
+            }
+          
+        }
         return res.json({Members: payload})
     }
 })
