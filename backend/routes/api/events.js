@@ -23,7 +23,7 @@ const checkErrors = async(res, err) => {
     })
 }
 
-router.get('/', requireAuth, async(req, res, next) => {
+router.get('/', async(req, res, next) => {
     let payload = [];
     const events = await Event.findAll({
         include: [

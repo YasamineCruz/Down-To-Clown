@@ -566,7 +566,7 @@ router.post('/:groupId/events', requireAuth, async(req, res, next) => {
 })
 
 
-router.get('/:groupId/events', requireAuth, async(req, res, next) => {
+router.get('/:groupId/events', async(req, res, next) => {
     const { groupId } = req.params;
 
     let payload = [];

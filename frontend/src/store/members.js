@@ -26,6 +26,7 @@ const membersReducer = ( state = initialState, action) => {
     switch(action.type) {
         case GET_MEMBERS:
             newState = {...state, members: {...state.members}};
+            console.log(action.payload)
             action.payload.Members.forEach(member => newState.members[member.id] = member)
             return newState;
         default:
