@@ -22,8 +22,7 @@ const GetAEvent = () => {
     const group = useSelector(state => state.group.group);
     const event = useSelector(store => store.event.event);
     const sessionUser = useSelector(state => state.session.user);
-    console.log('---This is the event in GetAEvent----',event)
-    console.log('---this is group on getAEvent', group)
+
     let groupId;
     if(event) groupId = event.groupId
 
@@ -77,7 +76,7 @@ const GetAEvent = () => {
             <div className='event-bottom'>
                <div className='event-middle-div'>
                     <div className='event-photo-div'>
-                        <img className='event-img' src={event.EventImages[0].url} alt=''/>
+                        <img className='event-img' src={event.EventImages[0]?.url} alt=''/>
                         <div className='event-details'>
                             <div className='details-text'>Details</div>
                             <div className='event-description'>{event.description}</div>
