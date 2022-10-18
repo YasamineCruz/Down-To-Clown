@@ -1,10 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useEffect} from "react";
+import { useEffect, useState} from "react";
 import * as groupActions from "../../store/groups";
 import './GetGroup.css'
 import { getAllMembersByGroupId } from "../../store/members";
+import GetEventsByGroup from '../GetEventByGroup';
 
 
 const check = (id, id2) => {
@@ -19,6 +20,7 @@ const GroupPage = () => {
     const group = useSelector(state => state.group.group);
     const sessionUser = useSelector(state => state.session.user);
     const members = useSelector(state => state.members.members)
+    const [ info, setInfo] = useState('about')
     console.log('---members---', members)
     
     useEffect(()=> {
@@ -36,29 +38,28 @@ const GroupPage = () => {
                     <div className='EGImgDiv'>
                         <img className='EGImg' src={group.url} alt=''/>
                     </div>
-                    <div className='EGTextContainer'>
+                    <div className='EGTextContainer info'>
                         <h1 className='EGName'>{group.name}</h1>
                         <div className='EG-state-city-container'>
                             <i className="fa-solid fa-location-dot icon"></i>
-                            <h3 className='EGCity'>{group.city}</h3>
-                            <h3 className='EGSTATE'>{group.state}</h3>  
+                            <h3 className='EGCity'>{group.city}, {group.state}</h3> 
                         </div>
                         <div className='EGUpMemberInfo'>
-                            <div className='memberInfo'>
-                            <i className="fa-solid fa-user-group"></i>
-                                {group.numMembers > 1 ? `${group.numMembers} members` : `${group.numMembers} member`}
+                            <div className='memberInfo info'>
+                            <i className="fa-solid fa-user-group icon"></i>
+                                {group.numMembers > 1 ? `${group.numMembers} members` : `${group.numMembers} member`} · {group.type}
+                                <img className='group-association-question'src='https://secure.meetupstatic.com/next/images/Question.svg?w=32' alt=''/>
                             </div>
-                            <h3>{group.type}</h3>
                         </div>
-                        <div className='EGCreator'>
-                        <i className="fa-regular fa-user"></i>
-                            Organized By { members[group.organizerId] ? `${members[group.organizerId].firstName} ${members[group.organizerId].lastName[0]}.` : ``}
+                        <div className='EGCreator info'>
+                        <i className="fa-regular fa-user icon"></i>
+                            Organized By<b className='please-give-space'> { members[group.organizerId] ? ` ${members[group.organizerId].firstName} ${members[group.organizerId].lastName[0]}.` : ``}</b>
                         </div>
                     </div>
                 </div>
                 <div className='EGLowerDiv'>
                 <div className='EgLinkContainer'>
-                    <div className='EGLink aboutText'>About</div>
+                    <div onClick={()=> setInfo('about')} className={info === 'about' ? `EGLink abouttext` : `EGLink`}>About</div>
                 { sessionUser && (
                     <div>
                     { check(sessionUser.id, group.organizerId) && (
@@ -73,9 +74,10 @@ const GroupPage = () => {
                         )}
                     </div>   
                     )}
-                        <Link className='EGLink' to={`/groups/${group.id}/events`}>Events for this Group</Link>   
+                        <div onClick={()=> setInfo('events')} className={info === 'events' ? `EGLink abouttext` : `EGLink`}>Events for this Group</div>   
                 </div>
-                    <div className='AboutAndMemberDiv'>
+                    { info === 'about' && (
+                     <div className='AboutAndMemberDiv'>
                         <div className='aboutDiv'>
                             What we're about
                         <p className='aboutText2'>{group.about}</p>    
@@ -102,7 +104,11 @@ const GroupPage = () => {
                                 </div>
                             </div>   
                         </div>
-                    </div>
+                    </div>    
+                    )}
+                   { info === 'events' && (
+                    <GetEventsByGroup />
+                   )}
                 </div>
             </div>
         )}

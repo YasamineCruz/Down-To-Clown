@@ -11,14 +11,19 @@ const check = (id, id2) => {
     return false
 }
 
-const GetAGroup = () => {
+const DaysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+const MonthsOfTheYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+const GetAEvent = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const { eventId } = params;
     const group = useSelector(state => state.group.group);
     const event = useSelector(store => store.event.event);
     const sessionUser = useSelector(state => state.session.user);
-
+    console.log('---This is the event in GetAEvent----',event)
+    console.log('---this is group on getAEvent', group)
     let groupId;
     if(event) groupId = event.groupId
 
@@ -27,17 +32,86 @@ const GetAGroup = () => {
         dispatch(groupActions.getAGroup(groupId))
     }, [dispatch, eventId, groupId])
 
+    let startDate = new Date(event?.startDate);
+    let startDay = startDate.getDay();
+    let startMonth = startDate.getMonth();
+    let startDate2 = startDate.getDate();
+    let startHours = startDate.getHours();
+    let startMinutes = startDate.getMinutes();
+    let startTime;
+
+    if(startHours >= 13) {
+        startTime = 'PM'
+        startHours = startHours - 12
+    } else {
+        startTime = 'AM'
+    }
+    if(startMinutes === 0) startMinutes = `00`;
+
+    let endDate = new Date(event?.endDate);
+    let endDay = endDate.getDay();
+    let endMonth = endDate.getMonth();
+    let endDate2 = endDate.getDate();
+    let endHours = endDate.getHours();
+    let endMinutes = endDate.getMinutes();
+    let endTime;
+
+    if(endHours >= 13) {
+        endTime = 'PM'
+        endHours = endHours - 12
+    } else {
+        endTime = 'AM'
+    }
+    if(endMinutes === 0) endMinutes = `00`;
+
+
     return (
-        <>
-        {event && (
-            <div>
-                <div>Name: {event.name}</div>
-                <div>Description: {event.description}</div>
-                <div>Type: {event.type}</div>
-                <div>Capacity: {event.capacity}</div>
-                <div>Price: {event.price}</div>
-                <div>Start Date: {event.startDate}</div>
-                <div>End Date: {event.endDate}</div>
+        <div className='event-container'>
+        {event && group && (
+            <div className='event-wrapper'>
+                <div className='event-upper-div'>
+                    <div className='event-name'>{event.name}</div>
+                    <div className='upper-info-div'>
+                    </div>
+                </div>
+            <div className='event-bottom'>
+               <div className='event-middle-div'>
+                    <div className='event-photo-div'>
+                        <img className='event-img' src={event.EventImages[0].url} alt=''/>
+                        <div className='event-details'>
+                            <div className='details-text'>Details</div>
+                            <div className='event-description'>{event.description}</div>
+                        </div>
+                    </div>
+                    <div className='event-middleInfo-Link'>
+                        <Link to={`/groups/${groupId}`} className='event-association-wrapper'>
+                            <div className='lil-group-img'>
+                                <img className='event-group-img' src={group?.GroupImages[0].url} alt=''/>
+                            </div>
+                            <div className='event-association'>
+                                <div className='group-association-name'>{group.name}</div>
+                                <div className='group-association-private'>
+                                    {group.private === 0 ? `Private group` : `Public group` }
+                                    <img className='group-association-question'src='https://secure.meetupstatic.com/next/images/Question.svg?w=32' alt=''/>
+                                </div>
+                            </div>
+                        </Link>
+                        <div className='event-info-container'>
+                            <div className='event-info-wrapper'> 
+                                <i className="fa-regular fa-clock clock"></i>
+                                <div className='event-location-time'>
+                                    <div className='event-time'>{`${DaysOfTheWeek[startDay]}, ${MonthsOfTheYear[startMonth]} ${startDate2} at ${startHours}:${startMinutes} ${startTime}`}</div>
+                                    <div className='event-time'>{` to ${DaysOfTheWeek[endDay]}, ${MonthsOfTheYear[endMonth]} ${endDate2} at ${endHours}:${endMinutes} ${endTime}`}</div>
+                                </div>
+                            </div>
+                            <div className='event-info-wrapper2'>
+                                {event.type === 'Online' ? (<i class="fa-solid fa-video clock"></i>) : (<i className="fa-solid fa-location-dot icon clock"></i>)}
+                                {event.type === 'Online' ? (<div className='event-type'>{event.type} Event</div>) :  <div className='event-location'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>}
+                            </div>
+                        </div>
+                    </div>
+               </div>
+            </div>
                 { sessionUser && group && (
                     <div>
                   { check(sessionUser.id, group.organizerId) && (
@@ -47,11 +121,21 @@ const GetAGroup = () => {
                     </>
                     )}
                     </div>   
-                )}        
+                )}
+                <div className='event-sticky'>
+                    <div className='event-sticky-time-loc'>
+                        <div className='event-sticky-time'>{`${DaysOfTheWeek[startDay]}, ${MonthsOfTheYear[startMonth]} ${startDate2} · ${startHours}:${startMinutes} ${startTime}`}</div>
+                        <div className='event-sticky-name'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>
+                    </div>
+                    <div className='event-sticky-price'>
+                        <div className='event-price'>{event.price}$</div>
+                        <div className='event-sticky-capacity'>{event.capacity - group.numMembers} spots left</div>
+                    </div>
+                </div>        
             </div>
         )}
-        </>
+        </div>
     )
 };
 
-export default GetAGroup;
+export default GetAEvent;

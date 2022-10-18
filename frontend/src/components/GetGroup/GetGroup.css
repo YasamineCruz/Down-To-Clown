@@ -39,11 +39,17 @@
 .EG-state-city-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .icon {
-    width: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     height: 10px;
+    width: 10px;
+    margin-right: 2.5%;
 }
 
 .EGTextContainer {
@@ -152,4 +158,58 @@
 .dot {
     height: 40px;
     width: 37px;
+}
+
+.EGCity {
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.memberInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 500;
+}
+
+.EGCreator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 500;
+}
+
+.info {
+    margin-top: 10px;
+}
+
+.please-give-space {
+    margin-left: .5%;
+}
+
+.EGCreatorName {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.EGCreatorInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.EGMembers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

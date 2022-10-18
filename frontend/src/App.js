@@ -22,7 +22,7 @@ import CreateEvent from "./components/CreateAEvent";
 import CreateVenue from "./components/CreateVenue";
 import GetEvents from "./components/GetEvents";
 import GetEventsByGroup from "./components/GetEventByGroup";
-import GetAGroup from "./components/GetAEvent";
+import GetAEvent from "./components/GetAEvent";
 import DeleteEvent from "./components/DeleteEvent";
 import EditEvent from "./components/EditEvent";
 
@@ -91,14 +91,11 @@ function App() {
           <Route exact path='/groups/:groupId/newVenue'>
             <CreateVenue />
           </Route>
-          <Route exact path='/groups/:groupId/events'>
-            <GetEventsByGroup />
-          </Route>
           <Route exact path='/events'>
             <GetEvents />
           </Route>
           <Route exact path='/events/:eventId'>
-            <GetAGroup />
+            <GetAEvent />
           </Route>
           <Route exact path='/events/:eventId/edit'>
             <EditEvent />

@@ -1,0 +1,107 @@
+.event-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: black;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+.eventsForGroup-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    margin-top: 1%;
+    border-radius: .5rem;
+    width: 750px;
+    height: 200px;
+}
+
+.hideme {
+    display: hidden;
+}
+
+.showme {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.eventsForGroup-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1%;
+    min-height: 80vh;
+    background-color: #f6f7f8;
+}
+
+.timeframe {
+    margin-right: 1%;
+    margin-left: 20%;
+    margin-top: 1%;
+    background-color: white;
+    height: 50px;
+    width: 300px;
+    padding: 25px;
+    border-radius: .5rem;
+}
+
+.upcoming-selected {
+    margin-bottom: 20px;
+    color: #00a2c7;
+}
+
+.upcoming-not-selected {
+    margin-bottom: 20px;
+}
+
+.past-selected {
+    margin-bottom: 20px;
+    color: #00a2c7;
+}
+
+.past-not-selected {
+    margin-bottom: 20px;
+}
+
+.events-for-group-time {
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    color: #00a2c7;
+    width: 300px;
+}
+
+.events-for-group-name {
+    font-size: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    color: black;
+    width: 300px;
+    margin-top: 5%;
+}
+
+.events-for-group-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 500;
+    width: 300px;
+    margin-top: 2%;
+}
+
+.events-groups-type {
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(212, 211, 211);
+    font-weight: 500;
+}
+
+.events-for-group-attending {
+    margin-top: 25%;
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(212, 211, 211);
+    font-weight: 500;
+}
