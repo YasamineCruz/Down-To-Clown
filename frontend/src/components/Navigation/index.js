@@ -33,7 +33,7 @@ function Navigation({ isLoaded }){
   return (
     <nav className='navLinks'>
       <NavLink className='MeetupLogo' exact to="/">
-          <img className='MeetupLogo' src='https://www.meetup.com/mu_static/en-US/logo--script.257d0bb1.svg' alt='text'/>
+          <img className='MeetupLogo' src='https://cdn-icons-png.flaticon.com/512/184/184390.png' alt='text'/>
         </NavLink>
     <div>
         {isLoaded && sessionLinks}
