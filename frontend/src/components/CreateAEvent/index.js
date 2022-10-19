@@ -32,10 +32,7 @@ const CreateEvent = () => {
     const [ endYear, setEndYear] = useState('');
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
-    const [url, setUrl] = useState('');
-    const [preview] = useState(true)
     const group = useSelector(state => state.group.group);
-    const event = useSelector(state => state.event.event);
 
 
     useEffect(() => {
@@ -43,13 +40,13 @@ const CreateEvent = () => {
     }, [dispatch, groupId])
 
     useEffect(() => {
-        if(type === 'Online' || type === '' && group){
+        if(type === 'Online' && group){
             let venues = group.Venues;
             for(let i = 0; i < venues.length; i++){
                 let venue = venues[i];
                 if(venue.address === 'Online') setVenueId(venue.id)
             }
-        }
+        } 
     },[type, group])
 
     const onSubmit = async(e) => {
@@ -103,12 +100,12 @@ const CreateEvent = () => {
         if(venue.address !== 'Online') inPersonVenues.push(venue)
        }
     }
-
+    
 
     return ( 
         <div className='edit-event-container'>
-        <form className='edit-event-form-wrapper'onSubmit={onSubmit}>
-        <div className='edit-group-div-wrapper'>
+            <form className='edit-event-form-wrapper'onSubmit={onSubmit}>
+            <div className='edit-group-div-wrapper'>
                <h1 className='edit-group-h1-text'>Create an Event</h1> 
             </div>
         { validationErrors && (
@@ -130,7 +127,7 @@ const CreateEvent = () => {
                          { inPersonVenues.map(venue => {
                             if(venue.name !== 'Online'){
                             return (
-                            <div key={venue.id} className='VenueCard' onClick={() => setVenueId(venue.id)} >
+                            <div key={venue.id} className={venueId === venue.id ? `VenueCard-selected` : `VenueCard-not-selected`} onClick={() => setVenueId(venue.id)} >
                                 <div>{venue.address}</div>
                                 <div>{venue.city}</div>
                                 <div>{venue.state}</div>
@@ -165,7 +162,7 @@ const CreateEvent = () => {
         <div className='create-event-radio'>
             <h2 className='create-event-h2-text'>Type</h2>
             <div className='radio-wrapper2'>
-              <label className='radio-text2'>Online</label>
+            <label className='radio-text2'>Online</label>
             <input className='radio-input2' type='radio' onChange={(e) => setType(e.target.value)} value='Online' checked={type === 'Online'}/> 
             <div className='radio-wrapper2'>
                 <label className='radio-text2'>In person</label>

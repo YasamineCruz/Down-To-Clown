@@ -38,7 +38,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
-    <div className='button-Container'>
+    <div className='button-Container2'>
       <div className='outerCircle' onClick={openMenu}></div>
       <button className="circles" onClick={openMenu}>
         { sessionUser && (

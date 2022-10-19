@@ -1,0 +1,11 @@
+delete-group-h1-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-size: 35px;
+    height: 600px;
+    max-width: 700px;
+    color: rgba(46, 62, 72, 0.12);
+}

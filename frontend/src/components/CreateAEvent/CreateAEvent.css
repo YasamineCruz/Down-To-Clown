@@ -1,34 +1,60 @@
 .dropdown {
     position: relative;
     display: inline-block;
+    margin-left: 25%;
+    height: 40px;
   }
   
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
+    background-color:  #f6f7f8;
+    max-width: 600px;
+    min-width: 300px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
+    padding: 25px;
     z-index: 1;
+    border-radius: .25rem;
   }
   
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-.VenueCard {
+.VenueCard-not-selected {
     display: block;
     flex-direction: column;
     justify-content: center;
-    border: 1px solid lightgray;
+    border-radius: .25rem;
+    background-color: white;
     margin-top: 5px;
     margin-bottom: 5px;
     gap: 1;
+    padding: 25px;
+    max-width: 600px;
+    min-width: 300px;
+    line-height: 25px;
 }
 
-.VenueCard:target {
-    background-color: yellow;
+.VenueCard-selected {
+  color: #00a2c7;
+  background-color: white;
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: .25rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  gap: 1;
+  padding: 25px;
+  max-width: 600px;
+  min-width: 300px;
+  line-height: 25px;
+}
+
+
+.VenueCard:active {
+  border-color: #00a2c7;
 }
 
 .edit-event-container {

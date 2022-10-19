@@ -119,6 +119,7 @@
     max-height: 450px;
     width: 650px;
     height: 350px;
+    margin-left: 2%;
 }
 
 .event-photo-div {
@@ -164,7 +165,8 @@
 .event-description {
     font-size: 16px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    margin-top: 2.5%
+    margin-top: 2.5%;
+    margin-left: 2%;
 }
 
 .group-association-name {
@@ -230,16 +232,13 @@
     display: flex;
     flex-direction: row;
     width: 600px;
+    
 }
 
 .links-and-details {
     display: flex;
     flex-direction: row;
     text-decoration: none;
-    color: black;
-    font-size: 20px;
-    font-weight: 700;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .links-for-events {

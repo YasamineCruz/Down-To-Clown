@@ -4,6 +4,10 @@ nav {
     font-style: none;
 }
 
+.button-Container2 {
+    display: flex;
+}
+
 
 .navLinks {
     display: flex;

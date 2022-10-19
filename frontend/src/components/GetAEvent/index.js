@@ -22,7 +22,6 @@ const GetAEvent = () => {
     const group = useSelector(state => state.group.group);
     const event = useSelector(store => store.event.event);
     const sessionUser = useSelector(state => state.session.user);
-    console.log('This is the event', event)
 
     let groupId;
     if(event) groupId = event.groupId
@@ -85,13 +84,13 @@ const GetAEvent = () => {
                         )}  
                         <div className='event-details'>
                             <div className='links-and-details'>
-                            <div className='details-text'>Details</div>
+                            <div className='EGLink abouttext'>Details</div>
                             { sessionUser && group && (
                                 <div className='event-page-links'>
                                 { check(sessionUser.id, group.organizerId) && (
                                     <div className='event-page-links'>
-                                        <Link className='links-for-events' to={`/events/${event.id}/edit`}>Edit Event</Link>
-                                        <Link className='links-for-events' to={`/events/${event.id}/delete`}>Delete Event</Link>
+                                        <Link className='EGLink' to={`/events/${event.id}/edit`}>Edit Event</Link>
+                                        <Link className='EGLink' to={`/events/${event.id}/delete`}>Delete Event</Link>
                                     </div>
                                 )}
                                 </div>   

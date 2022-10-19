@@ -21,12 +21,21 @@ const DeleteGroup = () => {
     }
 
     return (
-        <form onSubmit={onSubmit}>
+        <div className='edit-event-container'>
+              <form className='edit-event-form-wrapper' onSubmit={onSubmit}>
             {group && (
-             <label>Are you sure you want to delete {group.name}?</label>   
+                <div className='edit-grouptext-wrapper'>
+                    <div className='edit-group-div-wrapper'>
+                        <h1 className='delete-group-h1-text'>Are you sure you want to delete "{group.name}"?</h1> 
+                    </div>
+                </div>
             )}
-            <button type='submit'>Delete Group</button>
-        </form>
+            <div className='button-container'>
+                <button className='nextButton-selected' type='submit'>Delete Group</button>   
+            </div>
+        </form>  
+        </div>
+    
     )
 }
 

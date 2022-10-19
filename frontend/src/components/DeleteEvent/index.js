@@ -21,12 +21,21 @@ const DeleteEvent = () => {
     }
 
     return (
-        <form onSubmit={onSubmit}>
+        <div className='edit-event-container'>
+          <form className='edit-event-form-wrapper' onSubmit={onSubmit}>
             {event && (
-             <label>Are you sure you want to delete {event.name}?</label>   
+                <div className='edit-grouptext-wrapper'>
+                    <div className='edit-group-div-wrapper'>
+                        <h1 className='delete-group-h1-text'>Are you sure you want to delete {event.name}?</h1>
+                    </div>
+                </div>
             )}
-            <button type='submit'>Delete Event</button>
-        </form>
+            <div className="button-container">
+              <button className='nextButton-selected' type='submit'>Delete Event</button>  
+            </div>
+         </form>   
+        </div>
+       
     )
 }
 
