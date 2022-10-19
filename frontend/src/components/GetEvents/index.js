@@ -12,7 +12,6 @@ const MonthsOfTheYear = ['January', 'February', 'March', 'April', 'May', 'June',
 const GetEvents = () => {
     const dispatch = useDispatch();
     const events = useSelector(store => store.event.events)
-    console.log('This is events', events)
 
     useEffect(() => {
         dispatch(eventActions.getAllEvents())
@@ -49,6 +48,7 @@ const GetEvents = () => {
                         time = 'AM'
                     }
                     if(minutes === 0) minutes = `00`;
+                    if(minutes < 10 && minutes > 0) minutes = `0${minutes}`
                    
                     if(event.previewImage === 'Event does not have a preview Image'){
                         return (

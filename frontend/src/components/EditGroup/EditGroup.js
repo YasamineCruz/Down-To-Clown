@@ -19,13 +19,26 @@ const EditGroup = () => {
     const { groupId } = params
 
     const [validationErrors, setValidationErrors] = useState([]);
-    const [name, setName] = useState(group?.name)
-    const [description, setDescription] = useState(group?.about)
-    const [city, setCity] = useState(group?.city)
-    const [state, setState] = useState(group?.state)
-    const [type, setType] = useState(group?.type)
-    const [private_key, setPrivate_key] = useState(group?.private)
-    const [organizerId, setOrganizerId] = useState(group?.organizerId)
+    const [name, setName] = useState(null)
+    const [description, setDescription] = useState(null)
+    const [city, setCity] = useState(null)
+    const [state, setState] = useState(null)
+    const [type, setType] = useState(null)
+    const [private_key, setPrivate_key] = useState(null)
+    const [organizerId, setOrganizerId] = useState(null)
+
+    useEffect(()=> {
+        if(group){
+            if(name === null) setName(group.name);
+            if(description === null) setDescription(group.about);
+            if(city === null) setCity(group.city);
+            if(state === null) setState(group.state);
+            if(type === null) setType(group.type)
+            if(private_key === null) setPrivate_key(group.private)
+            if(organizerId === null) setOrganizerId(group.organizerId)
+        }
+    },[name, description, city, state, type, private_key, organizerId, group])
+   
 
     useEffect(()=>{
         dispatch(groupActions.getAGroup(groupId))

@@ -117,19 +117,27 @@ nav {
     text-decoration: none;
     color: black;
     width: auto;
+    font-size: 16px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 600;
 }
 
 .profile-dropdown-text {
     font-size: 16px;
     text-align: left;
     width: auto;
-    margin-top: 8px;
+    line-height: 20px;
     margin-bottom: 8px;
-    font-weight: 300;
+    font-weight: 500;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
 .line {
-    background: currentColor;
-    border: .5px solid  rgb(216, 216, 216);
-    height: .5px;
+    background-color: rgb(216, 216, 216);
+    fill: rgb(216, 216, 216);
+    height: .1px;
+}
+
+.space {
+    margin-top: 10%;
 }

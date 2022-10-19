@@ -52,6 +52,8 @@ const GetEventsByGroup = () => {
                         startTime = 'AM'
                     }
                     if(startMinutes === 0) startMinutes = `00`;
+                    if(startMinutes < 10 && startMinutes > 0) startMinutes = `0${startMinutes}`
+
                     return (
                     <Link key={event.id} className='eventsForGroup-wrapper' to={`/events/${event.id}`}>
                         <div key={event.id} className='event-link'>

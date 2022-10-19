@@ -16,14 +16,14 @@ const EditEvent = () => {
     
     const { eventId } = params
     
-    const [ venueId, setVenueId] = useState(event?.venueId);
-    const [ name, setName] = useState(event?.name);
-    const [ description, setDescription] = useState(event?.description);
-    const [ type, setType] = useState(event?.type);
-    const [ capacity, setCapacity] = useState(event?.capacity);
-    const [ price, setPrice] = useState(event?.price);
-    const [ startDate, setStartDate] = useState(event?.startDate);
-    const [ endDate, setEndDate] = useState(event?.endDate);
+    const [ venueId, setVenueId] = useState(null);
+    const [ name, setName] = useState(null);
+    const [ description, setDescription] = useState(null);
+    const [ type, setType] = useState(null);
+    const [ capacity, setCapacity] = useState(null);
+    const [ price, setPrice] = useState(null);
+    const [ startDate, setStartDate] = useState('');
+    const [ endDate, setEndDate] = useState('');
     const [ validationErrors, setValidationErrors] = useState([]);
     const [ startDay, setStartDay] = useState('');
     const [ startMonth, setStartMonth] = useState('');
@@ -36,6 +36,17 @@ const EditEvent = () => {
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
 
+    useEffect(()=> {
+        if(event){
+            if(venueId === null) setVenueId(event.Venue.id);
+            if(name === null) setName(event.name);
+            if(description === null) setDescription(event.description);
+            if(type === null) setType(event.type)
+            if(capacity === null) setCapacity(event.capacity);
+            if(price === null) setPrice(event.price);
+            }
+    },[event, venueId, name, description, type, capacity, price])
+   
     let groupId;
     if(event) groupId = event.groupId
    

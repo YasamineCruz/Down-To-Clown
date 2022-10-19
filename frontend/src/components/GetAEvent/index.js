@@ -46,6 +46,7 @@ const GetAEvent = () => {
         startTime = 'AM'
     }
     if(startMinutes === 0) startMinutes = `00`;
+    if(startMinutes < 10 && startMinutes > 0) startMinutes = `0${startMinutes}`
 
     let endDate = new Date(event?.endDate);
     let endDay = endDate.getDay();
@@ -62,7 +63,7 @@ const GetAEvent = () => {
         endTime = 'AM'
     }
     if(endMinutes === 0) endMinutes = `00`;
-
+    if(endMinutes < 10 && endMinutes > 0) endMinutes = `0${endMinutes}`
 
     return (
         <div className='event-container'>
