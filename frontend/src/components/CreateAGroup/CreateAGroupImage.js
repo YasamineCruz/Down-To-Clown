@@ -9,7 +9,6 @@ const CreateAGroupImage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [url, setUrl] = useState('');
-    const [preview, setPreview] = useState(false)
     const [errors, setErrors] = useState([])
     const group = useSelector(state => state.group.group)
     let groupId
@@ -19,7 +18,7 @@ const CreateAGroupImage = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         setErrors([]);
-          dispatch(groupActions.createAGroupImg({ url, preview}, groupId))
+          dispatch(groupActions.createAGroupImg({ url, preview: true}, groupId))
           .catch(async (res) => {
             const data = await res.json();
             if(data && data.errors) setErrors(data.errors)
@@ -34,25 +33,25 @@ const CreateAGroupImage = () => {
 
         if(errors.length <= 0) {
             setUrl('')
-            setPreview(false)
             history.push('/')
         }
     }
 
     return (
-        <div>
-            <h1>Now that you've create a group. It's time to choose a image to represent it!</h1>
-            <form onSubmit={onSubmit}>
-                <label>
-                    Input image url here:
-                    <input type='text' onChange={(e)=> setUrl(e.target.value)} value={url}/>
-                </label>
-                <label>
-                    Select if this is a preview image or not:
-                    <input type='checkbox' onChange={() => setPreview(!preview)}/> 
-                </label>
-                <button type='submit'>Create Image</button>
-            </form>
+        <div className='create-group-div-container'>
+            <div className='create-group-percent-thing'>
+            <div className='blue-line-page-7'></div>
+        </div>
+        <div className='create-group-steps'> Step 7 of 7</div>
+            <div className='create-group-text-wrapper'>
+                <h1 className='create-group-h1-text-description'>Now that you've created a group it's time to choose a image to represent it!</h1>
+                <form className='create-group-span-text' onSubmit={onSubmit}>
+                    <div className="create-group-img-div">
+                        <input className='create-group-img-input' type='text' onChange={(e)=> setUrl(e.target.value)} value={url} required placeholder='Enter a img url'/>
+                    </div>
+                    <button className='nextButton-selected'type='submit'>Add Group Image</button>
+                </form>    
+            </div>
         </div>
     )
 }

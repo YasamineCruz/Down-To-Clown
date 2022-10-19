@@ -26,24 +26,35 @@ const GroupName = () => {
     if(!sessionUser) return (<Redirect to='/'/>)
  
    return (
-    <form>
-         { validationErrors && (
-            <ul>
-            {validationErrors.map((error, idx) => (
-              <li key={idx}>{error}</li>
-            ))} 
-            </ul>
-        )}
-        <h1>What will your group’s name be?</h1>
-        <h3>
-            Choose a name that will give people a clear idea of what the group is about. Feel free to get creative! You can edit this later if you change your mind.
-        </h3>
-        <input type='text' onChange={(e) => setName(e.target.value)} value={name} required/>
-        <div>
-            <BackButton />
-            <NextButton clickable={clickable}/>
+    <div className='create-group-div-container'>
+        <div className='create-group-percent-thing'>
+            <div className='blue-line-page-2'></div>
         </div>
-    </form>
+        <div className='create-group-steps'> Step 2 of 7</div>
+        <form className='create-group-form'>
+                { validationErrors && (
+                    <ul className='create-group-errors'>
+                    {validationErrors.map((error, idx) => (
+                    <li key={idx}>{error}</li>
+                    ))} 
+                    </ul>
+                )}
+                <div className='create-group-text-wrapper'>
+                    <h1 className='create-group-h1-text'>What will your group’s name be?</h1>
+                    <h3 className='create-group-h3-text'>
+                    Choose a name that will give people a clear idea of what the group is about. Feel free to get creative! You can edit this later if you change your mind.
+                    </h3>
+                </div>
+                <div className='create-group-location-div'>
+                      <input className='create-group-name-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name'/>
+                </div>
+                <div className='button-container'>
+                    <BackButton />
+                    <NextButton clickable={clickable}/>
+                </div>
+            </form>
+    </div>
+   
   )
 }
 

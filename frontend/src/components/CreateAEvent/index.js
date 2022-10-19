@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import './CreateAEvent.css';
 import * as groupActions from '../../store/groups'
 import { Link } from 'react-router-dom';
+import { createAEventImg } from '../../store/events';
 
 const CreateEvent = () => {
     const [ venueId, setVenueId] = useState('');
@@ -31,14 +32,18 @@ const CreateEvent = () => {
     const [ endYear, setEndYear] = useState('');
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
+    const [url, setUrl] = useState('');
+    const [preview] = useState(true)
     const group = useSelector(state => state.group.group);
+    const event = useSelector(state => state.event.event);
+
 
     useEffect(() => {
         dispatch(groupActions.getAGroup(groupId))
     }, [dispatch, groupId])
 
     useEffect(() => {
-        if(type === 'Online'){
+        if(type === 'Online' || type === '' && group){
             let venues = group.Venues;
             for(let i = 0; i < venues.length; i++){
                 let venue = venues[i];
@@ -101,10 +106,13 @@ const CreateEvent = () => {
 
 
     return ( 
-        <>
-        <form onSubmit={onSubmit}>
+        <div className='edit-event-container'>
+        <form className='edit-event-form-wrapper'onSubmit={onSubmit}>
+        <div className='edit-group-div-wrapper'>
+               <h1 className='edit-group-h1-text'>Create an Event</h1> 
+            </div>
         { validationErrors && (
-            <ul>
+            <ul className='create-group-errors'>
             {validationErrors.map((error, idx) => (
               <li key={idx}>{error}</li>
             ))} 
@@ -112,8 +120,8 @@ const CreateEvent = () => {
                 )
             }
         { ( (type === 'In person' || type === '') && group) && ( 
-            <>
-            { group.Venues.length >= 1 && (
+            <div>
+            { group.Venues.length >= 2 && (
                <div className="dropdown">
             <span>View Venues</span>
                 <div className="dropdown-content">
@@ -135,37 +143,41 @@ const CreateEvent = () => {
                 </div>
             </div> 
             )}
-            </>
+            </div>
         )}
         { ( (type === 'In person' || type === '') && group) && (
             <>
             {!inPersonVenues.length && (
-                <div>
-                <Link to={`/groups/${groupId}/newVenue`}>For In person events you must have a Venue. Create one Here</Link>
+                <div className='create-event-link-container'>
+                    For In person events you must have a Venue. Create one 
+                <Link className='create-event-link-to-create-venue' to={`/groups/${groupId}/newVenue`}>Here</Link>
             </div>
             )}
             </>
         )}
-        <label> Name
-            <input type='text' onChange={(e) => setName(e.target.value)} value={name}/>
-        </label>
-        <label> Description
-            <input type='text' onChange={(e) => setDescription(e.target.value)} value={description}/>
-        </label>
-        <>
-        <label>Type
-            <input type='radio' onChange={(e) => setType(e.target.value)} value='Online' checked={type === 'Online'}/> Online
-            <input type='radio' onChange={(e) => setType(e.target.value)} value='In person' checked={type === 'In person'}/> In person
-        </label>
-        </>
-        <label> Capacity
-            <input onChange={(e) => setCapacity(e.target.value)} className='Capacity' type='number' min='1' step='1' placeholder='1' value={capacity}/>
-        </label>
-        <label> Price
-            <input onChange={(e) => setPrice(e.target.value)} className='Price' type='number' min='1' step='.01' placeholder='1' value={price}/>
-        </label>
-        <label> Start Date:
-            <input type='date' 
+        <div className='edit-group-text-wrapper'>
+        <div className='edit-group-div'>
+            <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name'/>
+            <input className='edit-group-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Enter a description'/>
+            <input className='edit-group-input' onChange={(e) => setCapacity(e.target.value)} type='number' min='1' step='1' required placeholder='Enter a capacity' value={capacity}/>
+            <input className='edit-group-input' onChange={(e) => setPrice(e.target.value)} type='number' min='1' step='.01' required placeholder='Enter a price' value={price}/>
+        </div>
+        <div className='create-event-radio'>
+            <h2 className='create-event-h2-text'>Type</h2>
+            <div className='radio-wrapper2'>
+              <label className='radio-text2'>Online</label>
+            <input className='radio-input2' type='radio' onChange={(e) => setType(e.target.value)} value='Online' checked={type === 'Online'}/> 
+            <div className='radio-wrapper2'>
+                <label className='radio-text2'>In person</label>
+                <input className='radio-input2' type='radio' onChange={(e) => setType(e.target.value)} value='In person' checked={type === 'In person'}/>  
+            </div>
+            </div>    
+        </div>
+        <div className='create-event-date'> 
+            <label className='create-event-label-text'>Start Date</label>
+            <input 
+            className='create-event-startDate-input'
+            type='date' 
             value={`${startYear}-${startMonth}-${startDay}`} 
             min={`${startYear}-${startMonth}-${startDay}`} 
             onChange={(e) => { 
@@ -176,8 +188,9 @@ const CreateEvent = () => {
                 if(startHour && startMinutes) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
             }} 
             required/>
-                <label> Start Time:
-                <input 
+                <label className='create-event-label-text'> Start Time</label>
+                <input
+                className='create-event-startDate-input' 
                 type='time' 
                 min={`${startHour}:${startMinutes}`} 
                 value={`${startHour}:${startMinutes}`}
@@ -188,10 +201,11 @@ const CreateEvent = () => {
                     if(startYear && startMonth && startDay) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
                 }} 
                 required/>
-                </label>
-        </label>
-        <label> End Date:
-            <input type='date' 
+        </div>
+        <div className='create-event-date'>
+         <label className='create-event-label-text'> End Date</label>
+            <input type='date'
+            className='create-event-startDate-input' 
             value={`${endYear}-${endMonth}-${endDay}`} 
             min={`${startYear}-${startMonth}-${startDay}`}
             onChange={(e) => { 
@@ -203,8 +217,9 @@ const CreateEvent = () => {
                 if(endHour && endMinutes) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));  
             }} 
             required/>
-            <label> EndTime:
-            <input 
+            <label className='create-event-label-text'> EndTime </label>
+            <input
+            className='create-event-startDate-input' 
             type='time' 
             min={`${startHour}:${startMinutes + 1}`}
             value={`${endHour}:${endMinutes}`} 
@@ -215,13 +230,16 @@ const CreateEvent = () => {
                 if(endYear && endMonth && endDay) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));
             }}
             required/>
-            </label>
-        </label>
-        <button type='submit'>
+        </div>
+        
+        </div>
+        <div className='button-container'>
+           <button className='nextButton-selected' type='submit'>
             Submit
-        </button>
+            </button> 
+        </div>
         </form>
-        </>
+        </div>
     )
 }
 

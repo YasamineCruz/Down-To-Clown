@@ -27,28 +27,37 @@ const GroupLocation = () => {
     if(!sessionUser) return (<Redirect to='/'/>)
 
   return (
-    <form>
-        { validationErrors && (
-            <ul>
+    <div className='create-group-div-container'>
+      <div className='create-group-percent-thing'>
+        <div className='blue-line-page-1'></div>
+      </div>
+      <div className='create-group-steps'> Step 1 of 7</div>
+       <form className='create-group-form'>
+        <div className='create-group-errors'>
+          { validationErrors && (
+            <ul className='error-ul'>
             {validationErrors.map((error, idx) => (
-              <li key={idx}>{error}</li>
+              <li className='error-li' key={idx}>{error}</li>
             ))} 
             </ul>
         )}  
-            <h1>First, set your group’s location.</h1>
-            <h3>
+        </div>
+          <div className='create-group-text-wrapper'>
+              <h1 className='create-group-h1-text'>First, set your group’s location.</h1>
+              <h3 className='create-group-h3-text'>
               Meetup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.
-            </h3>
-            <div className='locationDiv'>
-              <label>City</label>
-              <input type='text' onChange={(e) => setCity(e.target.value)} value={city} required/>
-              <label>State</label>
-              <input type='text' onChange={(e) => setState(e.target.value)} value={state} required/>
+              </h3>
+          </div>
+            <div className='create-group-location-div'>
+              <input className='s-c-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a City'/>
+              <input className='s-c-input' type='text' onChange={(e) => setState(e.target.value)} value={state} required placeholder='Enter a State'/>
             </div>
-        <div>
+        <div className='next-button-container'>
             <NextButton clickable={clickable}/>
         </div>
     </form>
+    </div>
+   
   )
 }
 

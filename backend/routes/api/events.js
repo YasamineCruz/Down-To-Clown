@@ -134,6 +134,8 @@ router.get('/:eventId', async(req, res, next) => {
         attributes: { exclude: ['createdAt', 'updatedAt'] }
      })
 
+    console.log('This is the event from the back', event)
+
     if(event){
         let numAttending = await Attendance.count({where: {eventId: event.id}})
         res.json({

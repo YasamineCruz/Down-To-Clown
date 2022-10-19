@@ -530,7 +530,7 @@ router.post('/:groupId/events', requireAuth, async(req, res, next) => {
     if(group){
         let event = await group.createEvent({ venueId, name, type, capacity, price, description, startDate, endDate})
         .then(function(event){
-            res.json({
+               res.json({
                id: event.id,
                groupId: event.groupId,
                venueId: event.venueId,
@@ -583,7 +583,7 @@ router.get('/:groupId/events', async(req, res, next) => {
     for(let i = 0; i < events.length; i++){
             let event = events[i]
             let group = await Group.findByPk(event.groupId, { attributes: { exclude: ['organizerId','about','createdAt', 'updatedAt', 'type', 'private']}})
-            let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private', 'lat', 'lng', 'address'] } })
+            let venue = await Venue.findByPk(event.venueId, { attributes: { exclude: ['groupId', 'createdAt', 'updatedAt', 'type', 'private', 'lat', 'lng'] } })
             let previewImage = await EventImage.findOne({where: { eventId: event.id}})
             let numAttending = await Attendance.count({where: {eventId: event.id}})
         
@@ -800,7 +800,7 @@ router.get('/:groupId/members', async(req, res, next) => {
     let currentUser = user.toSafeObject();
     let currentUserId = currentUser.id;
     let payload = [];
-
+    className='event-page-links'
 
     let group = await Group.findByPk(groupId)
 
@@ -818,7 +818,6 @@ router.get('/:groupId/members', async(req, res, next) => {
     if(currentUserMembership === null){
         for(let i = 0; i < members.length; i++){
             let member = members[i];
-            console.log('this is groupId in if statement', groupId)
             let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId}, {status: { [Op.in]: ['member', 'co-host', 'pending'] } } ] }, attributes: ['status']})
             if(membership){
                 payload.push({

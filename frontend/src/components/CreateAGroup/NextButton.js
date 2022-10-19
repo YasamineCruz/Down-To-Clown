@@ -3,15 +3,16 @@ import './CreateAGroup.css'
 
 const NextButton = ({clickable}) => {
     const { page, setPage} = useGroupContext();
+    console.log(clickable)
 
     if(page === 5) {
         return (
-            <button className='NextButton' onClick={()=> setPage(page + 1)} disabled={clickable}>Agree and Continue</button>
+            <button className='nextButton-selected' onClick={()=> setPage(page + 1)} disabled={clickable}>Agree and Continue</button>
         )
     } 
 
     return (
-        <button className='NextButton' onClick={()=> setPage(page + 1)}  disabled={clickable}>Next</button>
+        <button className={clickable === false ? `nextButton-selected` : `nextButton-not-selected`} onClick={()=> setPage(page + 1)}  disabled={clickable}>Next</button>
     )
 }
 

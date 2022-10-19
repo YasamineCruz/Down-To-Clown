@@ -30,29 +30,46 @@ const GroupPrivate = () => {
     if(!sessionUser) return (<Redirect to='/'/>)
  
     return (
-          <div>
-            <form>
+          <div className='create-group-div-container2'>
+            <div className='create-group-percent-thing'>
+                <div className='blue-line-page-4'></div>
+            </div>
+         <div className='create-group-steps'> Step 4 of 7</div>
+            <form className='create-group-form'>
             { validationErrors && (
-            <ul>
+            <ul className='create-group-errors'>
             {validationErrors.map((error, idx) => (
               <li key={idx}>{error}</li>
             ))} 
             </ul>
-            )}        
-                <h1>Select Type</h1>
-                <input onChange={(e) => setType(e.target.value)} type='radio' value='Online' name='type' required checked={type === 'Online'}/>
-                <label for='online'>Online</label>
-                <input onChange={(e) => setType(e.target.value)} type='radio' value='In person' name='type' required checked={type === 'In person'}/>
-                <label for='in person'>In person</label>
+            )}  
+                <div className='create-group-text-wrapper2'>
+                    <h1 className='create-group-h1-text-radio'>Select Type</h1>
+                    <div className='radio-wrapper'>
+                        <label className='radio-text' for='online'>Online</label>
+                        <input className='radio-input' onChange={(e) => setType(e.target.value)} type='radio' value='Online' name='type' required checked={type === 'Online'}/>
+                    </div>
+                    <div className='radio-wrapper'>
+                        <label className='radio-text' for='in person'>In person</label>
+                        <input className='radio-input' onChange={(e) => setType(e.target.value)} type='radio' value='In person' name='type' required checked={type === 'In person'}/>
+                    </div>   
+                </div>
             </form> 
             <form>
-                <h1>Select Private or Public</h1>
-                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
-                <label for='online'>Private</label>
-                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
-                <label for='in person'>Public</label>
+                <div className='create-group-text-wrapper2'>
+                   <h1 className='create-group-h1-text-radio'>Select Private or Public</h1>
+                   <div className='radio-wrapper'>
+                        <label className='radio-text' for='online'>Private</label>
+                        <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
+                   </div>
+                    <div className='radio-wrapper'>
+                         <label className='radio-text' for='in person'>Public</label>   
+                         <input className='radio-input'onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
+                    </div>
+                        
+                </div>
             </form>
-             <div>
+             <div className='button-container'>
                 <BackButton />
                 <NextButton clickable={clickable}/>
             </div>

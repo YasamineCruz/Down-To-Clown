@@ -80,7 +80,7 @@ const EditEvent = () => {
             setPrice('');
             setStartDate('');
             setEndDate('');
-            history.push(`/groups/${groupId}`)
+            history.push(`/events/${eventId}`)
         }  
     };
 

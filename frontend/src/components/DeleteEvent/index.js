@@ -17,7 +17,7 @@ const DeleteEvent = () => {
 
     const onSubmit = () => {
         dispatch(eventActions.deleteEvent(eventId))
-        history.push('/events/current')
+        history.push('/events')
     }
 
     return (

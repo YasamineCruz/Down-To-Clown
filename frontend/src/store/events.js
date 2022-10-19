@@ -103,7 +103,6 @@ export const createAEventImg = (eventImg, eventId) => async(dispatch) => {
     const response = await csrfFetch(`/api/events/${eventId}/images`, {
         method:'POST',
         body: JSON.stringify({
-            id: eventId,
             url,
             preview
         })
@@ -180,7 +179,7 @@ const eventReducer = (state = initialState, action) => {
         return newState;
      case GET_EVENTGROUP:
         newState = Object.assign({}, state);
-        newState.events = action.payload;
+        newState.eventsByGroup = action.payload;
         return newState;
       default:
         return state;

@@ -11,7 +11,7 @@ const MonthsOfTheYear = ['January', 'February', 'March', 'April', 'May', 'June',
 
 const GetEventsByGroup = () => {
     const dispatch = useDispatch();
-    const events = useSelector(store => store.event.events)
+    const events = useSelector(store => store.event.eventsByGroup)
     const params = useParams();
     const { groupId } = params;
     const [ timeframe, setTimeframe] = useState('upcoming')
@@ -22,7 +22,7 @@ const GetEventsByGroup = () => {
         dispatch(eventActions.getAllEventsByGroup(groupId))
     },[dispatch, groupId])
   
-    // let currentDate = new Date()
+    
     
     return (
         <div className='eventsForGroup-container'>
@@ -31,7 +31,7 @@ const GetEventsByGroup = () => {
                 <div onClick={()=> setTimeframe('past')} className={timeframe ==='past' ? `past-selected` : `past-not-selected`}>Past</div>
             </div>
         {events && events.statusCode === 404 && (
-            <div>There are currently no events for this Group.</div>
+            <div className='events-for-group-none'>There are currently no events for this Group.</div>
         )}
         {events && events.statusCode !== 404 && (  
             <div className='eventsForGroup-wrapper'>
@@ -53,7 +53,7 @@ const GetEventsByGroup = () => {
                     }
                     if(startMinutes === 0) startMinutes = `00`;
                     return (
-                    <Link key={event.id} className='event-link' to={`/events/${event.id}`}>
+                    <Link key={event.id} className='eventsForGroup-wrapper' to={`/events/${event.id}`}>
                         <div key={event.id} className='event-link'>
                             <div className='events-for-group-time'>{`${DaysOfTheWeek[startDay]}, ${MonthsOfTheYear[startMonth]} ${startDate2} at ${startHours}:${startMinutes} ${startTime}`}</div>
                             <div className='events-for-group-name'>{event.name}</div>

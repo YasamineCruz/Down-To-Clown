@@ -22,6 +22,7 @@ const GetAEvent = () => {
     const group = useSelector(state => state.group.group);
     const event = useSelector(store => store.event.event);
     const sessionUser = useSelector(state => state.session.user);
+    console.log('This is the event', event)
 
     let groupId;
     if(event) groupId = event.groupId
@@ -76,9 +77,26 @@ const GetAEvent = () => {
             <div className='event-bottom'>
                <div className='event-middle-div'>
                     <div className='event-photo-div'>
-                        <img className='event-img' src={event.EventImages[0]?.url} alt=''/>
+                        { event?.EventImages && event.EventImages.length >= 1 && (
+                           <img className='event-img' src={event.EventImages[0].url} alt=''/> 
+                        )}
+                        { (!event.EventImages || event.EventImages.length) <= 0 && (
+                            <img className='event-img' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3j3PyYLsHz2xgGv3MN_T7CZAkz-JTz4bkxw&usqp=CAU' alt=''/>
+                        )}  
                         <div className='event-details'>
+                            <div className='links-and-details'>
                             <div className='details-text'>Details</div>
+                            { sessionUser && group && (
+                                <div className='event-page-links'>
+                                { check(sessionUser.id, group.organizerId) && (
+                                    <div className='event-page-links'>
+                                        <Link className='links-for-events' to={`/events/${event.id}/edit`}>Edit Event</Link>
+                                        <Link className='links-for-events' to={`/events/${event.id}/delete`}>Delete Event</Link>
+                                    </div>
+                                )}
+                                </div>   
+                            )}
+                            </div>
                             <div className='event-description'>{event.description}</div>
                         </div>
                     </div>
@@ -103,28 +121,24 @@ const GetAEvent = () => {
                                     <div className='event-time'>{` to ${DaysOfTheWeek[endDay]}, ${MonthsOfTheYear[endMonth]} ${endDate2} at ${endHours}:${endMinutes} ${endTime}`}</div>
                                 </div>
                             </div>
-                            <div className='event-info-wrapper2'>
-                                {event.type === 'Online' ? (<i class="fa-solid fa-video clock"></i>) : (<i className="fa-solid fa-location-dot icon clock"></i>)}
-                                {event.type === 'Online' ? (<div className='event-type'>{event.type} Event</div>) :  <div className='event-location'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>}
-                            </div>
+                              {event.Venue && (
+                                    <div className='event-info-wrapper2'>
+                                    {event.type === 'Online' ? (<i class="fa-solid fa-video clock"></i>) : (<i className="fa-solid fa-location-dot icon clock"></i>)}
+                                    {event.type === 'Online' ? (<div className='event-type'>{event.type} Event</div>) :  <div className='event-location'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>}
+                                    </div>
+                                )}
+
                         </div>
                     </div>
                </div>
             </div>
-                { sessionUser && group && (
-                    <div>
-                  { check(sessionUser.id, group.organizerId) && (
-                    <>
-                    <Link to={`/events/${event.id}/edit`}>Edit Event</Link>
-                    <Link to={`/events/${event.id}/delete`}>Delete Event</Link>
-                    </>
-                    )}
-                    </div>   
-                )}
                 <div className='event-sticky'>
                     <div className='event-sticky-time-loc'>
                         <div className='event-sticky-time'>{`${DaysOfTheWeek[startDay]}, ${MonthsOfTheYear[startMonth]} ${startDate2} · ${startHours}:${startMinutes} ${startTime}`}</div>
-                        <div className='event-sticky-name'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>
+                        {event?.Venue && event.Venue.address !== 'Online' && (
+                          <div className='event-sticky-name'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>  
+                        )}
+                        
                     </div>
                     <div className='event-sticky-price'>
                         <div className='event-price'>{event.price}$</div>

@@ -13,7 +13,7 @@ const CurrentUsersGroups2 = () => {
 
 
     return (
-        <>
+        <div>
         <h3>Groups</h3>
         {groups && (
             <div key={groups} className='GroupsDiv'>{groups.map(group => {
@@ -41,8 +41,11 @@ const CurrentUsersGroups2 = () => {
                     )    
                     }
                     })}</div>
+        )}
+        {!groups && (
+            <div>The are currently no groups for this user.</div>
         )}      
-        </>
+        </div>
     )
 }
 

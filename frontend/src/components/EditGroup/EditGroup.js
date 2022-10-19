@@ -3,6 +3,7 @@ import { useSelector, useDispatch} from 'react-redux'
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import './EditGroup.css'
 
 
 const EditGroup = () => {
@@ -12,17 +13,19 @@ const EditGroup = () => {
     
     const sessionUser = useSelector(state => state.session.user);
     const group = useSelector(state => state.group.group)
+
+    console.log('group on edit page', group)
     
     const { groupId } = params
 
     const [validationErrors, setValidationErrors] = useState([]);
-    const [name, setName] = useState(group.name)
-    const [description, setDescription] = useState(group.about)
-    const [city, setCity] = useState(group.city)
-    const [state, setState] = useState(group.state)
-    const [type, setType] = useState(group.type)
-    const [private_key, setPrivate_key] = useState(group.private)
-    const [organizerId, setOrganizerId] = useState(group.organizerId)
+    const [name, setName] = useState(group?.name)
+    const [description, setDescription] = useState(group?.about)
+    const [city, setCity] = useState(group?.city)
+    const [state, setState] = useState(group?.state)
+    const [type, setType] = useState(group?.type)
+    const [private_key, setPrivate_key] = useState(group?.private)
+    const [organizerId, setOrganizerId] = useState(group?.organizerId)
 
     useEffect(()=>{
         dispatch(groupActions.getAGroup(groupId))
@@ -40,7 +43,7 @@ const EditGroup = () => {
         if(!city.length) errors.push('You must enter a city')
         if(!name.length) errors.push('You must enter a Group name');
         if(!type) errors.push('Type must be Online or In person');
-        if(!private_key) errors.push('You must select private or public')
+        if(private_key !== 0 && private_key !== 1) errors.push('You must select private or public')
         dispatch(groupActions.editAGroup({ organizerId, name, description, type, private_key, city, state}, groupId))
         .catch(async (res) => {
             const data = await res.json();
@@ -55,48 +58,55 @@ const EditGroup = () => {
     }
 
     return (
-        <>
-        <form onSubmit={onSubmit}>
+        <div className='edit-group-div-container'>
+        <form  onSubmit={onSubmit}>
+            <div className='edit-group-div-wrapper'>
+               <h1 className='edit-group-h1-text'>Edit Group</h1> 
+            </div>
             { validationErrors && (
-            <ul>
+                <ul className='create-group-errors'>
             {validationErrors.map((error, idx) => (
-              <li key={idx}>{error}</li>
+                <li key={idx}>{error}</li>
             ))} 
             </ul>
             )}
             { group && (
-            <>
-            <label> 
-            <input type='text' onChange={(e)=> setName(e.target.value)} value={name}/>
-            </label>
-            <label> Description
-                <input type='text' onChange={(e)=> setDescription(e.target.value)} value={description}/>
-            </label>
-            <label>
-                <input type='text' onChange={(e) => setCity(e.target.value)} value={city}/>
-            </label>
-            <label>
-                <input type='text' onChange={(e) => setState(e.target.value)} value={state}/>
-            </label>
-            <form>
-            <h1>Select Type</h1>
-                <input onChange={(e) => setType(e.target.value)} type='radio' value='Online' name='type' required checked={type === 'Online'}/>
-                <label for='online'>Online</label>
-                <input onChange={(e) => setType(e.target.value)} type='radio' value='In person' name='type' required checked={type === 'In person'}/>
-                <label for='in person'>In person</label>
-            </form> 
-            <form>
-                <h1>Select Private or Public</h1>
-                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
-                <label for='online'>Private</label>
-                <input onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
-                <label for='in person'>Public</label>
-            </form>
-            <button type='submit'>Edit Group</button>
-            </>
-            )}                
+            <div className='edit-group-text-wrapper'>
+                <div className='edit-group-div'>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name} required placeholder='Enter a name'/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description} required placeholder='Enter a description atleast 50 characters long'/>
+                    <input className='edit-group-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a city'/>
+                    <input className='edit-group-input' type='text' onChange={(e) => setState(e.target.value)} value={state} placeholder='Enter a state' required/>
+                </div>  
+                <form className='edit-group-form-wrapper'>
+                <h1 className='edit-group-h1-text'>Select Type</h1>
+                    <div className='radio-wrapper'>
+                    <input className='radio-input' onChange={(e) => setType(e.target.value)} type='radio' value='Online' name='type' required checked={type === 'Online'}/>
+                        <label className='radio-text' for='online'>Online</label> 
+                    </div>
+                    <div className='radio-wrapper'>
+                    <input className='radio-input' onChange={(e) => setType(e.target.value)} type='radio' value='In person' name='type' required checked={type === 'In person'}/>
+                        <label className='radio-text' for='in person'>In person</label>  
+                    </div>
+                </form> 
+                <form className='edit-group-form-wrapper'>
+                    <h1 className="edit-group-h1-text">Select Private or Public</h1>
+                    <div className='radio-wrapper'>
+                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
+                        <label className='radio-text' for='online'>Private</label>  
+                    </div>
+                    <div className='radio-wrapper'>
+                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
+                    <label className='radio-text' for='in person'>Public</label>  
+                    </div>
+                </form>
+            </div>
+            )}                       
+            <div className='button-container'>
+              <button className={validationErrors.length <= 0 ? `nextButton-selected` : `nextButton-not-selected`} disabled={validationErrors.length >= 1} type='submit'>Edit Group</button>  
+            </div> 
         </form>
-        </>
+        </div>
     )
 }
 

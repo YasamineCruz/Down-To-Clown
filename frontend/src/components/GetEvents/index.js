@@ -12,6 +12,7 @@ const MonthsOfTheYear = ['January', 'February', 'March', 'April', 'May', 'June',
 const GetEvents = () => {
     const dispatch = useDispatch();
     const events = useSelector(store => store.event.events)
+    console.log('This is events', events)
 
     useEffect(() => {
         dispatch(eventActions.getAllEvents())
