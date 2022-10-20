@@ -800,7 +800,7 @@ router.get('/:groupId/members', async(req, res, next) => {
     let currentUser = user.toSafeObject();
     let currentUserId = currentUser.id;
     let payload = [];
-    className='event-page-links'
+
 
     let group = await Group.findByPk(groupId)
 
