@@ -3,6 +3,7 @@
     display: inline-block;
     margin-left: 25%;
     height: 40px;
+    margin-bottom: 3.5%;
   }
   
 .dropdown-content {
@@ -15,13 +16,16 @@
     padding: 25px;
     z-index: 1;
     border-radius: .25rem;
+    margin-top: 2%;
   }
   
 .dropdown:hover .dropdown-content {
     display: block;
+    color:#00a2c7;
 }
 
 .VenueCard-not-selected {
+    color: black;
     display: block;
     flex-direction: column;
     justify-content: center;
@@ -39,6 +43,7 @@
 .VenueCard-selected {
   color: #00a2c7;
   background-color: white;
+  border: 1px solid #00a2c7;
   display: block;
   flex-direction: column;
   justify-content: center;
@@ -171,3 +176,24 @@
   margin-top: 1%;
 }
 
+.span-for-event-create {
+  background-color:#f65858;
+  border: 1px solid #f65858;
+  color: #ffff;
+  padding: 10px;
+  border-radius: .25rem;
+  
+}
+
+
+.dropdown:hover .span-for-event-create {
+  border: 1px solid #00a2c7;
+  background-color: white;
+  color: #00a2c7;
+}
+
+.create-event-h3 {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  size: 14px;
+  font-weight: 500;
+}

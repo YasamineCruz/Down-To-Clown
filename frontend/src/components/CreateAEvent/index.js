@@ -34,7 +34,6 @@ const CreateEvent = () => {
     const [ endMinutes, setEndMinutes] = useState('');
     const group = useSelector(state => state.group.group);
 
-
     useEffect(() => {
         dispatch(groupActions.getAGroup(groupId))
     }, [dispatch, groupId])
@@ -120,7 +119,8 @@ const CreateEvent = () => {
             <div>
             { group.Venues.length >= 2 && (
                <div className="dropdown">
-            <span>View Venues</span>
+                <h3 className='create-event-h3'>In person events must have a venue.</h3>
+            <span className='span-for-event-create'>Select a Venue Here</span>
                 <div className="dropdown-content">
                     {group && (
                         <div>
@@ -128,9 +128,7 @@ const CreateEvent = () => {
                             if(venue.name !== 'Online'){
                             return (
                             <div key={venue.id} className={venueId === venue.id ? `VenueCard-selected` : `VenueCard-not-selected`} onClick={() => setVenueId(venue.id)} >
-                                <div>{venue.address}</div>
-                                <div>{venue.city}</div>
-                                <div>{venue.state}</div>
+                                <div>{venue.address} {venue.city}, {venue.state}</div>
                             </div>
                                 )} else return <></>
                             }

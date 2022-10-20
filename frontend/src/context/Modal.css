@@ -78,11 +78,11 @@
 .ModalLoginButton {
     font-size: 14px;
     height: fit-content;
-    width: fit-content;
-    position: absolute;
-    left: 93%;
-    bottom: 96%;
+    width: 60px;
     z-index: 1;
+    margin-right: 1%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 550;
 }
 
 .ModalLoginButton:hover {
@@ -148,49 +148,6 @@
     width: 475px;
 }
 
-/* .signupForm {
-    display: flex;
-    justify-content: left;
-    flex-direction: column;
-} */
-
-
-/* .signupDiv {
-    width: 200vw;
-    display: flex;
-    justify-content: left;
-    flex-direction: row;
-} */
-
-.signupLabel {
-    display: flex;
-    justify-content: left;
-    flex-direction: column;
-    margin-left: 10px;
-}
-
-.signupInput {
-    margin-bottom: 20px;
-    height: 20px;
-    padding-left: 5px;
-}
-
-.signupButton {
-    height: fit-content;
-    width: 55px;
-    display: flex;
-    justify-content: center;
-    margin-left: 10px;
-    margin-top: 19px;
-    background-color:#f65858;
-    border-color: #f65858;
-    fill: #ffff;
-    color: #ffff;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
 
 .togglePassword {
     display: flex;
@@ -201,13 +158,12 @@
 .signup {
     font-size: 14px;
     height: fit-content;
-    width: fit-content;
-    position: absolute;
-    left: 96%;
-    bottom: 96%;
+    width: 60px;
     text-decoration: none;
     color: black;
     z-index: 1;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 550;
 }
 
 .down-to-clown-icon {
@@ -227,7 +183,7 @@
 .view-password {
     position: absolute;
     right: 15%;
-    bottom: 51.25%;
+    bottom: 56.25%;
 }
 
 .view-password2 {

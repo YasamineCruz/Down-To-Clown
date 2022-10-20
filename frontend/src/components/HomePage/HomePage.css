@@ -3,7 +3,7 @@
     display: block;
     top: 73%;
     left: 2%;
-    z-index: 0;
+    z-index: -1;
 }
 
 .homepageYellowBlob {
@@ -13,7 +13,7 @@
     left: 24%;
     height: 869px;
     width: 948px;
-    z-index: 0;
+    z-index: -1;
 }
 
 .homepageGreenBlob {
@@ -21,9 +21,9 @@
     display: block;
     top: 0%;
     left: 67.5%;
-    height: 570px;
+    max-height: 570px;
     width: 593px;
-    z-index: 0;
+    z-index: -1;
 }
 
 .homepageScreenImg {
@@ -68,7 +68,6 @@
 }
 
 .homepageLinks {
-    position: absolute;
     left: 25%;
     bottom: 16%;
     display: flex;
