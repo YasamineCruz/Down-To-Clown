@@ -797,13 +797,16 @@ router.get('/:groupId/members', async(req, res, next) => {
     const { groupId } = req.params;
     const { user } = req;
 
-    let currentUser = user.toSafeObject();
-    let currentUserId = currentUser.id;
+    let currentUser;
+    if( user && user !== null ) currentUserId === user.toSafeObject()
+    let currentUserId;
+    if(currentUser) currentUserId = currentUser.id;
     let payload = [];
 
     let group = await Group.findByPk(groupId)
 
-    let currentUserMembership = await Membership.findOne({where: { [Op.and]: [ {userId: currentUserId}, {groupId} ] } })
+    let currentUserMembership = null
+    if(currentUserId) currentUserMembership = await Membership.findOne({where: { [Op.and]: [ {userId: currentUserId}, {groupId} ] } })
 
     if(!group){
         res.status = 404;

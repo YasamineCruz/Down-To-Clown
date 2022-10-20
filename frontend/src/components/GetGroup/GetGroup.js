@@ -21,13 +21,13 @@ const GroupPage = () => {
     const sessionUser = useSelector(state => state.session.user);
     const members = useSelector(state => state.members.members)
     const [ info, setInfo] = useState('about')
-    console.log('---members---', members)
+
     
     useEffect(()=> {
        dispatch(groupActions.getAGroup(groupId))
        dispatch(getAllMembersByGroupId(groupId))
     }, [dispatch, groupId]) 
-  
+    
 
     return (
         <div className='EGContainer'>
@@ -95,7 +95,7 @@ const GroupPage = () => {
                                     <div className='organizer'>Members</div>
                                     { members && group && ( 
                                         Object.values(members).map(member => (
-                                            <div className='EGCreatorName'>
+                                            <div key={member.id} className='EGCreatorName'>
                                                 <i className="fa-regular fa-circle-user fa-2x dot"></i>
                                                 {`${member.firstName} ${member.lastName[0]}.`}
                                             </div>
