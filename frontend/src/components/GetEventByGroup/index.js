@@ -16,7 +16,22 @@ const GetEventsByGroup = () => {
     const { groupId } = params;
     const [ timeframe, setTimeframe] = useState('upcoming')
 
-    console.log('This is events for GetEventsByGroup', events)
+    let upcoming = [];
+    let past = [];
+
+    let currentDate = new Date()
+
+    if(events){
+        events.Events.forEach(event => {
+            let eventDate = new Date(event.startDate)
+            if(eventDate > currentDate){
+                upcoming.push(event)
+            } else {
+                past.push(event)
+            }
+        })
+    }
+
 
     useEffect(() => {
         dispatch(eventActions.getAllEventsByGroup(groupId))
@@ -33,7 +48,45 @@ const GetEventsByGroup = () => {
         {events && events.statusCode === 404 && (
             <div className='events-for-group-none'>There are currently no events for this Group.</div>
         )}
-        {events && events.statusCode !== 404 && (  
+        {events && events.statusCode !== 404 && upcoming.length >= 1 && timeframe === 'upcoming' && (  
+            <div className='eventsForGroup-wrapper'>
+                {upcoming.map(event => {
+
+                    let startDate = new Date(event.startDate);
+                    let startDay = startDate.getDay();
+                    let startMonth = startDate.getMonth();
+                    let startDate2 = startDate.getDate();
+                    let startHours = startDate.getHours();
+                    let startMinutes = startDate.getMinutes();
+                    let startTime;
+
+                    if(startHours >= 13) {
+                        startTime = 'PM'
+                        startHours = startHours - 12
+                    } else {
+                        startTime = 'AM'
+                    }
+                    if(startMinutes === 0) startMinutes = `00`;
+                    if(startMinutes < 10 && startMinutes > 0) startMinutes = `0${startMinutes}`
+
+                    return (
+                    <Link key={event.id} className='eventsForGroup-wrapper' to={`/events/${event.id}`}>
+                        <div key={event.id} className='event-link'>
+                            <div className='events-for-group-time'>{`${DaysOfTheWeek[startDay]}, ${MonthsOfTheYear[startMonth]} ${startDate2} at ${startHours}:${startMinutes} ${startTime}`}</div>
+                            <div className='events-for-group-name'>{event.name}</div>
+                            <div className='events-for-group-type'>
+                                {event.type === 'Online' ? (<i class="fa-solid fa-video clock"></i>) : (<i className="fa-solid fa-location-dot icon clock"></i>)}
+                                {event.type === 'Online' ? (<div className='events-groups-type'>{event.type} Event</div>) :  <div className='event-location'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>}
+                            </div>
+                            <div className='events-for-group-attending'>{event.numAttending <= 1 ? `${event.numAttending} attendee` : `${event.numAttending} attendees`}</div>
+                        </div>
+                    </Link>
+                        )
+                    }
+                )}
+            </div>
+        )}
+        {events && events.statusCode !== 404 && past.length >= 1 && timeframe === 'past' && (  
             <div className='eventsForGroup-wrapper'>
                 {events.Events.map(event => {
 
@@ -70,6 +123,12 @@ const GetEventsByGroup = () => {
                     }
                 )}
             </div>
+        )}
+        {events && events.statusCode !== 404 && upcoming.length <= 0 && timeframe === 'upcoming' && (
+           <div className='events-for-group-none'>There are currently no upcoming events for this Group.</div>
+        )}
+        {events && events.statusCode !== 404 && past.length <= 0 && timeframe === 'past' && (
+            <div className='events-for-group-none'>There are currently no past events for this Group.</div>
         )}
         </div>
     )

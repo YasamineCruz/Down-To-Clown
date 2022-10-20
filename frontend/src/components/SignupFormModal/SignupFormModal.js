@@ -13,7 +13,8 @@ const SignupForm = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState([]);
     const [passwordType, setPasswordType] = useState('password')
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(false);
+    const [submitted, setSubmitted] = useState(false)
 
     
     useEffect(()=> {
@@ -21,9 +22,23 @@ const SignupForm = () => {
       else setPasswordType('password')
     }, [passwordType, checked])
 
+    useEffect(()=> {
+      let validationErrors = []
+      if(username.length < 4) validationErrors.push('Please provide a username with at least 4 characters.')
+      if(firstName.length < 2) validationErrors.push('First name must be at least 2 characters.')
+      if(lastName.length < 2) validationErrors.push('Last name must be at least 2 characters.')
+      if(password.length < 6) validationErrors.push('Password must be 6 characters or more.')
+      if(!email.includes('@') || !email.includes('.com')) validationErrors.push('Invalid email')
+      if(password !== confirmPassword) validationErrors.push('Confirm Password field must be the same as the Password field')
+      setErrors(validationErrors)
+    },[username, firstName, lastName, password, email])
+
     
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        setSubmitted(true);
+
         if(password === confirmPassword){
           setErrors([]);
           return dispatch(sessionActions.signup({ username, email, firstName, lastName, password}))
@@ -34,17 +49,22 @@ const SignupForm = () => {
         }
         return setErrors(['Confirm Password field must be the same as the Password field']);
     }
+
+    console.log(errors)
     
     return (
         <div className='signupDiv'>
         <form onSubmit={handleSubmit} className='signupForm'>
-            <ul className='create-group-errors'>
-                {errors.map((errors, idx) => <li key={idx}>{errors}</li>)}
-            </ul>
             <div className='meetupIcon'>
               <img className='down-to-clown-icon' src='https://cdn-icons-png.flaticon.com/512/184/184390.png' alt=''/>
             </div>
             <div className='LogInWords'>Sign up</div>
+          {errors && submitted === true && (
+            <ul className='signup-errors'>
+            {errors.map((errors, idx) => <li className='errors-li' key={idx}>{errors}</li>)}
+            </ul>
+          )}
+
             <div className='LoginContent'>
           <label className='loginlabel'>
             <h3 className='login-modal-text'>Username</h3>
@@ -101,7 +121,27 @@ const SignupForm = () => {
                 value={password} 
                 name={password}
                 required/>
-                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2" :   "fa-regular fa-eye view-password2"}></i>
+                {submitted === false && (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-no-errors" :   "fa-regular fa-eye view-password-signup-no-errors"}></i>
+                )}
+                {errors.length <= 0 && submitted === true && (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-no-errors" :   "fa-regular fa-eye view-password-signup-no-errors"}></i>
+                )}
+                {errors.length <= 1 && submitted === true && errors[0] === 'Confirm Password field must be the same as the Password field' && (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-two-errors" :   "fa-regular fa-eye view-password-signup-two-errors"}></i>
+                )}
+                {errors.length === 1 && submitted === true && errors[0] !== 'Confirm Password field must be the same as the Password field' && (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-one-errors" :   "fa-regular fa-eye view-password-signup-one-errors"}></i>
+                )}
+                {errors.length === 2 && submitted === true &&  (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-two-errors" :   "fa-regular fa-eye view-password-signup-two-errors"}></i>
+                )}
+                {errors.length === 3 && submitted === true &&  (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-three-errors" :   "fa-regular fa-eye view-password-signup-three-errors"}></i>
+                )}
+                {errors.length === 4 && submitted === true &&  (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-four-errors" :   "fa-regular fa-eye view-password-signup-four-errors"}></i>
+                )}
             </div>
           </label>
           <label className='signuplabel'>
@@ -115,7 +155,27 @@ const SignupForm = () => {
                   value={confirmPassword} 
                   name={confirmPassword}
                   required/>
-                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password3" :   "fa-regular fa-eye view-password3"}></i>
+                  {submitted === false && (
+                    <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-no-errors" :   "fa-regular fa-eye view-password2-signup-no-errors"}></i>
+                  )}
+                  {errors.length <= 0 && submitted === true && (
+                    <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-no-errors" :   "fa-regular fa-eye view-password2-signup-no-errors"}></i>
+                  )}
+                  {errors.length <= 1 && submitted === true && errors[0] === 'Confirm Password field must be the same as the Password field' && (
+                    <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-two-errors" :   "fa-regular fa-eye view-password2-signup-two-errors"}></i>
+                  )}
+                  {errors.length === 1 && submitted === true && errors[0] !== 'Confirm Password field must be the same as the Password field' && (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-one-errors" :   "fa-regular fa-eye view-password2-signup-one-errors"}></i>
+                )}
+                {errors.length === 2 && submitted === true && (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-two-errors" :   "fa-regular fa-eye view-password2-signup-two-errors"}></i>
+                )}
+                {errors.length === 3 && submitted === true &&  (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-three-errors" :   "fa-regular fa-eye view-password2-signup-three-errors"}></i>
+                )}
+                {errors.length === 4 && submitted === true &&  (
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-four-errors" :   "fa-regular fa-eye view-password2-signup-four-errors"}></i>
+                )}
             </div> 
           </label>
           <button type='submit' className='loginButton'>Sign up</button>

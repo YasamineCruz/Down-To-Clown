@@ -11,10 +11,10 @@ const HomePage = () => {
         <div className='homepageContent'>
             <div className='homepageText'>
                 <h1 className='homepageTitle'>
-                 Celebrating a month of real connections on MeetupClone
+                 Celebrating a month of real connections on Down To Clown
                 </h1>
                 <p className='homepageP'>
-                 Whatever you’re looking to do this year, Meetup can help. For 20 years, people have turned to Meetup to meet people, make friends, find support, grow a business, and explore their interests. Thousands of events are happening every day—join the fun.
+                 Whatever you’re looking to do this year, Down To Clown can help. For 20 years, people have turned to Meetup to meet people, make friends, find support, grow a business, and explore their interests. Thousands of events are happening every day—join the fun.
                 </p> 
             </div>
             <div className='homepageLinks'>

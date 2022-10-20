@@ -36,11 +36,6 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <ul className='create-group-errors'>
-        {errors.map((error, idx) => (
-          <li key={idx}>{error}</li>
-        ))} 
-     </ul>
      <div className='meetupIcon'>
         <img className='down-to-clown-icon' src='https://cdn-icons-png.flaticon.com/512/184/184390.png' alt=''/>
      </div>
@@ -51,6 +46,13 @@ function LoginForm() {
         Demo User
        </button>
        </div>
+       {errors && (
+        <ul className='create-group-errors'>
+        {errors.map((error, idx) => (
+          <li key={idx}>{error}</li>
+        ))} 
+     </ul>
+      )}
       <div className='LoginContent'>
       <label className='loginlabel'>
         <h3 className='login-modal-text'>Email</h3>
@@ -72,7 +74,12 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password" :   "fa-regular fa-eye view-password"}></i>
+        {errors.length <= 0 && (
+        <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-login-no-errrors"  :   "fa-regular fa-eye view-password-login-no-errrors"}></i>
+        )}
+        {errors.length >= 1 && (
+           <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-login-errrors"  :   "fa-regular fa-eye view-password-login-errrors"}></i>
+        )}
         </div>
       </label>
         <button type="submit" className='loginButton'>Log In</button>

@@ -114,7 +114,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isInFuture(start){
           let now = new Date()
-          if(start < now){
+          let startDate = new Date(start)
+          if(startDate < now){
             throw new Error("Start date must be in the future")
           }
         }
@@ -125,7 +126,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
       laterThenStartDate(end){
-        if(end < this.startDate){
+        let startDate2 = new Date(this.startDate)
+        let endDate = new Date(end)
+        if(endDate < startDate2){
           throw new Error("End date is less than start date")
         }
         }

@@ -32,8 +32,9 @@ function Navigation({ isLoaded }){
 
   return (
     <nav className='navLinks'>
-      <NavLink className='MeetupLogo' exact to="/">
+      <NavLink className='MeetupLogoContainer' exact to="/">
           <img className='MeetupLogo' src='https://cdn-icons-png.flaticon.com/512/184/184390.png' alt='text'/>
+          <img className='Down-To-Clown-Logo' src='https://api.logo.com/api/v2/images?format=webp&logo=logo_bfafb3f0-5f63-4779-a694-f1b3f22e91d3&width=1000&background=transparent&fit=contain&u=1666303194' alt=''/>
         </NavLink>
     <div>
         {isLoaded && sessionLinks}

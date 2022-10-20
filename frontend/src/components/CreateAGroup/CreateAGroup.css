@@ -178,6 +178,10 @@ input:focus {
     align-content: center;
     align-self: flex-start;
     justify-content: center;
+    color: red;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    size: 14px;
+    font-weight: 500;
 }
 
 .error-ul {

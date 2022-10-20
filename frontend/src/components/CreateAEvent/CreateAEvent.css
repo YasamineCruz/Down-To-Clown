@@ -203,3 +203,16 @@
   size: 14px;
   font-weight: 500;
 }
+
+.create-event-errors{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 2%;
+  margin-bottom: 1%;
+  margin-left: 24%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  size: 14px;
+  font-weight: 500;
+  color: red;
+}

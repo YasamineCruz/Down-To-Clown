@@ -50,15 +50,18 @@ const CreateEvent = () => {
     const onSubmit = async(e) => {
         e.preventDefault();
         let errors = [];
+        if(!venueId){ errors.push('A venue must be selected')}
 
-        await dispatch(eventActions.createAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, groupId))
-        .catch(async (res) => {
-            const data = await res.json();
-            if(data && data.errors) {
-                let dataErrors = Object.values(data.errors)
-                errors.push(...dataErrors)
-            }
-        })
+        if(venueId){
+            await dispatch(eventActions.createAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, groupId))
+            .catch(async (res) => {
+                const data = await res.json();
+                if(data && data.errors) {
+                    let dataErrors = Object.values(data.errors)
+                    errors.push(...dataErrors)
+                }
+            })
+        }
 
         if(errors.length <= 0) {
             setVenueId('');
@@ -88,6 +91,7 @@ const CreateEvent = () => {
     if(!startDay) setStartDay(day);
     if(!startHour) setStartHour(hour + 1);
     if(!startMinutes) setStartMinutes(minutes);
+    if(!endYear) setEndYear(startYear) 
     if(!endHour) setEndHour(startHour)
     if(!endMinutes && startMinutes) setEndMinutes(startMinutes + 1)
 
@@ -107,7 +111,7 @@ const CreateEvent = () => {
                <h1 className='edit-group-h1-text'>Create an Event</h1> 
             </div>
         { validationErrors && (
-            <ul className='create-group-errors'>
+            <ul className='create-event-errors'>
             {validationErrors.map((error, idx) => (
               <li key={idx}>{error}</li>
             ))} 
