@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const SignupForm = () => {
     const dispatch = useDispatch();
-    const sessionUser = useSelector(state => state.session.user)
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -15,6 +14,7 @@ const SignupForm = () => {
     const [errors, setErrors] = useState([]);
     const [passwordType, setPasswordType] = useState('password')
     const [checked, setChecked] = useState(false)
+
     
     useEffect(()=> {
       if(checked) setPasswordType('text')
@@ -42,12 +42,14 @@ const SignupForm = () => {
                 {errors.map((errors, idx) => <li key={idx}>{errors}</li>)}
             </ul>
             <div className='meetupIcon'>
-                <i className="fa-brands fa-meetup fa-5x"></i>  
+              <img className='down-to-clown-icon' src='https://cdn-icons-png.flaticon.com/512/184/184390.png' alt=''/>
             </div>
-          <label className='signupLabel'>
-            Username
+            <div className='LogInWords'>Sign up</div>
+            <div className='LoginContent'>
+          <label className='loginlabel'>
+            <h3 className='login-modal-text'>Username</h3>
             <input
-            className='signupInput' 
+            className='loginInput' 
             type='text' 
             placeholder='Enter unique username' 
             onChange={(e)=> setUsername(e.target.value)} 
@@ -55,10 +57,10 @@ const SignupForm = () => {
             name={username}
             required/>
           </label>
-          <label className='signupLabel'>
-            Email
+          <label className='loginlabel'>
+            <h3 className='login-modal-text'>Email</h3>
             <input
-            className='signupInput'  
+            className='loginInput'  
             type='text' 
             placeholder='Enter email' 
             onChange={(e)=> setEmail(e.target.value)} 
@@ -66,10 +68,10 @@ const SignupForm = () => {
             name={email}
             required/>
           </label>
-          <label className='signupLabel'>
-            First Name
+          <label className='loginlabel'>
+            <h3 className='login-modal-text'>First name</h3>
             <input
-            className='signupInput'  
+            className='loginInput'  
             type='text' 
             placeholder='Enter first name' 
             onChange={(e)=> setFirstName(e.target.value)} 
@@ -77,10 +79,10 @@ const SignupForm = () => {
             name={firstName}
             required/>
           </label>
-          <label className='signupLabel'>
-            Last Name
+          <label className='loginlabel'>
+            <h3 className='login-modal-text'>Last name</h3>
             <input
-            className='signupInput'  
+            className='loginInput'  
             type='text' 
             placeholder='Enter last name' 
             onChange={(e)=> setLastName(e.target.value)} 
@@ -88,35 +90,36 @@ const SignupForm = () => {
             name={lastName}
             required/>
           </label>
-          <label className='signupLabel'>
-            Password
-            <input 
-            className='signupInput' 
-            type={passwordType} 
-            placeholder='Enter password' 
-            onChange={(e)=> setPassword(e.target.value)} 
-            value={password} 
-            name={password}
-            required/>
+          <label className='signuplabel'>
+            <h3 className='login-modal-text'>Password</h3>
+            <div>
+              <input 
+                className='loginInput' 
+                type={passwordType} 
+                placeholder='Enter password' 
+                onChange={(e)=> setPassword(e.target.value)} 
+                value={password} 
+                name={password}
+                required/>
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2" :   "fa-regular fa-eye view-password2"}></i>
+            </div>
           </label>
-          <label className='signupLabel'>
-            Confirm Password
-            <input 
-            className='signupInput' 
-            type={passwordType}
-            placeholder='Enter password' 
-            onChange={(e)=> setConfirmPassword(e.target.value)} 
-            value={confirmPassword} 
-            name={confirmPassword}
-            required/>
+          <label className='signuplabel'>
+            <h3 className='login-modal-text'>Confirm Password</h3>
+            <div>
+               <input 
+                  className='loginInput' 
+                  type={passwordType}
+                  placeholder='Enter password' 
+                  onChange={(e)=> setConfirmPassword(e.target.value)} 
+                  value={confirmPassword} 
+                  name={confirmPassword}
+                  required/>
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password3" :   "fa-regular fa-eye view-password3"}></i>
+            </div> 
           </label>
-          <label className='togglePassword'>
-            Show Password
-          <input type='checkbox' 
-          onChange={() => setChecked(!checked)} 
-          checked={checked}/>
-          </label>
-          <button type='submit' className='signupButton'>Sign up</button>    
+          <button type='submit' className='loginButton'>Sign up</button>
+          </div>    
         </form>
         </div>
     )

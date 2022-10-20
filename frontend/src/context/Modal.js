@@ -13,6 +13,7 @@ export function ModalProvider({ children }) {
     setValue(modalRef.current);
   }, [])
 
+
   return (
     <>
       <ModalContext.Provider value={value}>
@@ -22,6 +23,7 @@ export function ModalProvider({ children }) {
     </>
   );
 }
+
 
 export function Modal({ onClose, children }) {
   const modalNode = useContext(ModalContext);

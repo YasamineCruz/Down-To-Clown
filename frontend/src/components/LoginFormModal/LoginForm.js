@@ -10,6 +10,8 @@ function LoginForm() {
   const [errors, setErrors] = useState([]);
   const [passwordType, setPasswordType] = useState('password');
   const [checked, setChecked] = useState(false);
+
+  
     
   useEffect(()=> {
     if(checked) setPasswordType('text')
@@ -40,18 +42,18 @@ function LoginForm() {
         ))} 
      </ul>
      <div className='meetupIcon'>
-        <i className="fa-brands fa-meetup fa-5x"></i>  
+        <img className='down-to-clown-icon' src='https://cdn-icons-png.flaticon.com/512/184/184390.png' alt=''/>
      </div>
       <div className='LogInWords'>Log In</div>
       <div className='DemoUserDiv'>
-        <i id='fa-user-circle' className="fas fa-user-circle fa-2x" />
+        <i className="fas fa-user-circle fa-2x login-fa" />
         <button type='submit' onClick={(e) => handleSubmitDemoUser(e)} className='DemoUserButton'>
         Demo User
        </button>
        </div>
       <div className='LoginContent'>
       <label className='loginlabel'>
-        Email
+        <h3 className='login-modal-text'>Email</h3>
         <input
           type="text"
           className='loginInput'
@@ -61,21 +63,18 @@ function LoginForm() {
         />
       </label>
       <label className='loginlabel'>
-        Password
-        <input
+        <h3 className='login-modal-text'>Password</h3>
+        <div>
+           <input
           className='loginInput'
           type={passwordType}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password" :   "fa-regular fa-eye view-password"}></i>
+        </div>
       </label>
-      <label className='togglePassword'>
-        Show Password
-          <input type='checkbox' 
-          onChange={() => setChecked(!checked)} 
-          checked={checked}/>
-          </label>
         <button type="submit" className='loginButton'>Log In</button>
     </div>
     </form>
