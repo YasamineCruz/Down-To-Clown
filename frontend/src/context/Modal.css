@@ -24,6 +24,7 @@
     background-color:white;
     border-radius: 6px;
     justify-content: center;
+    max-height: 1000px;
     height: 800px;
     width: 475px;
     margin-top: 1%;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as sessionActions from '../../store/session';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 const SignupForm = () => {
@@ -38,7 +38,7 @@ const SignupForm = () => {
     return (
         <div className='signupDiv'>
         <form onSubmit={handleSubmit} className='signupForm'>
-            <ul>
+            <ul className='create-group-errors'>
                 {errors.map((errors, idx) => <li key={idx}>{errors}</li>)}
             </ul>
             <div className='meetupIcon'>

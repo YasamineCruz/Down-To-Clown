@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import './CreateAEvent.css';
 import * as groupActions from '../../store/groups'
 import { Link } from 'react-router-dom';
-import { createAEventImg } from '../../store/events';
 
 const CreateEvent = () => {
     const [ venueId, setVenueId] = useState('');
@@ -162,10 +161,8 @@ const CreateEvent = () => {
             <div className='radio-wrapper2'>
             <label className='radio-text2'>Online</label>
             <input className='radio-input2' type='radio' onChange={(e) => setType(e.target.value)} value='Online' checked={type === 'Online'}/> 
-            <div className='radio-wrapper2'>
                 <label className='radio-text2'>In person</label>
                 <input className='radio-input2' type='radio' onChange={(e) => setType(e.target.value)} value='In person' checked={type === 'In person'}/>  
-            </div>
             </div>    
         </div>
         <div className='create-event-date'> 

@@ -801,7 +801,6 @@ router.get('/:groupId/members', async(req, res, next) => {
     let currentUserId = currentUser.id;
     let payload = [];
 
-
     let group = await Group.findByPk(groupId)
 
     let currentUserMembership = await Membership.findOne({where: { [Op.and]: [ {userId: currentUserId}, {groupId} ] } })

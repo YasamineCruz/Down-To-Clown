@@ -36,7 +36,7 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <ul>
+      <ul className='create-group-errors'>
         {errors.map((error, idx) => (
           <li key={idx}>{error}</li>
         ))} 
