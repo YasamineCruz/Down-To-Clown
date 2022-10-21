@@ -16,6 +16,7 @@ const SignupForm = () => {
     const [checked, setChecked] = useState(false);
     const [submitted, setSubmitted] = useState(false)
 
+
     
     useEffect(()=> {
       if(checked) setPasswordType('text')
@@ -28,10 +29,10 @@ const SignupForm = () => {
       if(firstName.length < 2) validationErrors.push('First name must be at least 2 characters.')
       if(lastName.length < 2) validationErrors.push('Last name must be at least 2 characters.')
       if(password.length < 6) validationErrors.push('Password must be 6 characters or more.')
-      if(!email.includes('@') || !email.includes('.com')) validationErrors.push('Invalid email')
+      if(!email.includes('@') || !email.includes('.com')) validationErrors.push('Enter a valid email.')
       if(password !== confirmPassword) validationErrors.push('Confirm Password field must be the same as the Password field')
       setErrors(validationErrors)
-    },[username, firstName, lastName, password, email])
+    },[username, firstName, lastName, password, email, confirmPassword])
 
     
     const handleSubmit = (e) => {
@@ -50,7 +51,6 @@ const SignupForm = () => {
         return setErrors(['Confirm Password field must be the same as the Password field']);
     }
 
-    console.log(errors)
     
     return (
         <div className='signupDiv'>
@@ -75,7 +75,10 @@ const SignupForm = () => {
             onChange={(e)=> setUsername(e.target.value)} 
             value={username} 
             name={username}
-            required/>
+            required
+            minLength={4}
+            maxLength={30}
+            />
           </label>
           <label className='loginlabel'>
             <h3 className='login-modal-text'>Email</h3>
@@ -86,7 +89,10 @@ const SignupForm = () => {
             onChange={(e)=> setEmail(e.target.value)} 
             value={email} 
             name={email}
-            required/>
+            required
+            minLength={3}
+            maxLength={256}
+            />
           </label>
           <label className='loginlabel'>
             <h3 className='login-modal-text'>First name</h3>
@@ -97,7 +103,10 @@ const SignupForm = () => {
             onChange={(e)=> setFirstName(e.target.value)} 
             value={firstName} 
             name={firstName}
-            required/>
+            required
+            minLength={2}
+            maxLength={30}
+            />
           </label>
           <label className='loginlabel'>
             <h3 className='login-modal-text'>Last name</h3>
@@ -108,7 +117,10 @@ const SignupForm = () => {
             onChange={(e)=> setLastName(e.target.value)} 
             value={lastName} 
             name={lastName}
-            required/>
+            required
+            minLength={2}
+            maxLength={30}
+            />
           </label>
           <label className='signuplabel'>
             <h3 className='login-modal-text'>Password</h3>
@@ -120,9 +132,12 @@ const SignupForm = () => {
                 onChange={(e)=> setPassword(e.target.value)} 
                 value={password} 
                 name={password}
-                required/>
+                required
+                minLength={6}
+                maxLength={30}
+                />
                 {submitted === false && (
-                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-no-errors" :   "fa-regular fa-eye view-password-signup-no-errors"}></i>
+                  <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-no-errors1" :   "fa-regular fa-eye view-password-signup-no-errors1"}></i>
                 )}
                 {errors.length <= 0 && submitted === true && (
                   <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-signup-no-errors" :   "fa-regular fa-eye view-password-signup-no-errors"}></i>
@@ -154,9 +169,12 @@ const SignupForm = () => {
                   onChange={(e)=> setConfirmPassword(e.target.value)} 
                   value={confirmPassword} 
                   name={confirmPassword}
-                  required/>
+                  required
+                  minLength={6}
+                  maxLength={30}
+                  />
                   {submitted === false && (
-                    <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-no-errors" :   "fa-regular fa-eye view-password2-signup-no-errors"}></i>
+                    <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-no-errors1" :   "fa-regular fa-eye view-password2-signup-no-errors1"}></i>
                   )}
                   {errors.length <= 0 && submitted === true && (
                     <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password2-signup-no-errors" :   "fa-regular fa-eye view-password2-signup-no-errors"}></i>

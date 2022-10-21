@@ -54,7 +54,7 @@ const GroupDescription = () => {
           </span>  
         </div>
         <div className='create-group-description-div'>
-            <input className='create-group-description-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Please write atleast 50 characters'/>
+            <input className='create-group-description-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Please write atleast 50 characters' maxLength={500} minLength={50}/>
         </div>
         <div className='button-container'>
             <BackButton />

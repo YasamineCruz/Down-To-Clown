@@ -14,6 +14,7 @@ const GroupName = () => {
     useEffect(()=> {
         let errors = []
         if(!name.length) errors.push('You must enter a Group name');
+        if(name.lenth > 60) errors.push('Name must be less than 60 characters')
         if(errors.length > 0) {
             setValidationErrors(errors)
             setClickable(true)
@@ -46,7 +47,7 @@ const GroupName = () => {
                     </h3>
                 </div>
                 <div className='create-group-location-div'>
-                      <input className='create-group-name-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name'/>
+                      <input className='create-group-name-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name' maxLength={60} minLength={1}/>
                 </div>
                 <div className='button-container'>
                     <BackButton />

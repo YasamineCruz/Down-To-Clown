@@ -4,6 +4,7 @@
     top: 73%;
     left: 2%;
     z-index: -1;
+    overflow: hidden;
 }
 
 .homepageYellowBlob {
@@ -14,6 +15,7 @@
     height: 869px;
     width: 948px;
     z-index: -1;
+    overflow: hidden;
 }
 
 .homepageGreenBlob {
@@ -24,6 +26,7 @@
     max-height: 570px;
     width: 593px;
     z-index: -1;
+    overflow: hidden;
 }
 
 .homepageScreenImg {
@@ -119,4 +122,9 @@
 
 .homepageLink {
     text-decoration: none;
+}
+
+
+.image-wrapper {
+    overflow: hidden;
 }

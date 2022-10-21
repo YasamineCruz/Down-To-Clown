@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: {
-          args: [5,200],
+          args: [5, 200],
           msg: "Name must be at least 5 characters"
         }
       }

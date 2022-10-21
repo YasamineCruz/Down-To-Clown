@@ -183,13 +183,14 @@
     margin-top: 3%;
 }
 
-.view-password-login-no-errrors {
+.view-password-login-no-errors{
     position: absolute;
     right: 15%;
     bottom: 56.25%;
 }
 
-.view-password-login-errrors {
+
+.view-password-login-errors {
     position: absolute;
     right: 15%;
     bottom: 54%;
@@ -199,6 +200,12 @@
     position: absolute;
     right: 15%;
     bottom: 28.5%;
+}
+
+.view-password-signup-no-errors1 {
+    position: absolute;
+    right: 15%;
+    bottom: 31.5%;
 }
 
 .view-password-signup-one-errors {
@@ -229,6 +236,12 @@
     position: absolute;
     right: 15%;
     bottom: 17.5%;
+}
+
+.view-password2-signup-no-errors1 {
+    position: absolute;
+    right: 15%;
+    bottom: 20.5%;
 }
 
 .view-password2-signup-one-errors {

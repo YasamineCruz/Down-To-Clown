@@ -11,7 +11,6 @@ function LoginForm() {
   const [passwordType, setPasswordType] = useState('password');
   const [checked, setChecked] = useState(false);
 
-  
     
   useEffect(()=> {
     if(checked) setPasswordType('text')
@@ -75,10 +74,10 @@ function LoginForm() {
           required
         />
         {errors.length <= 0 && (
-        <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-login-no-errrors"  :   "fa-regular fa-eye view-password-login-no-errrors"}></i>
+        <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-login-no-errors"  :   "fa-regular fa-eye view-password-login-no-errors"}></i>
         )}
         {errors.length >= 1 && (
-           <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-login-errrors"  :   "fa-regular fa-eye view-password-login-errrors"}></i>
+           <i onClick={() => setChecked(!checked)} className={checked === true ? "fa-regular fa-eye-slash view-password-login-errors"  :   "fa-regular fa-eye view-password-login-errors"}></i>
         )}
         </div>
       </label>

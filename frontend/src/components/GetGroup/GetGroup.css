@@ -196,7 +196,14 @@
 }
 
 .please-give-space {
-    margin-left: .5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 150px;
+    height: 10px;
+    margin-left: 1%;
+    
 }
 
 .EGCreatorName {

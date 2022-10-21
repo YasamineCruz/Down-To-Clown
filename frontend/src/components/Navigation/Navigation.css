@@ -130,6 +130,7 @@ nav {
 }
 
 .profile-dropdown-text {
+    overflow: hidden;
     font-size: 16px;
     text-align: left;
     width: auto;

@@ -47,7 +47,7 @@ function ProfileButton({ user }) {
           </div>
         )}
       </button>
-      <i class={arrow} onClick={openMenu}></i>
+      <i className={arrow} onClick={openMenu}></i>
       <div>
       </div>
       {showMenu && (

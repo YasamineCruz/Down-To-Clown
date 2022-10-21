@@ -26,11 +26,14 @@ const GetEventsByGroup = () => {
             let eventDate = new Date(event.startDate)
             if(eventDate > currentDate){
                 upcoming.push(event)
-            } else {
+                console.log('upcoming', upcoming)
+            }else{
                 past.push(event)
             }
+
         })
     }
+
 
 
     useEffect(() => {
@@ -39,7 +42,7 @@ const GetEventsByGroup = () => {
   
     
     
-    return (
+return (
         <div className='eventsForGroup-container'>
             <div className='timeFrame'>
                 <div onClick={()=> setTimeframe('upcoming')} className={timeframe === 'upcoming' ? `upcoming-selected` : `upcoming-not-selected`}>Upcoming</div>
@@ -49,7 +52,7 @@ const GetEventsByGroup = () => {
             <div className='events-for-group-none'>There are currently no events for this Group.</div>
         )}
         {events && events.statusCode !== 404 && upcoming.length >= 1 && timeframe === 'upcoming' && (  
-            <div className='eventsForGroup-wrapper'>
+            <div className='eventsForGroup-wrapper2'>
                 {upcoming.map(event => {
 
                     let startDate = new Date(event.startDate);
@@ -87,8 +90,8 @@ const GetEventsByGroup = () => {
             </div>
         )}
         {events && events.statusCode !== 404 && past.length >= 1 && timeframe === 'past' && (  
-            <div className='eventsForGroup-wrapper'>
-                {events.Events.map(event => {
+            <div className='eventsForGroup-wrapper2'>
+                {past.map(event => {
 
                     let startDate = new Date(event.startDate);
                     let startDay = startDate.getDay();

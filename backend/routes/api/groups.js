@@ -798,9 +798,12 @@ router.get('/:groupId/members', async(req, res, next) => {
     const { user } = req;
 
     let currentUser;
-    if( user && user !== null ) currentUserId === user.toSafeObject()
     let currentUserId;
+
+    if( user && user !== null ) currentUser = user.toSafeObject()
+
     if(currentUser) currentUserId = currentUser.id;
+
     let payload = [];
 
     let group = await Group.findByPk(groupId)
@@ -818,6 +821,7 @@ router.get('/:groupId/members', async(req, res, next) => {
     let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
 
     if(currentUserMembership === null){
+    
         for(let i = 0; i < members.length; i++){
             let member = members[i];
             let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId}, {status: { [Op.in]: ['member', 'co-host', 'pending'] } } ] }, attributes: ['status']})
@@ -833,7 +837,8 @@ router.get('/:groupId/members', async(req, res, next) => {
         }
         return res.json({Members: payload})
      } else if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host') {
-         for(let i = 0; i < members.length; i++){
+
+        for(let i = 0; i < members.length; i++){
              let member = members[i];
              let membership = await Membership.findOne({ where: { [Op.and]: [ {userId: member.id}, {groupId}]}, attributes: ['status']})
             if(membership){
@@ -848,6 +853,7 @@ router.get('/:groupId/members', async(req, res, next) => {
        
         return res.json({Members: payload})
     } else {
+
         for(let i = 0; i < members.length; i++){
             let member = members[i];
             let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId}, {status: { [Op.in]: ['member', 'co-host', 'pending'] } } ] }, attributes: ['status']})

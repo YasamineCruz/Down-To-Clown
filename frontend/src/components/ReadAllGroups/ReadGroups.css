@@ -47,6 +47,7 @@
     border-top: 1px solid rgb(230, 230, 230, 1);
     min-width: 100%;
     padding: 0px;
+    min-height: fit-content;
 }
 
 .GroupsImages {

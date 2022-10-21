@@ -14,7 +14,6 @@ const EditGroup = () => {
     const sessionUser = useSelector(state => state.session.user);
     const group = useSelector(state => state.group.group)
 
-    console.log('group on edit page', group)
     
     const { groupId } = params
 
@@ -26,6 +25,7 @@ const EditGroup = () => {
     const [type, setType] = useState(null)
     const [private_key, setPrivate_key] = useState(null)
     const [organizerId, setOrganizerId] = useState(null)
+    const [ submitted, setSubmitted] = useState(false);
 
     useEffect(()=> {
         if(group){
@@ -48,24 +48,35 @@ const EditGroup = () => {
         setOrganizerId(sessionUser.id)
     },[sessionUser.id])
 
-    const onSubmit = (e) => {
-        let errors = []
-        e.preventDefault();
-        if(description.length < 50) errors.push('Description must be atleast 50 characters')
-        if(!state.length) errors.push('You must enter a state')
-        if(!city.length) errors.push('You must enter a city')
-        if(!name.length) errors.push('You must enter a Group name');
+    useEffect(()=> {
+        let errors = [];
+
+        if(!description || description.length < 50) errors.push('Description must be atleast 50 characters');
+        if(!state) errors.push('You must enter a state');
+        if(!city) errors.push('You must enter a city');
+        if(!name) errors.push('You must enter a Group name');
         if(!type) errors.push('Type must be Online or In person');
-        if(private_key !== 0 && private_key !== 1) errors.push('You must select private or public')
-        dispatch(groupActions.editAGroup({ organizerId, name, description, type, private_key, city, state}, groupId))
-        .catch(async (res) => {
-            const data = await res.json();
-            if(data && data.errors) setValidationErrors(data.errors)
-        })
-        if(errors.length > 0) {
-            setValidationErrors(errors)
-           } else {
-            setValidationErrors([])
+        if(private_key !== 0 && private_key !== 1) errors.push('You must select private or public');
+
+        setValidationErrors(errors);
+
+    },[description, state, city, name, type, private_key])
+
+
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        
+       setSubmitted(true)
+       if(validationErrors.length <= 0){
+           dispatch(groupActions.editAGroup({ organizerId, name, description, type, private_key, city, state}, groupId))
+           .catch(async (res) => {
+               const data = await res.json();
+               if(data && data.errors) setValidationErrors(data.errors)
+           })
+       }
+
+        if(validationErrors.length <= 0) {
             history.push(`/groups/${groupId}`)
         }
     }
@@ -76,7 +87,7 @@ const EditGroup = () => {
             <div className='edit-group-div-wrapper'>
                <h1 className='edit-group-h1-text'>Edit Group</h1> 
             </div>
-            { validationErrors && (
+            { validationErrors && submitted && (
                 <ul className='create-group-errors'>
             {validationErrors.map((error, idx) => (
                 <li key={idx}>{error}</li>
@@ -86,8 +97,8 @@ const EditGroup = () => {
             { group && (
             <div className='edit-group-text-wrapper'>
                 <div className='edit-group-div'>
-                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name} required placeholder='Enter a name'/>
-                    <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description} required placeholder='Enter a description atleast 50 characters long'/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name} required placeholder='Enter a name' maxLength={60}/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description} required placeholder='Enter a description atleast 50 characters long' minLength={50} maxLength={500}/>
                     <input className='edit-group-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a city'/>
                     <input className='edit-group-input' type='text' onChange={(e) => setState(e.target.value)} value={state} placeholder='Enter a state' required/>
                 </div>  

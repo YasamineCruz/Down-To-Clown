@@ -35,9 +35,10 @@
     flex-direction: row;
     margin-top: 1%;
     max-height: 900vh;
-    min-height: 80vh;
+    min-height: 100vh;
     height: 100%;
     background-color: #f6f7f8;
+    padding-bottom: 2%;
 }
 
 .timeframe {

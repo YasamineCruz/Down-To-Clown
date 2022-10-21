@@ -2,12 +2,15 @@ import { Link } from 'react-router-dom';
 import './HomePage.css'
 
 const HomePage = () => {
+
     return (
-        <>
+        <div className='homepage-wrapper'>
+        <div className='image-wrapper'>
         <img className='homepageRedBlob'src='https://secure.meetupstatic.com/next/images/blobs/red-blob.svg' alt='text'/>
         <img className='homepageYellowBlob' src='https://secure.meetupstatic.com/next/images/blobs/yellow-blob.svg' alt='text' />
         <img className='homepageGreenBlob' src='https://secure.meetupstatic.com/next/images/blobs/green-blob.svg' alt='text' />
         <img className='homepageScreenImg' src='https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=640' alt='text'/>
+        </div>
         <div className='homepageContent'>
             <div className='homepageText'>
                 <h1 className='homepageTitle'>
@@ -42,8 +45,7 @@ const HomePage = () => {
                     </h2>
             </div>
         </div>
-        
-        </>
+        </div>
     )
 }
 

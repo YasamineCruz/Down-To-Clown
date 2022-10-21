@@ -216,3 +216,21 @@
   font-weight: 500;
   color: red;
 }
+
+.create-event-h1-text {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-weight: 600;
+  font-size: 30px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.create-event-div-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 25%;
+  height: 60px;
+}

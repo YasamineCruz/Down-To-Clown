@@ -1,7 +1,7 @@
 import * as eventActions from "../../store/events";
 import * as groupActions from '../../store/groups'
 import { useSelector, useDispatch} from 'react-redux'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -35,6 +35,9 @@ const EditEvent = () => {
     const [ endYear, setEndYear] = useState('');
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
+    const [ submitted, setSubmitted] = useState(false);
+
+    const fullDate = useMemo(() => { return new Date()}, [])
 
     useEffect(()=> {
         if(event){
@@ -58,31 +61,42 @@ const EditEvent = () => {
         dispatch(eventActions.getAEvent(eventId))
     },[dispatch, eventId])
 
-    const onSubmit = async(e) => {
-        e.preventDefault();
-
+    useEffect(()=>{
         let errors = [];
+
         if(isNaN(venueId)) errors.push('There must be a venue selected') 
-        if(name.length < 5) errors.push('Name must be 5 character or longer')
-        if(!description.length) errors.push('Description is required')
+        if(!name || name.length < 5) errors.push('Name must be 5 character or longer')
+        if(!description) errors.push('Description is required')
         if(type !== 'Online' && type !== 'In person') errors.push('Type must be Online or In person')
         if(isNaN(capacity)) errors.push('Capacity must be an integer')
         if(isNaN(price)) errors.push('Price is invalid')
         if(startDate < fullDate) errors.push('Start Date must be in the future')
         if(endDate < startDate) errors.push('End Date must be greater than start Date')
+        
+        setValidationErrors(errors)
+        
+    },[fullDate, venueId, name, description, type, capacity, price, startDate, endDate])
 
-        await dispatch(eventActions.editAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, eventId))
+    const onSubmit = async(e) => {
+        e.preventDefault();
+        let errors = [];
+        setSubmitted(true)
+        
+        if(validationErrors.length <=0 ){
+            await dispatch(eventActions.editAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, eventId))
         .catch(async (res) => {
             const data = await res.json();
             if(data && data.errors) {
                 let dataErrors = Object.values(data.errors)
                 errors.push(...dataErrors)
             }
-        })
+        })} else {
+            return
+        }
 
         setValidationErrors(errors)
         
-        if(errors.length <= 0) {
+        if(validationErrors.length <= 0) {
             setVenueId('');
             setName('');
             setDescription('');
@@ -95,7 +109,6 @@ const EditEvent = () => {
         }  
     };
 
-    let fullDate = new Date()
 
     let year = fullDate.getFullYear();
     let month = fullDate.getMonth();
@@ -125,7 +138,7 @@ const EditEvent = () => {
         <div className='edit-group-div-wrapper'>
                <h1 className='edit-group-h1-text'>Edit Event</h1> 
         </div>
-        { validationErrors && (
+        { validationErrors && submitted && (
             <ul className='create-group-errors'>
             {validationErrors.map((error, idx) => (
               <li key={idx}>{error}</li>
@@ -134,7 +147,7 @@ const EditEvent = () => {
                 )
             }
         { ( (type === 'In person' || type === '') && group) && ( 
-            <div>
+            <div className='edit-event-dropdown-wrapper'>
             { group.Venues.length >= 2 && (
                <div className="dropdown">
             <span>View Venues</span>
@@ -170,8 +183,8 @@ const EditEvent = () => {
         )}
         <div className='edit-group-text-wrapper'>
         <div className='edit-group-div'>
-            <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name'/>
-            <input className='edit-group-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Enter a description'/>
+            <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name' minLength={5} maxLength={200}/>
+            <input className='edit-group-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Enter a description' maxLength={500}/>
             <input className='edit-group-input' onChange={(e) => setCapacity(e.target.value)} type='number' min='1' step='1' required placeholder='Enter a capacity' value={capacity}/>
             <input className='edit-group-input' onChange={(e) => setPrice(e.target.value)} type='number' min='1' step='.01' required placeholder='Enter a price' value={price}/>
         </div>

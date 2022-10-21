@@ -49,8 +49,8 @@ const GroupLocation = () => {
               </h3>
           </div>
             <div className='create-group-location-div'>
-              <input className='s-c-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a City'/>
-              <input className='s-c-input' type='text' onChange={(e) => setState(e.target.value)} value={state} required placeholder='Enter a State'/>
+              <input className='s-c-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a City' maxLength={500}/>
+              <input className='s-c-input' type='text' onChange={(e) => setState(e.target.value)} value={state} required placeholder='Enter a State' maxLength={500}/>
             </div>
         <div className='next-button-container'>
             <NextButton clickable={clickable}/>

@@ -1,11 +1,13 @@
 import * as eventActions from '../../store/events'
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import './CreateAEvent.css';
 import * as groupActions from '../../store/groups'
 import { Link } from 'react-router-dom';
+
+
 
 const CreateEvent = () => {
     const [ venueId, setVenueId] = useState('');
@@ -31,7 +33,11 @@ const CreateEvent = () => {
     const [ endYear, setEndYear] = useState('');
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
+    const [ submitted, setSubmitted] = useState(false)
     const group = useSelector(state => state.group.group);
+    const fullDate = useMemo(() => { return new Date()}, [])
+    console.log(fullDate)
+
 
     useEffect(() => {
         dispatch(groupActions.getAGroup(groupId))
@@ -47,12 +53,29 @@ const CreateEvent = () => {
         } 
     },[type, group])
 
+    useEffect(()=>{
+        let errors = [];
+
+        if(isNaN(venueId)) errors.push('There must be a venue selected') 
+        if(name.length < 5) errors.push('Name must be 5 character or longer')
+        if(!description.length) errors.push('Description is required')
+        if(type !== 'Online' && type !== 'In person') errors.push('Type must be Online or In person')
+        if(isNaN(capacity)) errors.push('Capacity must be an integer')
+        if(isNaN(price)) errors.push('Price is invalid')
+        if(startDate < fullDate) errors.push('Start Date must be in the future')
+        if(endDate < startDate) errors.push('End Date must be greater than start Date')
+
+        setValidationErrors(errors)
+
+    },[venueId, name, description, type, capacity, price, startDate, endDate, fullDate])
+
     const onSubmit = async(e) => {
         e.preventDefault();
         let errors = [];
-        if(!venueId){ errors.push('A venue must be selected')}
+        setSubmitted(true)
+        
 
-        if(venueId){
+        if(validationErrors.length <= 0){
             await dispatch(eventActions.createAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, groupId))
             .catch(async (res) => {
                 const data = await res.json();
@@ -61,9 +84,11 @@ const CreateEvent = () => {
                     errors.push(...dataErrors)
                 }
             })
+        } else {
+            return
         }
 
-        if(errors.length <= 0) {
+        if(validationErrors.length <= 0) {
             setVenueId('');
             setName('');
             setDescription('');
@@ -78,7 +103,6 @@ const CreateEvent = () => {
         setValidationErrors(errors)
     }
 
-    let fullDate = new Date()
 
     let year = fullDate.getFullYear();
     let month = fullDate.getMonth();
@@ -95,6 +119,7 @@ const CreateEvent = () => {
     if(!endHour) setEndHour(startHour)
     if(!endMinutes && startMinutes) setEndMinutes(startMinutes + 1)
 
+
     let inPersonVenues = [];
     if(group) {
        for(let i = 0; i < group.Venues.length; i++){
@@ -107,10 +132,10 @@ const CreateEvent = () => {
     return ( 
         <div className='edit-event-container'>
             <form className='edit-event-form-wrapper'onSubmit={onSubmit}>
-            <div className='edit-group-div-wrapper'>
-               <h1 className='edit-group-h1-text'>Create an Event</h1> 
+            <div className='create-event-div-wrapper'>
+               <h1 className='create-event-h1-text'>Create an Event</h1> 
             </div>
-        { validationErrors && (
+        { validationErrors && submitted && (
             <ul className='create-event-errors'>
             {validationErrors.map((error, idx) => (
               <li key={idx}>{error}</li>
@@ -155,8 +180,8 @@ const CreateEvent = () => {
         )}
         <div className='edit-group-text-wrapper'>
         <div className='edit-group-div'>
-            <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name'/>
-            <input className='edit-group-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Enter a description'/>
+            <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name' maxLength={200} minLength={5}/>
+            <input className='edit-group-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Enter a description' maxLength={500}/>
             <input className='edit-group-input' onChange={(e) => setCapacity(e.target.value)} type='number' min='1' step='1' required placeholder='Enter a capacity' value={capacity}/>
             <input className='edit-group-input' onChange={(e) => setPrice(e.target.value)} type='number' min='1' step='.01' required placeholder='Enter a price' value={price}/>
         </div>
@@ -174,7 +199,7 @@ const CreateEvent = () => {
             <input 
             className='create-event-startDate-input'
             type='date' 
-            value={`${startYear}-${startMonth}-${startDay}`} 
+            value={`${startYear}-${startMonth}-${startDay}`}
             min={`${startYear}-${startMonth}-${startDay}`} 
             onChange={(e) => { 
                 let dateArr = e.target.value.split('-'); 

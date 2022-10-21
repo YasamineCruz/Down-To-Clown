@@ -59,11 +59,15 @@
     flex-direction: row;
     justify-content: flex-start;
     margin-left: 25%;
-    height: 40px;
+    height: 60px;
 }
 
 .edit-group-div-container {
     margin-top: 1%;
     width: 100%;
     border-top: 1px solid  #e6e6e6;
+}
+
+.edit-event-dropdown-wrapper {
+    height: 30px;
 }
