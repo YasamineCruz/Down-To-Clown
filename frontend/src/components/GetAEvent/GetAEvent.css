@@ -16,6 +16,8 @@
 .event-name {
     font-size: 24px;
     font-weight: bolder;
+    overflow: hidden;
+    max-width: 1150px;
 }
 
 .upper-info-div {
@@ -167,6 +169,8 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     margin-top: 2.5%;
     margin-left: 2%;
+    overflow: hidden;
+    max-width: 600px;
 }
 
 .group-association-name {
