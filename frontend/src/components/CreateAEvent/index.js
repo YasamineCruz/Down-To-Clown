@@ -113,6 +113,7 @@ const CreateEvent = () => {
     if(day < 10) month = `0${day}`
     if(minutes < 10 && minutes !== 0) minutes = `00`
     if(minutes === 0) minutes = `00`
+    if(hour < 10) hour = `0${hour}`
     
     if(!startYear) setStartYear(year);
     if(!startMonth) setStartMonth(month);

@@ -117,6 +117,13 @@ const EditEvent = () => {
         }  
     };
 
+    let endDate2;
+    let startDate2;
+
+    if(event){
+        endDate2 = new Date(event.endDate)
+        startDate2 = new Date(event.startDate)
+    }
 
     let year = fullDate.getFullYear();
     let month = fullDate.getMonth();
@@ -127,19 +134,43 @@ const EditEvent = () => {
     if(day < 10) day = `0${day}`
     if(minutes < 10 && minutes !== 0) minutes = `00`
     if(minutes === 0) minutes = `00`
-    console.log('minutes', minutes)
-    console.log('hour', hour)
+    if(hour < 10) hour = `0${hour}`
+
+    let yearS = startDate2.getFullYear();
+    let monthS = startDate2.getMonth();
+    let dayS = startDate2.getDate();
+    let hourS = startDate2.getHours();
+    let minutesS = startDate2.getMinutes();
+    if(monthS < 10) monthS= `0${monthS}`
+    if(dayS < 10) dayS = `0${dayS}`
+    if(minutesS < 10 && minutesS !== 0) minutesS = `00`
+    if(minutesS === 0) minutesS = `00`
+    if(hourS < 10) hourS = `0${hourS}`
+
+    let yearE = endDate2.getFullYear();
+    let monthE = endDate2.getMonth();
+    let dayE = endDate2.getDate();
+    let hourE = endDate2.getHours();
+    let minutesE = endDate2.getMinutes();
+    if(monthE < 10) monthE = `0${monthE}`
+    if(dayE < 10) dayE = `0${dayE}`
+    if(minutesE < 10 && minutesE !== 0) minutesE = `00`
+    if(minutesE === 0) minutesE = `00`
+    if(hourE < 10) hourE = `0${hourE}`
     
-    if(!startYear) setStartYear(year);
-    if(!startMonth) setStartMonth(month);
-    if(!startDay) setStartDay(day);
-    if(!startHour) setStartHour(hour + 1);
-    if(!startMinutes) setStartMinutes(minutes);
-    if(!endHour) setEndHour(startHour)
-    if(!endYear) setEndYear(startYear)
-    if(!endDay) setEndDay(startDay)
-    if(!endMonth) setEndMonth(startMonth)
-    if(!endMinutes) setEndMinutes(startMinutes)
+    
+    
+    if(!startYear) setStartYear(yearS);
+    if(!startMonth) setStartMonth(monthS);
+    if(!startDay) setStartDay(dayS);
+    if(!startHour) setStartHour(hourS);
+    if(!startMinutes) setStartMinutes(minutesS);
+
+    if(!endYear) setEndYear(yearE)
+    if(!endMonth) setEndMonth(monthE)
+    if(!endDay) setEndDay(dayE)
+    if(!endHour) setEndHour(hourE)
+    if(!endMinutes) setEndMinutes(minutesE)
 
 
     let inPersonVenues = [];
@@ -223,7 +254,7 @@ const EditEvent = () => {
             className='create-event-startDate-input'
             type='date' 
             value={`${startYear}-${startMonth}-${startDay}`} 
-            min={`${startYear}-${startMonth}-${startDay}`} 
+            min={`${year}-${month}-${day}`} 
             onChange={(e) => { 
                 let dateArr = e.target.value.split('-'); 
                 setStartYear(dateArr[0]);
@@ -251,7 +282,7 @@ const EditEvent = () => {
             <input type='date'
             className='create-event-startDate-input' 
             value={`${endYear}-${endMonth}-${endDay}`} 
-            min={`${endYear}-${endMonth}-${endDay}`}
+            min={`${year}-${month}-${day}`}
             onChange={(e) => { 
                 let dateArr = e.target.value.split('-'); 
                 setEndYear(dateArr[0]);
