@@ -1,0 +1,40 @@
+.images-container {
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    background-color: white;
+    border: 10px solid white;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    max-width: 120px;
+    min-width: 1000px;
+    margin-left: 20%;
+    min-height: fit-content;
+    border-radius: 8px;
+}
+
+.GroupsImages2 {
+    width: 180px;
+    height: 100px;
+    box-sizing: border-box;
+    border: 0 solid;
+    border-radius: .5rem;
+    text-decoration: none;
+}
+
+.fix-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 120px;
+    min-width: 1000px;
+}
+
+.images-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 180px;
+    margin: 1%;
+    justify-content: flex-start;
+}

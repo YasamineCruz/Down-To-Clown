@@ -21,7 +21,6 @@ import DeleteGroup from "./components/DeleteGroup/DeleteGroup";
 import CreateEvent from "./components/CreateAEvent";
 import CreateVenue from "./components/CreateVenue";
 import GetEvents from "./components/GetEvents";
-import GetEventsByGroup from "./components/GetEventByGroup";
 import GetAEvent from "./components/GetAEvent";
 import DeleteEvent from "./components/DeleteEvent";
 import EditEvent from "./components/EditEvent";

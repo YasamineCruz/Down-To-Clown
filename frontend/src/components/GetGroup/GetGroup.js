@@ -6,6 +6,8 @@ import * as groupActions from "../../store/groups";
 import './GetGroup.css'
 import { getAllMembersByGroupId } from "../../store/members";
 import GetEventsByGroup from '../GetEventByGroup';
+import CreateGroupImageModal from "../CreateGroupImage";
+import GroupImages from "../GroupImages/GroupImages";
 
 
 const check = (id, id2) => {
@@ -60,6 +62,7 @@ const GroupPage = () => {
                 <div className='EGLowerDiv'>
                 <div className='EgLinkContainer'>
                     <div onClick={()=> setInfo('about')} className={info === 'about' ? `EGLink abouttext` : `EGLink`}>About</div>
+                    <div onClick={()=> setInfo('images')} className={info === 'images' ? `EGLink abouttext` : `EGLink`}>View Group Images</div>
                 { sessionUser && (
                     <div>
                     { check(sessionUser.id, group.organizerId) && (
@@ -74,7 +77,8 @@ const GroupPage = () => {
                         )}
                     </div>   
                     )}
-                        <div onClick={()=> setInfo('events')} className={info === 'events' ? `EGLink abouttext` : `EGLink`}>Events for this Group</div>   
+                        <div onClick={()=> setInfo('events')} className={info === 'events' ? `EGLink abouttext` : `EGLink`}>Events for this Group</div>
+                        <CreateGroupImageModal groupId={groupId}/>   
                 </div>
                     { info === 'about' && (
                      <div className='AboutAndMemberDiv'>
@@ -108,6 +112,9 @@ const GroupPage = () => {
                     )}
                    { info === 'events' && (
                     <GetEventsByGroup />
+                   )}
+                   { info === 'images' && (
+                    <GroupImages />
                    )}
                 </div>
             </div>

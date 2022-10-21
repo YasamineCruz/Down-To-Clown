@@ -93,6 +93,10 @@
     font-family: 'Lato', sans-serif;
 }
 
+.EGLink:hover {
+    color: #00a2c7;
+}
+
 .aboutText {
     color: #00a2c7;
 }

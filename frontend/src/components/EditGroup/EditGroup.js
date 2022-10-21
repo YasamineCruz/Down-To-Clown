@@ -44,7 +44,7 @@ const EditGroup = () => {
             if(organizerId === null) setOrganizerId(group.organizerId)
         }
     },[name, description, city, state, type, private_key, organizerId, group])
-   
+
 
     useEffect(()=>{
         dispatch(groupActions.getAGroup(groupId))
@@ -62,7 +62,7 @@ const EditGroup = () => {
         if(!city) errors.push('You must enter a city');
         if(!name) errors.push('You must enter a Group name');
         if(!type) errors.push('Type must be Online or In person');
-        if(private_key !== 0 && private_key !== 1) errors.push('You must select private or public');
+        if(private_key !== 0 && private_key !== 1 && private_key !== true && private_key !== false) errors.push('You must select private or public');
 
         setValidationErrors(errors);
 

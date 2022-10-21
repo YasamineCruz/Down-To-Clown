@@ -4,7 +4,6 @@ const CREATE_GROUP = 'groups/createGroup';
 const REMOVE_GROUP = 'groups/removeGroup';
 const GET_GROUPS = 'groups/getGroups';
 const UPDATE_GROUP = 'groups/updateGroup'
-const CREATE_GROUPIMG = 'groups/createGroupImg'
 const GET_CURRENTUSERSGROUPS = 'groups/getCurrentUserGroups'
 const GET_GROUP = 'groups/getGroup'
 
@@ -42,13 +41,6 @@ const updateGroup = (group) => {
     }
 }
 
-const createGroupImg = (groupImg) => {
-    return {
-        type: CREATE_GROUPIMG,
-        payload: groupImg
-    }
-}
-
 const getGroups = (group) => {
     return {
         type: GET_GROUPS,
@@ -79,17 +71,16 @@ export const createAGroup = (group) => async(dispatch) => {
 
 export const createAGroupImg = (groupImg, groupId) => async(dispatch) => {
     const { url, preview} = groupImg
-    const response = await csrfFetch(`/api/groups/${groupId}/images`, {
+    await csrfFetch(`/api/groups/${groupId}/images`, {
         method:'POST',
         body: JSON.stringify({
-            id: groupId,
             url,
             preview
         })
     });
-    const data = await response.json();
-    dispatch(createGroupImg(data))
-    return response
+    
+    dispatch(getAGroup(groupId))
+    return;
 } 
 
 export const getCurrentUsersGroups = () => async(dispatch) => {
@@ -157,10 +148,6 @@ const groupReducer = (state = initialState, action) => {
      case GET_GROUPS:
         newState = Object.assign({}, state);
         newState.groups = action.payload;
-        return newState;
-     case CREATE_GROUPIMG:
-        newState = Object.assign({}, state);
-        newState.groupImg = action.payload;
         return newState;
      case UPDATE_GROUP:
         newState = Object.assign({}, state);
