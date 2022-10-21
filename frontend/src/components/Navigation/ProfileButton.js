@@ -53,13 +53,13 @@ function ProfileButton({ user }) {
       {showMenu && (
         <div className="profile-dropdown">
           <div className='profile-dropdown-text'>
-            <Link className='navGroupLink profile-dropdown-text' to='/user/groups'>Your groups</Link>
+            <Link className='navGroupLink profile-dropdown-text hover' to='/user/groups'>Your groups</Link>
           </div>
           <div className='line'></div>
           <div className='profile-dropdown-text space'>{user.username}</div>
           <div className='profile-dropdown-text'>{user.email}</div>
           <div className='profile-dropdown-text'>
-            <div className='profile-dropdown-text' onClick={logout}>Log Out</div>
+            <div className='profile-dropdown-text hover' onClick={logout}>Log Out</div>
           </div>
         </div>
       )}

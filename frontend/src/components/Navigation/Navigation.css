@@ -8,6 +8,7 @@ nav {
     display: flex;
     width: 70px;
     gap: 1%;
+    cursor: pointer;
 }
 
 
@@ -138,6 +139,10 @@ nav {
     margin-bottom: 8px;
     font-weight: 500;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.hover:hover {
+    color: #00a2c7;
 }
 
 .line {

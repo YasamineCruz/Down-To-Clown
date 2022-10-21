@@ -13,11 +13,22 @@ body {
 html {
     padding: 0%;
     margin: 0%;
-    cursor: pointer;
     height: 100%;
 }
 
 button {
     cursor: pointer;
+}
+
+Link {
+    cursor: pointer;
+}
+
+h1 {
+    cursor: default;
+}
+
+p {
+    cursor: default;
 }
 

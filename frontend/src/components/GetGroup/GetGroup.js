@@ -40,18 +40,18 @@ const GroupPage = () => {
                     </div>
                     <div className='EGTextContainer info'>
                         <h1 className='EGName'>{group.name}</h1>
-                        <div className='EG-state-city-container'>
+                        <div className='EG-state-city-container default-cursor'>
                             <i className="fa-solid fa-location-dot icon"></i>
                             <h3 className='EGCity'>{group.city}, {group.state}</h3> 
                         </div>
                         <div className='EGUpMemberInfo'>
-                            <div className='memberInfo info'>
+                            <div className='memberInfo info default-cursor'>
                             <i className="fa-solid fa-user-group icon"></i>
                                 {group.numMembers > 1 ? `${group.numMembers} members` : `${group.numMembers} member`} · {group.type}
                                 <img className='group-association-question'src='https://secure.meetupstatic.com/next/images/Question.svg?w=32' alt=''/>
                             </div>
                         </div>
-                        <div className='EGCreator info'>
+                        <div className='EGCreator info default-cursor'>
                         <i className="fa-regular fa-user icon"></i>
                             Organized By<b className='please-give-space'> { members[group.organizerId] ? ` ${members[group.organizerId].firstName} ${members[group.organizerId].lastName[0]}.` : ``}</b>
                         </div>
@@ -84,18 +84,18 @@ const GroupPage = () => {
                         </div>
                         <div className='memberStuff'>
                             <div className='EGCreatorInfo'>
-                                <div className='organizer'>Organizer</div>
-                                <div className='EGCreatorName'>
+                                <div className='organizer default-cursor'>Organizer</div>
+                                <div className='EGCreatorName default-cursor'>
                                     <i className="fa-regular fa-circle-user fa-2x dot"></i>
                                     { members[group.organizerId] ? `${members[group.organizerId].firstName} ${members[group.organizerId].lastName[0]}.` : ``}
                                     </div>
                             </div>
                             <div className='EGCreatorInfo'>   
                                 <div className='EGMembers'>
-                                    <div className='organizer'>Members</div>
+                                    <div className='organizer default-cursor'>Members</div>
                                     { members && group && ( 
                                         Object.values(members).map(member => (
-                                            <div key={member.id} className='EGCreatorName'>
+                                            <div key={member.id} className='EGCreatorName default-cursor'>
                                                 <i className="fa-regular fa-circle-user fa-2x dot"></i>
                                                 {`${member.firstName} ${member.lastName[0]}.`}
                                             </div>
