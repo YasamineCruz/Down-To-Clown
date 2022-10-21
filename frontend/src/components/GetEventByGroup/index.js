@@ -22,16 +22,17 @@ const GetEventsByGroup = () => {
     let currentDate = new Date()
 
     if(events){
-        events.Events.forEach(event => {
-            let eventDate = new Date(event.startDate)
-            if(eventDate > currentDate){
-                upcoming.push(event)
-                console.log('upcoming', upcoming)
-            }else{
-                past.push(event)
-            }
-
-        })
+        if(events.Events){
+            events.Events.forEach(event => {
+                let eventDate = new Date(event.startDate)
+                if(eventDate > currentDate){
+                    upcoming.push(event)
+                }else{
+                    past.push(event)
+                }
+    
+            })
+        }
     }
 
 
