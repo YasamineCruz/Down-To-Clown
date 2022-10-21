@@ -34,10 +34,12 @@ const CreateEvent = () => {
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
     const [ submitted, setSubmitted] = useState(false)
+
+    const sessionUser = useSelector(state => state.session.user)
     const group = useSelector(state => state.group.group);
     const fullDate = useMemo(() => { return new Date()}, [])
-    console.log(fullDate)
 
+    if(!sessionUser) history.push('/')
 
     useEffect(() => {
         dispatch(groupActions.getAGroup(groupId))
@@ -55,15 +57,12 @@ const CreateEvent = () => {
 
     useEffect(()=>{
         let errors = [];
-
         if(isNaN(venueId)) errors.push('There must be a venue selected') 
         if(name.length < 5) errors.push('Name must be 5 character or longer')
         if(!description.length) errors.push('Description is required')
         if(type !== 'Online' && type !== 'In person') errors.push('Type must be Online or In person')
         if(isNaN(capacity)) errors.push('Capacity must be an integer')
         if(isNaN(price)) errors.push('Price is invalid')
-        if(startDate < fullDate) errors.push('Start Date must be in the future')
-        if(endDate < startDate) errors.push('End Date must be greater than start Date')
 
         setValidationErrors(errors)
 
@@ -73,7 +72,8 @@ const CreateEvent = () => {
         e.preventDefault();
         let errors = [];
         setSubmitted(true)
-        
+        if(startDate < fullDate) errors.push('Start Date must be in the future')
+        if(endDate < startDate) errors.push('End Date must be greater than start Date')
 
         if(validationErrors.length <= 0){
             await dispatch(eventActions.createAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, groupId))
@@ -109,15 +109,21 @@ const CreateEvent = () => {
     let day = fullDate.getDate();
     let hour = fullDate.getHours();
     let minutes = fullDate.getMinutes()
+    if(month < 10) month = `0${month}`
+    if(day < 10) month = `0${day}`
+    if(minutes < 10 && minutes !== 0) minutes = `00`
+    if(minutes === 0) minutes = `00`
     
     if(!startYear) setStartYear(year);
     if(!startMonth) setStartMonth(month);
     if(!startDay) setStartDay(day);
     if(!startHour) setStartHour(hour + 1);
     if(!startMinutes) setStartMinutes(minutes);
-    if(!endYear) setEndYear(startYear) 
-    if(!endHour) setEndHour(startHour)
-    if(!endMinutes && startMinutes) setEndMinutes(startMinutes + 1)
+    if(!endYear) setEndYear(startYear)
+    if(!endMonth) setEndMonth(startMonth)
+    if(!endDay) setEndDay(startDay) 
+    if(!endHour && startHour) setEndHour(startHour)
+    if(!endMinutes && startMinutes) setEndMinutes(+startMinutes)
 
 
     let inPersonVenues = [];
@@ -228,13 +234,12 @@ const CreateEvent = () => {
             <input type='date'
             className='create-event-startDate-input' 
             value={`${endYear}-${endMonth}-${endDay}`} 
-            min={`${startYear}-${startMonth}-${startDay}`}
+            min={`${endYear}-${endMonth}-${endDay}`}
             onChange={(e) => { 
                 let dateArr = e.target.value.split('-'); 
                 setEndYear(dateArr[0]);
                 setEndMonth(dateArr[1]);
                 setEndDay(dateArr[2])
-
                 if(endHour && endMinutes) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));  
             }} 
             required/>
@@ -242,7 +247,7 @@ const CreateEvent = () => {
             <input
             className='create-event-startDate-input' 
             type='time' 
-            min={`${startHour}:${startMinutes + 1}`}
+            min={`${hour}:${minutes + 1}`}
             value={`${endHour}:${endMinutes}`} 
             onChange={(e) => {
                 let timeArr = e.target.value.split(':');

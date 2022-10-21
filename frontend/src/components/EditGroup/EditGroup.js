@@ -27,6 +27,12 @@ const EditGroup = () => {
     const [organizerId, setOrganizerId] = useState(null)
     const [ submitted, setSubmitted] = useState(false);
 
+    
+        if(!sessionUser) history.push('/')
+    if(group && sessionUser){
+        if(group.organizerId !== sessionUser.id) history.push('/')
+    }
+
     useEffect(()=> {
         if(group){
             if(name === null) setName(group.name);
@@ -45,8 +51,8 @@ const EditGroup = () => {
     },[dispatch, groupId])
 
     useEffect(() => {
-        setOrganizerId(sessionUser.id)
-    },[sessionUser.id])
+        if(sessionUser) setOrganizerId(sessionUser.id)
+    },[sessionUser])
 
     useEffect(()=> {
         let errors = [];
@@ -97,37 +103,37 @@ const EditGroup = () => {
             { group && (
             <div className='edit-group-text-wrapper'>
                 <div className='edit-group-div'>
-                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name} required placeholder='Enter a name' maxLength={60}/>
-                    <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description} required placeholder='Enter a description atleast 50 characters long' minLength={50} maxLength={500}/>
-                    <input className='edit-group-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a city'/>
-                    <input className='edit-group-input' type='text' onChange={(e) => setState(e.target.value)} value={state} placeholder='Enter a state' required/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name ? name : ''} required placeholder='Enter a name' maxLength={60}/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description ? description : ''} required placeholder='Enter a description atleast 50 characters long' minLength={50} maxLength={500}/>
+                    <input className='edit-group-input' type='text' onChange={(e) => setCity(e.target.value)} value={city ? city : ''} required placeholder='Enter a city'/>
+                    <input className='edit-group-input' type='text' onChange={(e) => setState(e.target.value)} value={state ? state : ''} placeholder='Enter a state' required/>
                 </div>  
                 <form className='edit-group-form-wrapper'>
                 <h1 className='edit-group-h1-text'>Select Type</h1>
                     <div className='radio-wrapper'>
                     <input className='radio-input' onChange={(e) => setType(e.target.value)} type='radio' value='Online' name='type' required checked={type === 'Online'}/>
-                        <label className='radio-text' for='online'>Online</label> 
+                        <label className='radio-text'>Online</label> 
                     </div>
                     <div className='radio-wrapper'>
                     <input className='radio-input' onChange={(e) => setType(e.target.value)} type='radio' value='In person' name='type' required checked={type === 'In person'}/>
-                        <label className='radio-text' for='in person'>In person</label>  
+                        <label className='radio-text'>In person</label>  
                     </div>
                 </form> 
                 <form className='edit-group-form-wrapper'>
                     <h1 className="edit-group-h1-text">Select Private or Public</h1>
                     <div className='radio-wrapper'>
                     <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
-                        <label className='radio-text' for='online'>Private</label>  
+                        <label className='radio-text'>Private</label>  
                     </div>
                     <div className='radio-wrapper'>
                     <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
-                    <label className='radio-text' for='in person'>Public</label>  
+                    <label className='radio-text'>Public</label>  
                     </div>
                 </form>
             </div>
             )}                       
             <div className='button-container'>
-              <button className={validationErrors.length <= 0 ? `nextButton-selected` : `nextButton-not-selected`} disabled={validationErrors.length >= 1} type='submit'>Edit Group</button>  
+              <button className={validationErrors.length <= 0 ? `nextButton-selected` : `nextButton-not-selected`} type='submit'>Edit Group</button>  
             </div> 
         </form>
         </div>

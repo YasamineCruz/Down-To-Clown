@@ -11,10 +11,11 @@ const GroupDescription = () => {
    const [ validationErrors, setValidationErrors ] = useState('')
    const sessionUser = useSelector(state => state.session.user)
 
+   
    useEffect(()=> {
-    let errors = []
-    if(description.length < 50) errors.push('Description must be atleast 50 characters')
-
+     let errors = []
+     if(description.length < 50) errors.push('Description must be atleast 50 characters')
+     
     if(errors.length > 0) {
         setValidationErrors(errors)
         setClickable(true)
@@ -22,9 +23,10 @@ const GroupDescription = () => {
         setValidationErrors([])
         setClickable(false)
        }
-   }, [description])
+      }, [description])
+      
+    if(!sessionUser) return (<Redirect to='/'/>)
 
-   if(!sessionUser) return (<Redirect to='/'/>)
 
    return (
     <div className='create-group-div-container'>

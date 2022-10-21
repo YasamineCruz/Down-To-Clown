@@ -1,8 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState} from 'react';
 import * as venueActions from '../../store/venues';
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import * as groupActions from '../../store/groups'
 
 const CreateVenue = () => {
     const [ address, setAddress] = useState('');
@@ -16,6 +17,19 @@ const CreateVenue = () => {
     const dispatch = useDispatch();
     const { groupId } = params;
     const [submitted, setSubmitted] = useState(false)
+    const sessionUser = useSelector(state => state.session.user)
+    const group = useSelector(state => state.group.group)
+
+    if(!sessionUser) history.push('/')
+
+    if(group && sessionUser){
+        if(group.organizerId !== sessionUser.id) history.push('/')
+    }
+
+
+    useEffect(() => {
+        dispatch(groupActions.getAGroup(groupId))
+    }, [dispatch, groupId])
 
     useEffect(()=> {
         let validationErrors = [];
@@ -24,7 +38,7 @@ const CreateVenue = () => {
         if(!state || state.length < 1 || state.length > 200) validationErrors.push('State must be between 1 and 200 characters long.');
         if(isNaN(lat)) validationErrors.push('Latitude must be number.');
         if(isNaN(lng)) validationErrors.push('Longitude must be a number.');
-        errors.push(validationErrors)
+        setErrors(validationErrors)
     }, [address, city, state, lat, lng, errors])
 
     const onSubmit = (e) => {
@@ -45,7 +59,7 @@ const CreateVenue = () => {
             setCity('');
             setLat('');
             setLng('');
-            history.push(`/groups/${groupId}`)
+            history.goBack();
         }
     }
 

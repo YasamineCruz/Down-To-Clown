@@ -11,6 +11,10 @@ const CreateAGroupImage = () => {
     const [url, setUrl] = useState('');
     const [errors, setErrors] = useState([])
     const group = useSelector(state => state.group.group)
+    const sessionUser = useSelector(state => state.session.user)
+
+    if(!sessionUser) history.push('/')
+
     let groupId
     if(group) groupId = group.id
 
@@ -24,7 +28,7 @@ const CreateAGroupImage = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         setErrors([]);
-        if(errors.lenmght <= 0){
+        if(errors.length <= 0){
             dispatch(groupActions.createAGroupImg({ url, preview: true}, groupId))
             .catch(async (res) => {
               const data = await res.json();

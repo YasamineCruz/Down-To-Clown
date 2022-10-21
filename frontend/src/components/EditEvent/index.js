@@ -5,6 +5,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import './EditEvent.css'
 
 const EditEvent = () => {
     const history = useHistory();
@@ -13,6 +14,7 @@ const EditEvent = () => {
 
     const event = useSelector(state => state.event.event)
     const group = useSelector(state => state.group.group);
+    let sessionUser = useSelector(state => state.session.user)
     
     const { eventId } = params
     
@@ -38,6 +40,12 @@ const EditEvent = () => {
     const [ submitted, setSubmitted] = useState(false);
 
     const fullDate = useMemo(() => { return new Date()}, [])
+
+    if(!sessionUser) history.push('/');
+
+    if(group && sessionUser){
+        if(group.organizerId !== sessionUser.id) history.push('/')
+    }
 
     useEffect(()=> {
         if(event){
@@ -114,7 +122,13 @@ const EditEvent = () => {
     let month = fullDate.getMonth();
     let day = fullDate.getDate();
     let hour = fullDate.getHours();
-    let minutes = fullDate.getMinutes()
+    let minutes = fullDate.getMinutes();
+    if(month < 10) month = `0${month}`
+    if(day < 10) day = `0${day}`
+    if(minutes < 10 && minutes !== 0) minutes = `00`
+    if(minutes === 0) minutes = `00`
+    console.log('minutes', minutes)
+    console.log('hour', hour)
     
     if(!startYear) setStartYear(year);
     if(!startMonth) setStartMonth(month);
@@ -122,7 +136,11 @@ const EditEvent = () => {
     if(!startHour) setStartHour(hour + 1);
     if(!startMinutes) setStartMinutes(minutes);
     if(!endHour) setEndHour(startHour)
-    if(!endMinutes && startMinutes) setEndMinutes(startMinutes + 1)
+    if(!endYear) setEndYear(startYear)
+    if(!endDay) setEndDay(startDay)
+    if(!endMonth) setEndMonth(startMonth)
+    if(!endMinutes) setEndMinutes(startMinutes)
+
 
     let inPersonVenues = [];
     if(group) {
@@ -157,7 +175,7 @@ const EditEvent = () => {
                          { inPersonVenues.map(venue => {
                             if(venue.name !== 'Online'){
                             return (
-                            <div className={venueId === venue.id ? `VenueCard-selected` : `VenueCard-not-selected`} onClick={() => setVenueId(venue.id)} >
+                            <div key={venue.id} className={venueId === venue.id ? `VenueCard-selected` : `VenueCard-not-selected`} onClick={() => setVenueId(venue.id)} >
                                 <div>{venue.address}</div>
                                 <div>{venue.city}</div>
                                 <div>{venue.state}</div>
@@ -188,12 +206,12 @@ const EditEvent = () => {
             <input className='edit-group-input' onChange={(e) => setCapacity(e.target.value)} type='number' min='1' step='1' required placeholder='Enter a capacity' value={capacity}/>
             <input className='edit-group-input' onChange={(e) => setPrice(e.target.value)} type='number' min='1' step='.01' required placeholder='Enter a price' value={price}/>
         </div>
-        <div className='create-event-radio'>
+        <div className='edit-event-radio'>
             <h2 className='create-event-h2-text'>Type</h2>
-            <div className='radio-wrapper2'>
+            <div className='radio-wrapper3'>
             <label className='radio-text2'>Online</label>
             <input className='radio-input2' type='radio' onChange={(e) => setType(e.target.value)} value='Online' checked={type === 'Online'}/> 
-            <div className='radio-wrapper2'>
+            <div className='radio-wrapper3'>
                 <label className='radio-text2'>In person</label>
                 <input className='radio-input2' type='radio' onChange={(e) => setType(e.target.value)} value='In person' checked={type === 'In person'}/>  
             </div>
@@ -233,7 +251,7 @@ const EditEvent = () => {
             <input type='date'
             className='create-event-startDate-input' 
             value={`${endYear}-${endMonth}-${endDay}`} 
-            min={`${startYear}-${startMonth}-${startDay}`}
+            min={`${endYear}-${endMonth}-${endDay}`}
             onChange={(e) => { 
                 let dateArr = e.target.value.split('-'); 
                 setEndYear(dateArr[0]);

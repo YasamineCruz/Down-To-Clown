@@ -10,6 +10,12 @@ const DeleteGroup = () => {
     const { groupId } = params;
     const group = useSelector(state => state.group.group)
     const history = useHistory()
+    let sessionUser = useSelector(state => state.session.user)
+
+    if(!sessionUser) history.push('/')
+    if(group && sessionUser){
+        if(group.organizerId !== sessionUser.id) history.push('/')
+    }
 
     useEffect(() => {
         dispatch(groupActions.getAGroup(groupId))

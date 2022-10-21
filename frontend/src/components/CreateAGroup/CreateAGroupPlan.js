@@ -11,9 +11,11 @@ const GroupPlan = () => {
     const [organizerId, setOrganizerId] = useState(null)
     const { setPage, state, setState, city, setCity, name, setName, private_key, setPrivate_key, description, setDescription, type, setType} = useGroupContext();
     const dispatch = useDispatch();
-    const sessionUser = useSelector(state => state.session.user)
     const [ clickable, setClickable ]= useState(false)
     let history = useHistory();
+    const sessionUser = useSelector(state => state.session.user)
+
+    if(!sessionUser) history.push('/')
     
 
     useEffect(()=> {

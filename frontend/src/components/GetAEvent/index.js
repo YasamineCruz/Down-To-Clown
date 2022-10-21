@@ -28,7 +28,7 @@ const GetAEvent = () => {
 
     useEffect(() => {
         dispatch(eventActions.getAEvent(eventId))
-        dispatch(groupActions.getAGroup(groupId))
+        if(groupId) dispatch(groupActions.getAGroup(groupId))
     }, [dispatch, eventId, groupId])
 
     let startDate = new Date(event?.startDate);
@@ -123,7 +123,7 @@ const GetAEvent = () => {
                             </div>
                               {event.Venue && (
                                     <div className='event-info-wrapper2'>
-                                    {event.type === 'Online' ? (<i class="fa-solid fa-video clock"></i>) : (<i className="fa-solid fa-location-dot icon clock"></i>)}
+                                    {event.type === 'Online' ? (<i className="fa-solid fa-video clock"></i>) : (<i className="fa-solid fa-location-dot icon clock"></i>)}
                                     {event.type === 'Online' ? (<div className='event-type'>{event.type} Event</div>) :  <div className='event-location'>{`${event.Venue.address} · ${event.Venue.city}, ${event.Venue.state}`}</div>}
                                     </div>
                                 )}
