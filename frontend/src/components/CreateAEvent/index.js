@@ -186,6 +186,7 @@ const CreateEvent = () => {
             </>
         )}
         <div className='edit-group-text-wrapper'>
+        <h2 className='event-details-Text'>Event Details</h2>
         <div className='edit-group-div'>
             <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name' maxLength={200} minLength={5}/>
             <input className='edit-group-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Enter a description' maxLength={500}/>

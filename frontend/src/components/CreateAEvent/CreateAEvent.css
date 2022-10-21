@@ -234,3 +234,9 @@
   margin-left: 25%;
   height: 60px;
 }
+
+.event-details-Text {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin-bottom: 5px;
+  cursor: default;
+}
