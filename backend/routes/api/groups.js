@@ -42,6 +42,7 @@ const validateGroup = [
 const checkErrors = async(res, err) => {
         let errorList = err.errors;
         let errors = {};
+        console.log(errorList)
         for(let i = 0; i < errorList.length; i++){
             let err = errorList[i]
             let name = err.path
