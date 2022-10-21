@@ -68,7 +68,7 @@ const EditGroup = () => {
         }
     },[description, state, city, name, type, private_key])
 
-
+    console.log(private_key)
 
     const onSubmit = (e) => {
         e.preventDefault();
