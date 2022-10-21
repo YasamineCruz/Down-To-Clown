@@ -122,11 +122,11 @@ const EditGroup = () => {
                 <form className='edit-group-form-wrapper'>
                     <h1 className="edit-group-h1-text">Select Private or Public</h1>
                     <div className='radio-wrapper'>
-                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
+                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1 || private_key === true}/>
                         <label className='radio-text'>Private</label>  
                     </div>
                     <div className='radio-wrapper'>
-                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
+                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0 || private_key === false}/>
                     <label className='radio-text'>Public</label>  
                     </div>
                 </form>
