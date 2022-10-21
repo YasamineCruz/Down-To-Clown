@@ -171,6 +171,7 @@ const eventReducer = (state = initialState, action) => {
         return newState;
      case GET_EVENT:
         newState = Object.assign({}, state);
+        console.log(newState)
         newState.event = action.payload;
         return newState;
      case REMOVE_EVENT:

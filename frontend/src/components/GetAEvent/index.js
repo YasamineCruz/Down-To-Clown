@@ -103,7 +103,7 @@ const GetAEvent = () => {
                     <div className='event-middleInfo-Link'>
                         <Link to={`/groups/${groupId}`} className='event-association-wrapper'>
                             <div className='lil-group-img'>
-                                <img className='event-group-img' src={group?.GroupImages[0].url} alt=''/>
+                                <img className='event-group-img' src={group?.GroupImages[0]?.url} alt=''/>
                             </div>
                             <div className='event-association'>
                                 <div className='group-association-name'>{group.name}</div>
