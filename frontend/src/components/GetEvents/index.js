@@ -58,7 +58,7 @@ const GetEvents = () => {
                                 <div className='GroupsInfo'>
                                     <div className=''>{`${DaysOfTheWeek[day]}, ${MonthsOfTheYear[month]} ${date2} ${hours}:${minutes} ${time}`}</div>
                                     <div className='GroupsName'>{event.name}</div>
-                                    <div>{event.description}</div>
+                                    <div className='GroupsAbout'>{event.description}</div>
                                 </div>
                             </div>
                         </Link>  
@@ -71,7 +71,7 @@ const GetEvents = () => {
                             <div className='GroupsInfo'>
                                 <div className=''>{`${DaysOfTheWeek[day]}, ${MonthsOfTheYear[month]} ${date2} ${hours}:${minutes} ${time}`}</div>
                                 <div className='GroupsName'>{event.name}</div>
-                                <div>{event.description}</div>
+                                <div className='GroupsAbout'>{event.description}</div>
                             </div>
                         </div>
                     </Link>  

@@ -88,7 +88,7 @@ const CreateEvent = () => {
             return
         }
 
-        if(validationErrors.length <= 0) {
+        if(validationErrors.length <= 0 && errors.length <= 0) {
             setVenueId('');
             setName('');
             setDescription('');
