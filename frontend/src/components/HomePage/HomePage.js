@@ -28,7 +28,7 @@ const HomePage = () => {
                         <h3 className='EGText'>
                          Events   
                         </h3>
-                        <img className='homepageArrow' src='https://secure.meetupstatic.com/next/images/shared/right-arrow.svg?w=32' alt='' />
+                        <i class="fa-solid fa-arrow-right homepageArrow"></i>
                     </div>
                     </Link>
                 </h2>
@@ -39,7 +39,7 @@ const HomePage = () => {
                         <h3 className='EGText'>
                           Groups  
                         </h3>
-                        <img className='homepageArrow' src='https://secure.meetupstatic.com/next/images/shared/right-arrow.svg?w=32' alt='' />
+                        <i class="fa-solid fa-arrow-right homepageArrow"></i>
                     </div>
                     </Link>  
                     </h2>

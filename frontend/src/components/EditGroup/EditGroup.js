@@ -26,7 +26,7 @@ const EditGroup = () => {
     const [private_key, setPrivate_key] = useState(null)
     const [organizerId, setOrganizerId] = useState(null)
     const [ submitted, setSubmitted] = useState(false);
-
+    const [loaded, setLoaded] = useState(false)
     
     if(!sessionUser) history.push('/')
     if(group && sessionUser){
@@ -34,6 +34,7 @@ const EditGroup = () => {
     }
 
     useEffect(()=> {
+        setLoaded(true)
         if(group){
             if(name === null) setName(group.name);
             if(description === null) setDescription(group.about);
@@ -100,13 +101,13 @@ const EditGroup = () => {
             ))} 
             </ul>
             )}
-            { group && (
+            { group && loaded && (
             <div className='edit-group-text-wrapper'>
                 <div className='edit-group-div'>
-                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name ? name : ''} required placeholder='Enter a name' maxLength={60}/>
-                    <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description ? description : ''} required placeholder='Enter a description atleast 50 characters long' minLength={50} maxLength={500}/>
-                    <input className='edit-group-input' type='text' onChange={(e) => setCity(e.target.value)} value={city ? city : ''} required placeholder='Enter a city'/>
-                    <input className='edit-group-input' type='text' onChange={(e) => setState(e.target.value)} value={state ? state : ''} placeholder='Enter a state' required/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name} required placeholder='Enter a name' maxLength={60}/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description} required placeholder='Enter a description atleast 50 characters long' minLength={50} maxLength={500}/>
+                    <input className='edit-group-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a city'/>
+                    <input className='edit-group-input' type='text' onChange={(e) => setState(e.target.value)} value={state} placeholder='Enter a state' required/>
                 </div>  
                 <form className='edit-group-form-wrapper'>
                 <h1 className='edit-group-h1-text'>Select Type</h1>

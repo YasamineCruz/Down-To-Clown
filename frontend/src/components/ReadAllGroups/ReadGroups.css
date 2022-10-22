@@ -32,11 +32,22 @@
     font-size: 20px;
     text-decoration: none;
     line-height: 25px;
+    cursor: pointer;
+}
+
+.EGTitle:hover {
+    color: #00a2c7;
 }
 
 .EGTitleColorBlue {
     color: #008294;
     border-bottom: 3px solid #008294;
+    cursor: pointer;
+}
+
+.EGTitleColorBlue:hover {
+    color: #00a2c7;
+    border-bottom: 3px solid #00a2c7;
 }
 
 .EGTitleColorGrey {

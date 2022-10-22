@@ -85,7 +85,7 @@ const GetAEvent = () => {
                         )}  
                         <div className='event-details'>
                             <div className='links-and-details'>
-                            <div className='EGLink abouttext'>Details</div>
+                            <div className='details'>Details</div>
                             { sessionUser && group && (
                                 <div className='event-page-links'>
                                 { check(sessionUser.id, group.organizerId) && (

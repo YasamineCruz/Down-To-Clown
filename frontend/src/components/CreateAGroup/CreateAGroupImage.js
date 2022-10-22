@@ -25,7 +25,7 @@ const CreateAGroupImage = () => {
    },[url])
 
 
-    const onSubmit = (e) => {
+    const onSubmit = async(e) => {
         e.preventDefault();
         setErrors([]);
         if(errors.length <= 0){
@@ -35,7 +35,7 @@ const CreateAGroupImage = () => {
               if(data && data.errors) setErrors(data.errors)
           })
   
-          dispatch(venueActions.createAVenue(groupId, { address: 'Online', city: 'NA', state: 'NA', lat: 0, lng: 0}))
+          await dispatch(venueActions.createAVenue(groupId, { address: 'Default', city: 'NA', state: 'NA', lat: 2, lng: 2}))
           .catch(async (res) => {
             const data = await res.json();
             if(data && data.errors) setErrors(data.errors)
@@ -45,7 +45,7 @@ const CreateAGroupImage = () => {
 
         if(errors.length <= 0) {
             setUrl('')
-            history.push('/')
+            history.push(`/groups/${groupId}`)
         }
     }
 

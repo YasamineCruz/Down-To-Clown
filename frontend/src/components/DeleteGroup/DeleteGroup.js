@@ -23,7 +23,7 @@ const DeleteGroup = () => {
 
     const onSubmit = () => {
         dispatch(groupActions.deleteGroup(groupId))
-        history.push('/user/groups')
+        history.push('/groups')
     }
 
     return (

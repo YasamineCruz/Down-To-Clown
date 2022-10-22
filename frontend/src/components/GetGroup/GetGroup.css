@@ -106,9 +106,9 @@
     font-size: 16px;
 }
 
-.default-cursor {
+/* .default-cursor {
     cursor: default;
-}
+} */
 
 .aboutDiv {
     display: flex;

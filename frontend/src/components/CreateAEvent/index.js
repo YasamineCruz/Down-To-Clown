@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import './CreateAEvent.css';
 import * as groupActions from '../../store/groups'
-import { Link } from 'react-router-dom';
 
 
 
@@ -46,14 +45,13 @@ const CreateEvent = () => {
     }, [dispatch, groupId])
 
     useEffect(() => {
-        if(type === 'Online' && group){
+        if(group){
+            console.log(group)
             let venues = group.Venues;
-            for(let i = 0; i < venues.length; i++){
-                let venue = venues[i];
-                if(venue.address === 'Online') setVenueId(venue.id)
-            }
+            setVenueId(venues[0]?.id)
         } 
-    },[type, group])
+    },[group])
+
 
     useEffect(()=>{
         let errors = [];
@@ -75,7 +73,7 @@ const CreateEvent = () => {
         if(startDate < fullDate) errors.push('Start Date must be in the future')
         if(endDate < startDate) errors.push('End Date must be greater than start Date')
 
-        if(validationErrors.length <= 0){
+        if(validationErrors.length <= 0 && errors.length <= 0){
             await dispatch(eventActions.createAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, groupId))
             .catch(async (res) => {
                 const data = await res.json();
@@ -84,9 +82,7 @@ const CreateEvent = () => {
                     errors.push(...dataErrors)
                 }
             })
-        } else {
-            return
-        }
+        } 
 
         if(validationErrors.length <= 0 && errors.length <= 0) {
             setVenueId('');
@@ -103,37 +99,39 @@ const CreateEvent = () => {
         setValidationErrors(errors)
     }
 
-
+  
     let year = fullDate.getFullYear();
     let month = fullDate.getMonth();
-    let day = fullDate.getDate();
+    let day = fullDate.getDate() + 1;
     let hour = fullDate.getHours();
     let minutes = fullDate.getMinutes()
+    
     if(month < 10) month = `0${month}`
     if(day < 10) month = `0${day}`
     if(minutes < 10 && minutes !== 0) minutes = `00`
     if(minutes === 0) minutes = `00`
     if(hour < 10) hour = `0${hour}`
-    
-    if(!startYear) setStartYear(year);
-    if(!startMonth) setStartMonth(month);
-    if(!startDay) setStartDay(day);
-    if(!startHour) setStartHour(hour + 1);
-    if(!startMinutes) setStartMinutes(minutes);
-    if(!endYear) setEndYear(startYear)
-    if(!endMonth) setEndMonth(startMonth)
-    if(!endDay) setEndDay(startDay) 
-    if(!endHour && startHour) setEndHour(startHour)
-    if(!endMinutes && startMinutes) setEndMinutes(+startMinutes)
 
-
-    let inPersonVenues = [];
-    if(group) {
-       for(let i = 0; i < group.Venues.length; i++){
-        let venue = group.Venues[i];
-        if(venue.address !== 'Online') inPersonVenues.push(venue)
-       }
+    if(fullDate){
+      if(!startYear) setStartYear(year);
+      if(!startMonth) setStartMonth(month);
+      if(!startDay) setStartDay(day);
+      if(!startHour) setStartHour(hour);
+      if(!startMinutes) setStartMinutes(minutes);
+      if(!endYear) setEndYear(startYear)
+      if(!endMonth) setEndMonth(startMonth)
+      if(!endDay) setEndDay(startDay) 
+      if(!endHour && startHour) setEndHour(+startHour + 1)
+      if(!endMinutes && startMinutes) setEndMinutes(+startMinutes + 1)   
     }
+
+    // let inPersonVenues = [];
+    // if(group) {
+    //    for(let i = 0; i < group.Venues.length; i++){
+    //     let venue = group.Venues[i];
+    //     if(venue.address !== 'Online') inPersonVenues.push(venue)
+    //    }
+    // }
     
 
     return ( 
@@ -150,7 +148,7 @@ const CreateEvent = () => {
             </ul>
                 )
             }
-        { ( (type === 'In person' || type === '') && group) && ( 
+        {/* { ( (type === 'In person' || type === '') && group) && ( 
             <div>
             { group.Venues.length >= 2 && (
                <div className="dropdown">
@@ -184,7 +182,7 @@ const CreateEvent = () => {
             </div>
             )}
             </>
-        )}
+        )} */}
         <div className='edit-group-text-wrapper'>
         <h2 className='event-details-Text'>Event Details</h2>
         <div className='edit-group-div'>
@@ -237,7 +235,7 @@ const CreateEvent = () => {
             className='create-event-startDate-input' 
             value={`${endYear}-${endMonth}-${endDay}`} 
             min={`${endYear}-${endMonth}-${endDay}`}
-            onChange={(e) => { 
+            onChange={(e) => {
                 let dateArr = e.target.value.split('-'); 
                 setEndYear(dateArr[0]);
                 setEndMonth(dateArr[1]);

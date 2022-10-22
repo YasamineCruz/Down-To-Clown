@@ -4,7 +4,7 @@ import { useSelector, useDispatch} from 'react-redux'
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import './EditEvent.css'
 
 const EditEvent = () => {
@@ -24,8 +24,8 @@ const EditEvent = () => {
     const [ type, setType] = useState(null);
     const [ capacity, setCapacity] = useState(null);
     const [ price, setPrice] = useState(null);
-    const [ startDate, setStartDate] = useState('');
-    const [ endDate, setEndDate] = useState('');
+    const [ startDate, setStartDate] = useState(null);
+    const [ endDate, setEndDate] = useState(null);
     const [ validationErrors, setValidationErrors] = useState([]);
     const [ startDay, setStartDay] = useState('');
     const [ startMonth, setStartMonth] = useState('');
@@ -38,9 +38,10 @@ const EditEvent = () => {
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
     const [ submitted, setSubmitted] = useState(false);
+   const [ loaded, setLoaded] = useState(false)
 
     const fullDate = useMemo(() => { return new Date()}, [])
-
+    console.log(event)
     if(!sessionUser) history.push('/');
 
     if(group && sessionUser){
@@ -48,27 +49,33 @@ const EditEvent = () => {
     }
 
     useEffect(()=> {
-        if(event){
-            if(venueId === null) setVenueId(event.Venue.id);
-            if(name === null) setName(event.name);
-            if(description === null) setDescription(event.description);
+        setLoaded(true)
+        if(loaded && event){
+            if(venueId === null) setVenueId(event.venueId)
+            if(name === null) setName(event.name)
+            if(description === null) setDescription(event.description)
             if(type === null) setType(event.type)
-            if(capacity === null) setCapacity(event.capacity);
-            if(price === null) setPrice(event.price);
-            }
-    },[event, venueId, name, description, type, capacity, price])
+            if(capacity === null) setCapacity(event.capacity)
+            if(price === null) setPrice(event.price)
+            if(startDate === null) setStartDate(event.startDate)
+            if(endDate === null) setEndDate(event.endDate)
+        }
+
+    },[event, venueId, name, description, type, capacity, price, loaded, startDate, endDate])
    
     let groupId;
     if(event) groupId = event.groupId
    
     useEffect(() => {
-        dispatch(groupActions.getAGroup(groupId))
+        if(groupId){
+         dispatch(groupActions.getAGroup(groupId))   
+        }
     }, [dispatch, groupId])
 
     useEffect(()=>{
         dispatch(eventActions.getAEvent(eventId))
     },[dispatch, eventId])
-
+    
     useEffect(()=>{
         let errors = [];
 
@@ -78,7 +85,10 @@ const EditEvent = () => {
         if(type !== 'Online' && type !== 'In person') errors.push('Type must be Online or In person')
         if(isNaN(capacity)) errors.push('Capacity must be an integer')
         if(isNaN(price)) errors.push('Price is invalid')
-        if(startDate < fullDate) errors.push('Start Date must be in the future')
+        if(startDate < fullDate) {
+            console.log(startDate)
+            errors.push('Start Date must be in the future')
+        }
         if(endDate < startDate) errors.push('End Date must be greater than start Date')
         
         setValidationErrors(errors)
@@ -98,9 +108,7 @@ const EditEvent = () => {
                 let dataErrors = Object.values(data.errors)
                 errors.push(...dataErrors)
             }
-        })} else {
-            return
-        }
+        })}
 
         setValidationErrors(errors)
         
@@ -125,17 +133,7 @@ const EditEvent = () => {
         startDate2 = new Date(event.startDate)
     }
 
-    let year = fullDate.getFullYear();
-    let month = fullDate.getMonth();
-    let day = fullDate.getDate();
-    let hour = fullDate.getHours();
-    let minutes = fullDate.getMinutes();
-    if(month < 10) month = `0${month}`
-    if(day < 10) day = `0${day}`
-    if(minutes < 10 && minutes !== 0) minutes = `00`
-    if(minutes === 0) minutes = `00`
-    if(hour < 10) hour = `0${hour}`
-
+    if(endDate2 && startDate2){
     let yearS = startDate2.getFullYear();
     let monthS = startDate2.getMonth();
     let dayS = startDate2.getDate();
@@ -170,7 +168,9 @@ const EditEvent = () => {
     if(!endMonth) setEndMonth(monthE)
     if(!endDay) setEndDay(dayE)
     if(!endHour) setEndHour(hourE)
-    if(!endMinutes) setEndMinutes(minutesE)
+    if(!endMinutes) setEndMinutes(minutesE)    
+    }
+    
 
 
     let inPersonVenues = [];
@@ -181,9 +181,11 @@ const EditEvent = () => {
        }
     }
 
+
     return ( 
         <div className='edit-event-container'>
-        <form className='edit-event-form-wrapper' onSubmit={onSubmit}>
+            {event && loaded && (
+                <form className='edit-event-form-wrapper' onSubmit={onSubmit}>
         <div className='edit-group-div-wrapper'>
                <h1 className='edit-group-h1-text'>Edit Event</h1> 
         </div>
@@ -195,7 +197,7 @@ const EditEvent = () => {
             </ul>
                 )
             }
-        { ( (type === 'In person' || type === '') && group) && ( 
+        {/* { ( (type === 'In person' || type === '') && group) && ( 
             <div className='edit-event-dropdown-wrapper'>
             { group.Venues.length >= 2 && (
                <div className="dropdown">
@@ -220,8 +222,8 @@ const EditEvent = () => {
             </div> 
             )}
             </div>
-        )}
-        { ( (type === 'In person' || type === '') && group) && (
+        )} */}
+        {/* { ( (type === 'In person' || type === '') && group) && (
             <>
             {!inPersonVenues.length && (
                 <div className='create-event-link-container'>
@@ -229,7 +231,7 @@ const EditEvent = () => {
             </div>
             )}
             </>
-        )}
+        )} */}
         <div className='edit-group-text-wrapper'>
         <div className='edit-group-div'>
             <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name' minLength={5} maxLength={200}/>
@@ -254,7 +256,7 @@ const EditEvent = () => {
             className='create-event-startDate-input'
             type='date' 
             value={`${startYear}-${startMonth}-${startDay}`} 
-            min={`${year}-${month}-${day}`} 
+            // min={`${year}-${month}-${day}`} 
             onChange={(e) => { 
                 let dateArr = e.target.value.split('-'); 
                 setStartYear(dateArr[0]);
@@ -267,7 +269,7 @@ const EditEvent = () => {
                 <input
                 className='create-event-startDate-input' 
                 type='time' 
-                min={`${startHour}:${startMinutes}`} 
+                // min={`${startHour}:${startMinutes}`} 
                 value={`${startHour}:${startMinutes}`}
                 onChange={(e) => {
                     let timeArr = e.target.value.split(':')
@@ -282,7 +284,7 @@ const EditEvent = () => {
             <input type='date'
             className='create-event-startDate-input' 
             value={`${endYear}-${endMonth}-${endDay}`} 
-            min={`${year}-${month}-${day}`}
+            // min={`${year}-${month}-${day}`}
             onChange={(e) => { 
                 let dateArr = e.target.value.split('-'); 
                 setEndYear(dateArr[0]);
@@ -296,7 +298,7 @@ const EditEvent = () => {
             <input
             className='create-event-startDate-input' 
             type='time' 
-            min={`${startHour}:${startMinutes + 1}`}
+            // min={`${startHour}:${startMinutes + 1}`}
             value={`${endHour}:${endMinutes}`} 
             onChange={(e) => {
                 let timeArr = e.target.value.split(':');
@@ -314,6 +316,8 @@ const EditEvent = () => {
             </button> 
         </div>
         </form>
+            )}
+        
         </div>
     )
 }

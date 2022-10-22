@@ -35,7 +35,7 @@
     height: 520px;
     left: 52.2%;
     top: 7.3%;
-    z-index: 0;
+    z-index: -1;
 }
 
 .homepageContent {
@@ -54,6 +54,8 @@
     margin-top: 1%;
     margin-bottom: 0%;
 }
+
+
 
 .homepageTitle {
    height: fit-content;
@@ -97,6 +99,10 @@
     width: 360px;
 }
 
+.homepageEGText:hover {
+    color: #00a2c7;
+}
+
 .homepageEGText {
     display: flex;
     flex-direction: row;
@@ -108,6 +114,7 @@
     margin-top: 0px;
 }
 
+
 .EGText {
     font-size: 16px;
     text-align: left;
@@ -115,10 +122,15 @@
     text-decoration: none;
 }
 
-.homepageArrow {
-    font-size: 16px;
-    padding-left: 10px;
+.EGText:hover {
+    color: #00a2c7;
 }
+
+.homepageArrow {
+    font-size: 20px;
+    padding-left: 20px;
+}
+
 
 .homepageLink {
     text-decoration: none;
