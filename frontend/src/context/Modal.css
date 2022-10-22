@@ -79,6 +79,7 @@
 } 
 
 .ModalLoginButton {
+    cursor: pointer;
     font-size: 14px;
     height: fit-content;
     width: 60px;
