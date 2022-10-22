@@ -27,6 +27,7 @@
 }
 
 .event-type {
+    cursor: default;
     font-size: 14px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -65,6 +66,10 @@
     color: black;
 }
 
+.event-association-wrapper:hover {
+    border: 1px solid #00a2c7;
+}
+
 .event-association {
     display: flex;
     flex-direction: column;
@@ -78,6 +83,7 @@
 }
 
 .event-time {
+    cursor: default;
     font-size: 14px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -211,16 +217,19 @@
     font-size: 18px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: 500;
+    cursor: default;
 }
 
 .event-sticky-name {
     font-size: 18px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: 600;
-    margin-top: 3%
+    margin-top: 3%;
+    cursor: default;
 }
 
 .event-price {
+    cursor: default;
     margin-top: 5%;
     font-size: 18px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -231,7 +240,8 @@
     font-size: 18px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: 500;
-    margin-top: 10%
+    margin-top: 10%;
+    cursor: default;
 }
 
 .event-page-links {
