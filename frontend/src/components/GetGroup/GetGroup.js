@@ -21,7 +21,7 @@ const GroupPage = () => {
     const sessionUser = useSelector(state => state.session.user);
     const members = useSelector(state => state.members.members)
     const [ info, setInfo] = useState('about')
-
+    console.log('this is memebrs', members)
     
     useEffect(()=> {
        dispatch(groupActions.getAGroup(groupId))
