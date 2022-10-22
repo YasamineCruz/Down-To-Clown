@@ -134,7 +134,6 @@ router.get('/:eventId', async(req, res, next) => {
         attributes: { exclude: ['createdAt', 'updatedAt'] }
      })
 
-    console.log('This is the event from the back', event)
 
     if(event){
         let numAttending = await Attendance.count({where: {eventId: event.id}})
@@ -417,7 +416,7 @@ router.delete('/:eventId/attendance', requireAuth, async(req, res, next) => {
 
     if(checkAuthorization ||  memberId === currentUserId){
          let member = await Attendance.findOne({ where: { [Op.and]: [ {eventId}, {userId: memberId } ] } });
-        console.log(member)
+
         if(member){
         await member.destroy()
         return res.json({

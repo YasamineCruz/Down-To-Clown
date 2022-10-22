@@ -41,7 +41,7 @@ const EditEvent = () => {
    const [ loaded, setLoaded] = useState(false)
 
     const fullDate = useMemo(() => { return new Date()}, [])
-    console.log(event)
+
     if(!sessionUser) history.push('/');
 
     if(group && sessionUser){
@@ -86,7 +86,6 @@ const EditEvent = () => {
         if(isNaN(capacity)) errors.push('Capacity must be an integer')
         if(isNaN(price)) errors.push('Price is invalid')
         if(startDate < fullDate) {
-            console.log(startDate)
             errors.push('Start Date must be in the future')
         }
         if(endDate < startDate) errors.push('End Date must be greater than start Date')

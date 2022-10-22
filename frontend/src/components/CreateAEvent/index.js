@@ -46,7 +46,6 @@ const CreateEvent = () => {
 
     useEffect(() => {
         if(group){
-            console.log(group)
             let venues = group.Venues;
             setVenueId(venues[0]?.id)
         } 

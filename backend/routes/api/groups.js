@@ -42,7 +42,7 @@ const validateGroup = [
 const checkErrors = async(res, err) => {
         let errorList = err.errors;
         let errors = {};
-        console.log(errorList)
+
         for(let i = 0; i < errorList.length; i++){
             let err = errorList[i]
             let name = err.path
@@ -820,17 +820,14 @@ router.get('/:groupId/members', async(req, res, next) => {
         })
     }
     let members = await User.findAll({attributes: ['id', 'firstName', 'lastName'] })
-    console.log('backend', members)
+
 
     if(currentUserMembership === null){
     
         for(let i = 0; i < members.length; i++){
             let member = members[i];
-            console.log('this is member',member)
-            console.log('this is member id', member.id)
-            console.log('this is groupId', groupId)
             let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId} ] }, attributes: ['status']})
-            console.log('this is membership 1', membership)
+
             if(membership !== null){
                 payload.push({
                 id: member.id,
@@ -844,7 +841,6 @@ router.get('/:groupId/members', async(req, res, next) => {
      } else if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host') {
 
         for(let i = 0; i < members.length; i++){
-            console.log('this is membership 2', membership)
              let member = members[i];
              let membership = await Membership.findOne({ where: { [Op.and]: [ {userId: member.id}, {groupId}]}, attributes: ['status']})
             if(membership){
@@ -860,7 +856,6 @@ router.get('/:groupId/members', async(req, res, next) => {
         return res.json({Members: payload})
     } else {
         for(let i = 0; i < members.length; i++){
-            console.log('this is membership 3', membership)
             let member = members[i];
             let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId} ] }, attributes: ['status']})
             if(membership){
