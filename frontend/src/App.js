@@ -19,9 +19,8 @@ import GroupPage from "./components/GetGroup/GetGroup";
 import CurrentUsersGroups2 from "./components/GetCurrentUsersGroups/GetCurrent";
 import DeleteGroup from "./components/DeleteGroup/DeleteGroup";
 import CreateEvent from "./components/CreateAEvent";
-import CreateVenue from "./components/CreateVenue";
+// import CreateVenue from "./components/CreateVenue";
 import GetEvents from "./components/GetEvents";
-import GetEventsByGroup from "./components/GetEventByGroup";
 import GetAEvent from "./components/GetAEvent";
 import DeleteEvent from "./components/DeleteEvent";
 import EditEvent from "./components/EditEvent";
@@ -88,9 +87,9 @@ function App() {
           <Route exact path ='/groups/:groupId/delete'>
             <DeleteGroup />
           </Route>
-          <Route exact path='/groups/:groupId/newVenue'>
+          {/* <Route exact path='/groups/:groupId/newVenue'>
             <CreateVenue />
-          </Route>
+          </Route> */}
           <Route exact path='/events'>
             <GetEvents />
           </Route>
@@ -105,6 +104,9 @@ function App() {
           </Route>
           <Route exact path='/user/groups'>
             <CurrentUsersGroups2 />
+          </Route>
+          <Route>
+            Page does not exist.
           </Route>
         </Switch>
       )}

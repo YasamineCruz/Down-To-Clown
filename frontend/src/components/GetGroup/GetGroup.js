@@ -78,7 +78,7 @@ const GroupPage = () => {
                 </div>
                     { info === 'about' && (
                      <div className='AboutAndMemberDiv'>
-                        <div className='aboutDiv'>
+                        <div className='aboutDiv default-cursor'>
                             What we're about
                         <p className='aboutText2'>{group.about}</p>    
                         </div>
