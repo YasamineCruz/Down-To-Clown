@@ -16,7 +16,7 @@ const CurrentUsersGroups2 = () => {
     return (
         <div className='EGWrapper'>
             <div className='EGTitles2'>
-                <h1 className='EGTitle EGTitleColorGrey'>Your Groups</h1>
+                <h1 className='EGTitle3 EGTitleColorGrey'>Your Groups</h1>
             </div>
         <div className='GroupsMaster'>
         {groups && (
