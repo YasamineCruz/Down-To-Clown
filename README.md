@@ -5,6 +5,7 @@
 
 <div>
   <h1>Splash Page</h1>
+  <img src='https://user-images.githubusercontent.com/100809078/197366904-8a3c3b91-dba3-49a6-aca8-59fe1ea3cc6a.png' alt=''/>
 </div>
 
 <div>
