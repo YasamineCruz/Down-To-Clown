@@ -4,13 +4,12 @@
 </br>
 <div>
 <h2>Introduction</h2>
-<p>Down To Clown is a meetup clone with a few features that try and replicate the actual site.</p>
+<p>Down To Clown is a meetup clone with a few features that try and replicate the actual site. The backend allows the creation of users, events, and groups that are used on the frontend.</p>
 <p>Link to Website <a href="https://down-to-clown.herokuapp.com/">Down To Clown</a><p>
 </div>
 </br>
 <div>
 <h2>Features</h2>
-</br>
 <h3>Sign Up</h3>
 </br>
 <li>Users can sign up.</li>
@@ -76,16 +75,31 @@
 </div>
 </br>
 <div>
-<h1>Technologies and Languages</h1>
+<h1>Tech Stack</h1>
 <div>
+<h2>Platform, Frameworks, and Libraries</h2>
+</b>
 <img src='https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white' alt='' />
 <img src='https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB' alt=''/>
 <img src='https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white' alt=''/>
 <img src='https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black' alt=''/>
 <img src='https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white' alt=''/>
+</br>
+<h2>Database</h2>
+<h3>In Development</h3>
 <img src='https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white' alt=''/>
-<img src='https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white' alt=''/>
+<h3>In Production</h3>
 <img src='https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white' alt />
-<img src='https://img.shields.io/badge/Express.js-404D59?style=for-the-badge' alt=''/>
+<h2>Hosted By</h2>
+<img src='https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white' alt=''/>
 </div>
+<h3>How to use on a local machine</h3>
+<li>Clone the repo <a href="https://github.com/YasamineCruz/API-project">Here</a></li>
+<li>cd into the Root and npm install and npm intall -D to install dependencies</li>
+<li>Copy the example .env-example into a .env file</li>
+<li>Make sure the port in your .env file matches your frontend package.json proxy</li>
+<li>To migrate data run command: npx dotenv sequelize db:migrate</li>
+<li>To seed data run command: npx dotenv sequelize db:seed:all</li>
+<li>Run command npm start in the backend and then the frontend.</li>
+<li>The page should then open on your default browser.</li>
 </div>
