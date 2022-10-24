@@ -170,7 +170,7 @@ const EditEvent = () => {
     if(!endMinutes) setEndMinutes(minutesE)    
     }
     
-
+    console.log(validationErrors)
 
     let inPersonVenues = [];
     if(group) {
