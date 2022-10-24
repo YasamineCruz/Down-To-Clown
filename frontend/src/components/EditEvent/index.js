@@ -196,41 +196,6 @@ const EditEvent = () => {
             </ul>
                 )
             }
-        {/* { ( (type === 'In person' || type === '') && group) && ( 
-            <div className='edit-event-dropdown-wrapper'>
-            { group.Venues.length >= 2 && (
-               <div className="dropdown">
-            <span>View Venues</span>
-                <div className="dropdown-content">
-                    {group && (
-                        <div>
-                         { inPersonVenues.map(venue => {
-                            if(venue.name !== 'Online'){
-                            return (
-                            <div key={venue.id} className={venueId === venue.id ? `VenueCard-selected` : `VenueCard-not-selected`} onClick={() => setVenueId(venue.id)} >
-                                <div>{venue.address}</div>
-                                <div>{venue.city}</div>
-                                <div>{venue.state}</div>
-                            </div>
-                                )} else return <></>
-                            }
-                        )}
-                        </div>
-                    )}
-                </div>
-            </div> 
-            )}
-            </div>
-        )} */}
-        {/* { ( (type === 'In person' || type === '') && group) && (
-            <>
-            {!inPersonVenues.length && (
-                <div className='create-event-link-container'>
-                <Link className='create-event-link-to-create-venue' to={`/groups/${groupId}/newVenue`}>For In person events you must have a Venue. Create one Here</Link>
-            </div>
-            )}
-            </>
-        )} */}
         <div className='edit-group-text-wrapper'>
         <div className='edit-group-div'>
             <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name' minLength={5} maxLength={200}/>
