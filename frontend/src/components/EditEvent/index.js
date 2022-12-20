@@ -57,8 +57,8 @@ const EditEvent = () => {
             if(type === null) setType(event.type)
             if(capacity === null) setCapacity(event.capacity)
             if(price === null) setPrice(event.price)
-            if(startDate === null) setStartDate(event.startDate)
-            if(endDate === null) setEndDate(event.endDate)
+            if(startDate === null) setStartDate(new Date(event.startDate))
+            if(endDate === null) setEndDate(new Date(event.endDate))
         }
 
     },[event, venueId, name, description, type, capacity, price, loaded, startDate, endDate])
@@ -78,21 +78,26 @@ const EditEvent = () => {
     
     useEffect(()=>{
         let errors = [];
-
+        console.log(name)
         if(isNaN(venueId)) errors.push('There must be a venue selected') 
         if(!name || name.length < 5) errors.push('Name must be 5 character or longer')
         if(!description) errors.push('Description is required')
         if(type !== 'Online' && type !== 'In person') errors.push('Type must be Online or In person')
         if(isNaN(capacity)) errors.push('Capacity must be an integer')
         if(isNaN(price)) errors.push('Price is invalid')
+        console.log(endDate, 'endDate')
+        console.log('startDate', startDate)
+        console.log(startDate > endDate)
         if(startDate < fullDate) {
             errors.push('Start Date must be in the future')
         }
         if(endDate < startDate) errors.push('End Date must be greater than start Date')
-        
+        console.log('errors', errors)
+
         setValidationErrors(errors)
         
     },[fullDate, venueId, name, description, type, capacity, price, startDate, endDate])
+    console.log(validationErrors,'---valErrors')
 
     const onSubmit = async(e) => {
         e.preventDefault();
@@ -100,18 +105,19 @@ const EditEvent = () => {
         setSubmitted(true)
         
         if(validationErrors.length <=0 ){
+            console.log('yeeet')
             await dispatch(eventActions.editAEvent({venueId, name, description, type, capacity, price, startDate, endDate}, eventId))
         .catch(async (res) => {
             const data = await res.json();
             if(data && data.errors) {
                 let dataErrors = Object.values(data.errors)
                 errors.push(...dataErrors)
+                setValidationErrors(errors)
             }
         })}
 
-        setValidationErrors(errors)
-        
-        if(validationErrors.length <= 0) {
+   
+        if(validationErrors.length <= 0 && errors.length <= 0) {
             setVenueId('');
             setName('');
             setDescription('');
@@ -170,7 +176,6 @@ const EditEvent = () => {
     if(!endMinutes) setEndMinutes(minutesE)    
     }
     
-    console.log(validationErrors)
 
     let inPersonVenues = [];
     if(group) {
@@ -198,7 +203,7 @@ const EditEvent = () => {
             }
         <div className='edit-group-text-wrapper'>
         <div className='edit-group-div'>
-            <input className='edit-group-input' type='text' onChange={(e) => setName(e.target.value)} value={name} required placeholder='Enter a name' minLength={5} maxLength={200}/>
+            <input className='edit-group-input' type='text' onChange={(e) => { setName(e.target.value); console.log(name) }} value={name} required placeholder='Enter a name' minLength={5} maxLength={200}/>
             <input className='edit-group-input' type='text' onChange={(e) => setDescription(e.target.value)} value={description} required placeholder='Enter a description' maxLength={500}/>
             <input className='edit-group-input' onChange={(e) => setCapacity(e.target.value)} type='number' min='1' step='1' required placeholder='Enter a capacity' value={capacity}/>
             <input className='edit-group-input' onChange={(e) => setPrice(e.target.value)} type='number' min='1' step='.01' required placeholder='Enter a price' value={price}/>
@@ -226,7 +231,8 @@ const EditEvent = () => {
                 setStartYear(dateArr[0]);
                 setStartMonth(dateArr[1]);
                 setStartDay(dateArr[2])
-                if(startHour && startMinutes) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
+                setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
+                console.log('startDate after Year month day',startDate)
             }} 
             required/>
                 <label className='create-event-label-text'> Start Time</label>
@@ -239,7 +245,8 @@ const EditEvent = () => {
                     let timeArr = e.target.value.split(':')
                     setStartHour(timeArr[0]);
                     setStartMinutes(timeArr[1]);
-                    if(startYear && startMonth && startDay) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
+                    setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
+                    console.log('startDate after Hour minutes', startDate)
                 }} 
                 required/>
         </div>
@@ -249,13 +256,18 @@ const EditEvent = () => {
             className='create-event-startDate-input' 
             value={`${endYear}-${endMonth}-${endDay}`} 
             // min={`${year}-${month}-${day}`}
-            onChange={(e) => { 
-                let dateArr = e.target.value.split('-'); 
-                setEndYear(dateArr[0]);
-                setEndMonth(dateArr[1]);
-                setEndDay(dateArr[2])
-
-                if(endHour && endMinutes) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));  
+            onChange={async(e) => {
+                console.log('----value---', e.target.value) 
+                let date = e.target.value;
+                let dateArr = date.split('-') 
+                setEndYear(parseInt(dateArr[0]));
+                console.log(parseInt(endYear))
+                 setEndMonth(dateArr[1]);
+                console.log(endMonth)
+               setEndDay(parseInt(dateArr[2]))
+                console.log(endDay)
+                setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));
+                console.log(endDate, 'after year month day')  
             }} 
             required/>
             <label className='create-event-label-text'> EndTime </label>
@@ -265,10 +277,12 @@ const EditEvent = () => {
             // min={`${startHour}:${startMinutes + 1}`}
             value={`${endHour}:${endMinutes}`} 
             onChange={(e) => {
+                console.log(e.target.value)
                 let timeArr = e.target.value.split(':');
                 setEndHour(timeArr[0]);
                 setEndMinutes(timeArr[1]);
-                if(endYear && endMonth && endDay) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));
+                setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));
+                console.log(endDate, 'after hour minutes')
             }}
             required/>
         </div>

@@ -58,7 +58,7 @@ const EditGroup = () => {
 
     useEffect(()=> {
         let errors = [];
-
+        console.log(name, 'name in useEffect')
         if(!description || description.length < 50) errors.push('Description must be atleast 50 characters');
         if(!state) errors.push('You must enter a state');
         if(!city) errors.push('You must enter a city');
@@ -104,7 +104,7 @@ const EditGroup = () => {
             { group && loaded && (
             <div className='edit-group-text-wrapper'>
                 <div className='edit-group-div'>
-                    <input className='edit-group-input' type='text' onChange={(e)=> setName(e.target.value)} value={name} required placeholder='Enter a name' maxLength={60}/>
+                    <input className='edit-group-input' type='text' onChange={(e)=> { setName(e.target.value); console.log(name, 'name after onChange')}} value={name} required placeholder='Enter a name' maxLength={60}/>
                     <input className='edit-group-input' type='text' onChange={(e)=> setDescription(e.target.value)} value={description} required placeholder='Enter a description atleast 50 characters long' minLength={50} maxLength={500}/>
                     <input className='edit-group-input' type='text' onChange={(e) => setCity(e.target.value)} value={city} required placeholder='Enter a city'/>
                     <input className='edit-group-input' type='text' onChange={(e) => setState(e.target.value)} value={state} placeholder='Enter a state' required/>
