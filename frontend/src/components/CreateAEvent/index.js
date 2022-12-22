@@ -33,7 +33,6 @@ const CreateEvent = () => {
     const [ endHour, setEndHour] = useState('');
     const [ endMinutes, setEndMinutes] = useState('');
     const [ submitted, setSubmitted] = useState(false);
-    const heroku = 'heroku'
 
     const sessionUser = useSelector(state => state.session.user)
     const group = useSelector(state => state.group.group);
