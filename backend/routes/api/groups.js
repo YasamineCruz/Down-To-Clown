@@ -658,7 +658,8 @@ router.get('/:groupId/events', async(req, res, next) => {
 
 
 router.post('/:groupId/membership', requireAuth, async(req, res, next) => {
-    const { groupId, memberId, status } = req.body
+    const { groupId } = req.params;
+    const { memberId, status } = req.body
 
     let group = await Group.findByPk(groupId);
     let currentMemberships = await Membership.findAll({where: { id: { [Op.not] : null } }, raw: true})
