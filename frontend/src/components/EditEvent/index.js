@@ -5,7 +5,9 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import './EditEvent.css'
+import './EditEvent.css';
+
+export const addZero = (num) => num < 10 ? `0${num}` : num;
 
 const EditEvent = () => {
     const history = useHistory();
@@ -15,7 +17,6 @@ const EditEvent = () => {
     const event = useSelector(state => state.event.event)
     const group = useSelector(state => state.group.group);
     let sessionUser = useSelector(state => state.session.user)
-    
     const { eventId } = params
     
     const [ venueId, setVenueId] = useState(null);
@@ -24,22 +25,13 @@ const EditEvent = () => {
     const [ type, setType] = useState(null);
     const [ capacity, setCapacity] = useState(null);
     const [ price, setPrice] = useState(null);
-    const [ startDate, setStartDate] = useState('');
-    const [ endDate, setEndDate] = useState('');
+    const [ startDate, setStartDate] = useState(null);
+    const [ endDate, setEndDate] = useState(null);
     const [ validationErrors, setValidationErrors] = useState([]);
-    const [ startDay, setStartDay] = useState('');
-    const [ startMonth, setStartMonth] = useState('');
-    const [ startYear, setStartYear] = useState('');
-    const [ startHour, setStartHour] = useState('');
-    const [ startMinutes, setStartMinutes] = useState('')
-    const [ endDay, setEndDay] = useState('');
-    const [ endMonth, setEndMonth] = useState('');
-    const [ endYear, setEndYear] = useState('');
-    const [ endHour, setEndHour] = useState('');
-    const [ endMinutes, setEndMinutes] = useState('');
     const [ submitted, setSubmitted] = useState(false);
 
     const fullDate = useMemo(() => { return new Date()}, [])
+    const minStartDate = `${fullDate.getFullYear()}-${addZero(fullDate.getMonth() + 1)}-${addZero(fullDate.getDate() + 1)}T${addZero(fullDate.getHours())}:00`
 
     if(!sessionUser) history.push('/');
 
@@ -55,9 +47,14 @@ const EditEvent = () => {
             if(type === null) setType(event.type)
             if(capacity === null) setCapacity(event.capacity);
             if(price === null) setPrice(event.price);
+            let newStartDate = new Date(event.startDate)
+            if(startDate === null) setStartDate(`${newStartDate.getFullYear()}-${addZero(newStartDate.getMonth() + 1)}-${addZero(newStartDate.getDate())}T${addZero(newStartDate.getHours())}:${addZero(newStartDate.getMinutes())}`)
+            let newEndDate = new Date(event.endDate)
+            if(endDate === null) setEndDate(`${newEndDate.getFullYear()}-${addZero(newEndDate.getMonth() + 1)}-${addZero(newEndDate.getDate())}T${addZero(newEndDate.getHours())}:${addZero(newEndDate.getMinutes())}`)
             }
     },[event, venueId, name, description, type, capacity, price])
    
+
     let groupId;
     if(event) groupId = event.groupId
    
@@ -78,8 +75,8 @@ const EditEvent = () => {
         if(type !== 'Online' && type !== 'In person') errors.push('Type must be Online or In person')
         if(isNaN(capacity)) errors.push('Capacity must be an integer')
         if(isNaN(price)) errors.push('Price is invalid')
-        if(startDate < fullDate) errors.push('Start Date must be in the future')
-        if(endDate < startDate) errors.push('End Date must be greater than start Date')
+        if(new Date(startDate) < fullDate) errors.push('Start Date must be in the future')
+        if(new Date(endDate) < new Date(startDate)) errors.push('End Date must be greater than start Date')
         
         setValidationErrors(errors)
         
@@ -117,29 +114,6 @@ const EditEvent = () => {
         }  
     };
 
-
-    let year = fullDate.getFullYear();
-    let month = fullDate.getMonth();
-    let day = fullDate.getDate();
-    let hour = fullDate.getHours();
-    let minutes = fullDate.getMinutes();
-    if(month < 10) month = `0${month}`
-    if(day < 10) day = `0${day}`
-    if(minutes < 10 && minutes !== 0) minutes = `00`
-    if(minutes === 0) minutes = `00`
-    console.log('minutes', minutes)
-    console.log('hour', hour)
-    
-    if(!startYear) setStartYear(year);
-    if(!startMonth) setStartMonth(month);
-    if(!startDay) setStartDay(day);
-    if(!startHour) setStartHour(hour + 1);
-    if(!startMinutes) setStartMinutes(minutes);
-    if(!endHour) setEndHour(startHour)
-    if(!endYear) setEndYear(startYear)
-    if(!endDay) setEndDay(startDay)
-    if(!endMonth) setEndMonth(startMonth)
-    if(!endMinutes) setEndMinutes(startMinutes)
 
 
     let inPersonVenues = [];
@@ -221,63 +195,29 @@ const EditEvent = () => {
             <label className='create-event-label-text'>Start Date</label>
             <input 
             className='create-event-startDate-input'
-            type='date' 
-            value={`${startYear}-${startMonth}-${startDay}`} 
-            min={`${startYear}-${startMonth}-${startDay}`} 
+            type='datetime-local' 
+            value={startDate}
+            min={minStartDate} 
             onChange={(e) => { 
-                let dateArr = e.target.value.split('-'); 
-                setStartYear(dateArr[0]);
-                setStartMonth(dateArr[1]);
-                setStartDay(dateArr[2])
-                if(startHour && startMinutes) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
+                setStartDate(e.target.value)
             }} 
             required/>
-                <label className='create-event-label-text'> Start Time</label>
-                <input
-                className='create-event-startDate-input' 
-                type='time' 
-                min={`${startHour}:${startMinutes}`} 
-                value={`${startHour}:${startMinutes}`}
-                onChange={(e) => {
-                    let timeArr = e.target.value.split(':')
-                    setStartHour(timeArr[0]);
-                    setStartMinutes(timeArr[1]);
-                    if(startYear && startMonth && startDay) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
-                }} 
-                required/>
         </div>
         <div className='create-event-date'>
          <label className='create-event-label-text'> End Date</label>
-            <input type='date'
+            <input type='datetime-local'
             className='create-event-startDate-input' 
-            value={`${endYear}-${endMonth}-${endDay}`} 
-            min={`${endYear}-${endMonth}-${endDay}`}
+            value={endDate}
+            min={startDate} 
             onChange={(e) => { 
-                let dateArr = e.target.value.split('-'); 
-                setEndYear(dateArr[0]);
-                setEndMonth(dateArr[1]);
-                setEndDay(dateArr[2])
-
-                if(endHour && endMinutes) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));  
+                setEndDate(e.target.value)
             }} 
-            required/>
-            <label className='create-event-label-text'> EndTime </label>
-            <input
-            className='create-event-startDate-input' 
-            type='time' 
-            min={`${startHour}:${startMinutes + 1}`}
-            value={`${endHour}:${endMinutes}`} 
-            onChange={(e) => {
-                let timeArr = e.target.value.split(':');
-                setEndHour(timeArr[0]);
-                setEndMinutes(timeArr[1]);
-                if(endYear && endMonth && endDay) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));
-            }}
             required/>
         </div>
         
         </div>
         <div className='button-container'>
+            <button className='BackButton' onClick={()=>  history.push(`/events/${eventId}`)}type='button'>Exit</button>
            <button className='nextButton-selected' type='submit'>
             Submit
             </button> 

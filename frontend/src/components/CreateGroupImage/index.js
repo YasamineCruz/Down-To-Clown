@@ -5,17 +5,16 @@ import CreateGroupImage from './CreateGroupImage';
 
 
 function CreateGroupImageModal() {
-  const [showImageModal, setShowImageModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
       <div className='EGLink' onClick={() => {
-        setShowImageModal(true);
-        document.getElementById('ImageModal').style.display = 'flex'
+        setShowModal(true);
       }}>Create a Group Image</div>
-      {showImageModal && (
-        <ImageModal onClose={() => setShowImageModal(false)}>
-          <CreateGroupImage />
+      {showModal && (
+        <ImageModal onClose={() => setShowModal(false)}>
+          <CreateGroupImage setShowModal={setShowModal}/>
         </ImageModal>
       )}
     </>

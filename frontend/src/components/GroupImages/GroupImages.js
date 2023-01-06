@@ -29,8 +29,7 @@ const GroupImages = () => {
                       <div className='fix-flex'>
                         {group.GroupImages.map(image => (
                             <div className='images-wrapper'>
-                            <img className='GroupsImages2' key={image.id} src={image.url} alt=''/>
-                            <GetIndividualGroupImageModal url={image.url}/>
+                            <GetIndividualGroupImageModal image={image} groupId={groupId}/>
                             </div>
                         ))}
                       </div>  

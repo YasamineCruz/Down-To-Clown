@@ -4,18 +4,18 @@ import { IndividualImageModal } from '../../context/IndividualImageModal';
 import GetAGroupImage from './GetAGroupImage';
 
 
-function GetIndividualGroupImageModal({url}) {
-  const [showIndividualImageModal, setShowIndividualImageModal] = useState(false);
-    
+function GetIndividualGroupImageModal({image, groupId}) {
+  const [showModal, setShowModal] = useState(false);
   return (
     <>
       <div className='EGLink' onClick={() => {
-        setShowIndividualImageModal(true);
-
-      }}>View</div>
-      {showIndividualImageModal && (
-        <IndividualImageModal onClose={() => setShowIndividualImageModal(false)}>
-          <GetAGroupImage url={url}/>
+        setShowModal(true);
+      }}>
+        <img className='GroupsImages2' key={image.id} src={image.url} alt=''/>
+        View</div>
+      {showModal && (
+        <IndividualImageModal onClose={() => setShowModal(false)}>
+          <GetAGroupImage url={image.url} setShowModal={setShowModal} groupId={groupId} id={image.id}/>
         </IndividualImageModal>
       )}
     </>

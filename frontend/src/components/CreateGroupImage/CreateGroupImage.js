@@ -4,7 +4,7 @@ import * as groupActions from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 
-function CreateGroupImage() {
+function CreateGroupImage({setShowModal}) {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState("");
   const [url, setUrl] = useState('');
@@ -36,12 +36,13 @@ function CreateGroupImage() {
         if (data && data.errors) setErrors(data.errors);
       });
       setUrl('')    
-      document.getElementById('ImageModal').style.display = 'none'
+      setShowModal(false)
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <button className='exit-button2' onClick={() => setShowModal(false)}>X</button>
      <div className='meetupIcon'>
         <img className='down-to-clown-icon' src='https://cdn-icons-png.flaticon.com/512/184/184390.png' alt=''/>
      </div>
@@ -55,7 +56,7 @@ function CreateGroupImage() {
       )}
       <div className='LoginContent'>
       <label className='loginlabel'>
-        <h3 className='login-modal-text'>Image url</h3>
+        <h3 className='login-modal-text urlText'>Image url</h3>
         <input
           type="text"
           className='loginInput'
@@ -65,7 +66,7 @@ function CreateGroupImage() {
           maxLength={500}
         />
       </label>
-        <button type="submit" className='loginButton'>Submit</button>
+        <button type="submit" className='loginButton imageButton'>Submit</button>
     </div>
     </form>
   );

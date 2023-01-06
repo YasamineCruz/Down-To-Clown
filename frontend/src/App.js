@@ -24,6 +24,7 @@ import GetEvents from "./components/GetEvents";
 import GetAEvent from "./components/GetAEvent";
 import DeleteEvent from "./components/DeleteEvent";
 import EditEvent from "./components/EditEvent";
+import MembershipApproval from "./components/MembershipApproval/MembershipApproval";
 
 
 

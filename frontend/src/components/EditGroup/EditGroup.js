@@ -25,7 +25,7 @@ const EditGroup = () => {
     const [type, setType] = useState(null)
     const [private_key, setPrivate_key] = useState(null)
     const [organizerId, setOrganizerId] = useState(null)
-    const [ submitted, setSubmitted] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
     
         if(!sessionUser) history.push('/')
@@ -62,7 +62,7 @@ const EditGroup = () => {
         if(!city) errors.push('You must enter a city');
         if(!name) errors.push('You must enter a Group name');
         if(!type) errors.push('Type must be Online or In person');
-        if(private_key !== 0 && private_key !== 1 && private_key !== true && private_key !== false) errors.push('You must select private or public');
+        if(private_key !== 0 && private_key !== 1 && private_key !== 'yes' && private_key !== 'no') errors.push('You must select private or public');
 
         setValidationErrors(errors);
 
@@ -72,10 +72,9 @@ const EditGroup = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        
        setSubmitted(true)
        if(validationErrors.length <= 0){
-           dispatch(groupActions.editAGroup({ organizerId, name, description, type, private_key, city, state}, groupId))
+           dispatch(groupActions.editAGroup({ organizerId, name, description, type, private_key: private_key === 'yes' ? true : false, city, state}, groupId))
            .catch(async (res) => {
                const data = await res.json();
                if(data && data.errors) setValidationErrors(data.errors)
@@ -122,17 +121,18 @@ const EditGroup = () => {
                 <form className='edit-group-form-wrapper'>
                     <h1 className="edit-group-h1-text">Select Private or Public</h1>
                     <div className='radio-wrapper'>
-                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={true} name='type' required checked={private_key === 'true' || private_key === 1}/>
+                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={'yes'} name='type' required checked={private_key === 'yes' || private_key === 1}/>
                         <label className='radio-text'>Private</label>  
                     </div>
                     <div className='radio-wrapper'>
-                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={false} name='type' required checked={private_key === 'false' || private_key === 0}/>
+                    <input className='radio-input' onChange={(e) => setPrivate_key(e.target.value)} type='radio' value={'no'} name='type' required checked={private_key === 'no' || private_key === 0}/>
                     <label className='radio-text'>Public</label>  
                     </div>
                 </form>
             </div>
             )}                       
             <div className='button-container'>
+            <button className='BackButton' type='button' onClick={() =>  history.push(`/groups/${groupId}`)}>Exit</button>
               <button className={validationErrors.length <= 0 ? `nextButton-selected` : `nextButton-not-selected`} type='submit'>Edit Group</button>  
             </div> 
         </form>

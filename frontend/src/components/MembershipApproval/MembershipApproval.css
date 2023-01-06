@@ -1,0 +1,22 @@
+.pending-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.pending-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 40px;
+    padding-left: 5%;
+    padding-right: 1%;
+    justify-content: space-between;
+}
+
+.red {
+    color: red
+}
+
+.green {
+    color: green;
+}

@@ -16,11 +16,11 @@ const DeleteEvent = () => {
     const group = useSelector(state => state.group.group);
 
     let groupId;
-    if(group) groupId = group.id
+    if (group) groupId = group.id
 
-    if(!sessionUser) history.push('/')
-    if(group && sessionUser){
-        if(group.organizerId !== sessionUser.id) history.push('/')
+    if (!sessionUser) history.push('/')
+    if (group && sessionUser) {
+        if (group.organizerId !== sessionUser.id) history.push('/')
     }
 
 
@@ -39,20 +39,21 @@ const DeleteEvent = () => {
 
     return (
         <div className='edit-event-container'>
-          <form className='edit-event-form-wrapper' onSubmit={onSubmit}>
-            {event && (
-                <div className='edit-grouptext-wrapper'>
-                    <div className='edit-group-div-wrapper'>
-                        <h1 className='delete-group-h1-text'>Are you sure you want to delete {event.name}?</h1>
+            <form className='edit-event-form-wrapper' onSubmit={onSubmit}>
+                {event && (
+                    <div className='edit-grouptext-wrapper'>
+                        <div className='edit-group-div-wrapper'>
+                            <h1 className='delete-group-h1-text'>Are you sure you want to delete {event.name}?</h1>
+                        </div>
                     </div>
+                )}
+                <div className="button-container">
+                    <button className='BackButton' onClick={() => history.push(`/events/${eventId}`)} type='button'>Exit</button>
+                    <button className='nextButton-selected' type='submit'>Delete Event</button>
                 </div>
-            )}
-            <div className="button-container">
-              <button className='nextButton-selected' type='submit'>Delete Event</button>  
-            </div>
-         </form>   
+            </form>
         </div>
-       
+
     )
 }
 

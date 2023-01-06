@@ -37,6 +37,7 @@ const DeleteGroup = () => {
                 </div>
             )}
             <div className='button-container'>
+                <button className='BackButton' type='button' onClick={() =>  history.push(`/groups/${groupId}`)}>Exit</button>
                 <button className='nextButton-selected' type='submit'>Delete Group</button>   
             </div>
         </form>  

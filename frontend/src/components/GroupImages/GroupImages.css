@@ -6,14 +6,18 @@
     border: 10px solid white;
     margin-top: 2%;
     margin-bottom: 2%;
-    max-width: 120px;
-    min-width: 1000px;
+    max-width: 1200px;
+    min-width: 1200px;
     margin-left: 20%;
-    min-height: fit-content;
+    min-height: 300px;
+    max-height: fit-content;
+    height: fit-content;
+    max-height: fit-content;
     border-radius: 8px;
 }
 
 .GroupsImages2 {
+    display: flex;
     width: 180px;
     height: 100px;
     box-sizing: border-box;
@@ -26,8 +30,10 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    max-width: 120px;
+    max-width: 1200px;
     min-width: 1000px;
+    max-height: fit-content;
+    height: fit-content;
 }
 
 .images-wrapper {
@@ -35,6 +41,11 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 180px;
-    margin: 1%;
+    margin: 2%;
     justify-content: flex-start;
+    max-height: 125px;
+}
+
+.EGLink {
+    max-height: 100px;
 }

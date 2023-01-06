@@ -31,7 +31,9 @@ const GetAEvent = () => {
         if(groupId) dispatch(groupActions.getAGroup(groupId))
     }, [dispatch, eventId, groupId])
 
+    console.log('startdate before', event?.startDate)
     let startDate = new Date(event?.startDate);
+    console.log('stateDate after conversion', startDate)
     let startDay = startDate.getDay();
     let startMonth = startDate.getMonth();
     let startDate2 = startDate.getDate();
@@ -48,13 +50,16 @@ const GetAEvent = () => {
     if(startMinutes === 0) startMinutes = `00`;
     if(startMinutes < 10 && startMinutes > 0) startMinutes = `0${startMinutes}`
 
+    console.log('event Enddate before its made into a new date', event?.endDate)
     let endDate = new Date(event?.endDate);
+    console.log('---event--- after---- enddate', endDate)
     let endDay = endDate.getDay();
     let endMonth = endDate.getMonth();
     let endDate2 = endDate.getDate();
     let endHours = endDate.getHours();
     let endMinutes = endDate.getMinutes();
     let endTime;
+
 
     if(endHours >= 13) {
         endTime = 'PM'
@@ -81,7 +86,7 @@ const GetAEvent = () => {
                            <img className='event-img' src={event.EventImages[0].url} alt=''/> 
                         )}
                         { (!event.EventImages || event.EventImages.length) <= 0 && (
-                            <img className='event-img' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3j3PyYLsHz2xgGv3MN_T7CZAkz-JTz4bkxw&usqp=CAU' alt=''/>
+                            <img className='event-img' src='https://www.pyrunco.com/wp-content/uploads/2020/12/upcoming-events.jpg' alt=''/>
                         )}  
                         <div className='event-details'>
                             <div className='links-and-details'>

@@ -45,7 +45,7 @@ const CreateAGroupImage = () => {
 
         if(errors.length <= 0) {
             setUrl('')
-            history.push('/')
+            history.push(`/groups/${groupId}`)
         }
     }
 
