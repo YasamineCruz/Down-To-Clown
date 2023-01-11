@@ -21,7 +21,7 @@ const pending = (groupsArray, membersObject) => {
     return pendingMembers
 }
 
-export default function MembershipApproval() {
+export default function MembershipApproval({setShowPending, showPending}) {
     const dispatch = useDispatch()
     const groups = useSelector(state => state.group.currentUserGroups)
     const members = useSelector(state => state.members.members)
@@ -34,6 +34,18 @@ export default function MembershipApproval() {
     useEffect(() => {
         dispatch(getCurrentUsersGroups())
     }, [dispatch])
+
+    useEffect(() => {
+        if (!showPending) return;
+    
+        const closeMenu = () => {
+          setShowPending(false);
+        };
+    
+        document.addEventListener('click', closeMenu);
+    
+        return () => document.removeEventListener("click", closeMenu);
+      }, [showPending]);
 
     useEffect(() => {
         if (groups) {
@@ -53,9 +65,9 @@ export default function MembershipApproval() {
         let status = 'denied'
         await dispatch(editAMembership(memberId, groupId, status))
     }
-    console.log('CURRENT PENDING', currentPendingMembers)
+   
     return (
-        <div>
+        <div onClose={() => setShowPending(false)}>
             <div>
                 {currentPendingMembers.length <= 0 && (
                     <div className='profile-dropdown-text space'>No Memberships pending...</div>
@@ -64,10 +76,23 @@ export default function MembershipApproval() {
                     <div>{currentPendingMembers.map(member => {
                         return (
                             <div className='pending-wrapper space'>
-                                <div className='member-name profile-dropdown-text'>{member.firstName} {member.lastName[0]} </div>
-                                <div className='pending-buttons'>
-                                    <i class="fa-solid fa-circle-check green" onClick={() => Accept(member.id, member.groupId)}></i>
-                                    <i class="fa-solid fa-circle-xmark red" onClick={() => Deny(member.id, member.groupId)}></i>
+                                <div className='pending-container'>
+                                    {groups && (
+                                        <div className='group-name-wrapper'>{groups.map(group => {
+                                            if (group.id === +member.groupId) {
+                                                return (
+                                                    <div className='group-name'>{group.name}</div>
+                                                )
+                                            }
+                                        })}</div>
+                                    )}
+                                    <div className='member-info-container'>
+                                        <div className='member-name profile-dropdown-text'>{member.firstName} {member.lastName[0]} </div>
+                                        <div className='pending-buttons'>
+                                            <i class="fa-solid fa-circle-check green pointer" onClick={() => Accept(member.id, member.groupId)}></i>
+                                            <i class="fa-solid fa-circle-xmark red pointer" onClick={() => Deny(member.id, member.groupId)}></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )

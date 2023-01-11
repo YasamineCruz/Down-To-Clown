@@ -72,7 +72,7 @@ function ProfileButton({ user }) {
           <div className='profile-dropdown'>
             <div className='profile-dropdown-text' onClick={() => {setShowPending(false); openMenu()}}>View Menu</div>
             <div className='line'></div>
-            <MembershipApproval />
+            <MembershipApproval setShowPending={setShowPending} showPending={showPending}/>
           </div>
         )}
       </div>

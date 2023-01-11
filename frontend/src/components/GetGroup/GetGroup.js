@@ -27,7 +27,7 @@ const GroupPage = () => {
 
     let organizer;
 
-    membersArray?.forEach(member => { if(member.id === group?.organizerId) organizer = member})
+    membersArray?.forEach(member => { if (member.id === group?.organizerId) organizer = member })
 
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const GroupPage = () => {
         dispatch(getAllMembersByGroupId(groupId))
     }, [dispatch, groupId])
 
-   
+
     return (
         <div className='EGContainer'>
             <div className='EGInfoContainer'>
@@ -109,38 +109,40 @@ const GroupPage = () => {
                                         <div className='EGCreatorInfo'>
                                             <div className='EGMembers'>
                                                 <div className='organizer'>Members</div>
-                                                {members && group && (
-                                                    membersArray.map(member => {
-                                                        if(member.Membership?.status !== 'pending'){
-                                                        return (
-                                                            <div key={member.id} className='EGCreatorName'>
-                                                                <i className="fa-regular fa-circle-user fa-2x dot"></i>
-                                                                {`${member.firstName} ${member.lastName[0]}.`}
-                                                            </div>
-                                                        )
-                                                        }
-                                                        return <div></div>
-                                                    })
-                                                )}
+                                                <div className='members-container'>
+                                                    {members && group && (
+                                                        membersArray.map(member => {
+                                                            if (member.Membership?.status !== 'pending') {
+                                                                return (
+                                                                    <div key={member.id} className='EGCreatorName member-member'>
+                                                                        <i className="fa-regular fa-circle-user fa-2x dot"></i>
+                                                                        {`${member.firstName} ${member.lastName[0]}.`}
+                                                                    </div>
+                                                                )
+                                                            }
+                                                            return <div></div>
+                                                        })
+                                                    )}
+                                                    </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                            )}
+                                        {info === 'events' && (
+                                            <GetEventsByGroup />
+                                        )}
+                                        {info === 'images' && (
+                                            <GroupImages />
+                                        )}
                                     </div>
                                 </div>
                             )}
-                            {info === 'events' && (
-                                <GetEventsByGroup />
-                            )}
-                            {info === 'images' && (
-                                <GroupImages />
-                            )}
                         </div>
                     </div>
-                )}
-            </div>
-        </div>
-    )
+                )
 
-}
+                }
 
-export default GroupPage;
+                export default GroupPage;
 

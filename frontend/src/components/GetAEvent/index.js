@@ -1,10 +1,13 @@
 import * as eventActions from '../../store/events'
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import './GetAEvent.css'
 import { useParams } from "react-router-dom";
 import * as groupActions from "../../store/groups";
 import { Link } from 'react-router-dom';
+import { getAllAttendancesByEventId } from '../../store/attendances';
+import RequestAttendance from '../RequestAttendance';
+import { getAllMembersByGroupId } from '../../store/members';
 
 const check = (id, id2) => {
     if(id === id2) return true;
@@ -15,25 +18,52 @@ const DaysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', '
 
 const MonthsOfTheYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
+const checkAttendance = (userId, attendanceObject, eventId) => {
+    if(attendanceObject[eventId][userId]) return false
+    return true
+}
+
+const checkIfMember = (userId, membersObject, groupId) => {
+
+    if(membersObject[groupId][userId]){
+        if(membersObject[groupId][userId].Membership.status !== 'pending') return true
+    }
+    return false
+}
+
 const GetAEvent = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const { eventId } = params;
     const group = useSelector(state => state.group.group);
-    const event = useSelector(store => store.event.event);
+    const event = useSelector(state => state.event.event);
     const sessionUser = useSelector(state => state.session.user);
-
+    const attendances = useSelector(state => state.attendance.attendances)
+    const members = useSelector(state => state.members.members)
+    
     let groupId;
     if(event) groupId = event.groupId
 
+    
+    if(groupId){
+        if(group?.id){
+            console.log('CHECK MEMEBRSHIP', checkIfMember(sessionUser?.id, members, groupId))
+        }
+    }
     useEffect(() => {
         dispatch(eventActions.getAEvent(eventId))
-        if(groupId) dispatch(groupActions.getAGroup(groupId))
-    }, [dispatch, eventId, groupId])
+        if(sessionUser){
+            dispatch(getAllAttendancesByEventId(eventId))
+        }
+        if(groupId) {
+            dispatch(groupActions.getAGroup(groupId))
+            dispatch(getAllMembersByGroupId(groupId))
+        }
+    }, [dispatch, eventId, groupId, sessionUser])
 
-    console.log('startdate before', event?.startDate)
+
     let startDate = new Date(event?.startDate);
-    console.log('stateDate after conversion', startDate)
+
     let startDay = startDate.getDay();
     let startMonth = startDate.getMonth();
     let startDate2 = startDate.getDate();
@@ -50,9 +80,8 @@ const GetAEvent = () => {
     if(startMinutes === 0) startMinutes = `00`;
     if(startMinutes < 10 && startMinutes > 0) startMinutes = `0${startMinutes}`
 
-    console.log('event Enddate before its made into a new date', event?.endDate)
     let endDate = new Date(event?.endDate);
-    console.log('---event--- after---- enddate', endDate)
+
     let endDay = endDate.getDay();
     let endMonth = endDate.getMonth();
     let endDate2 = endDate.getDate();
@@ -72,7 +101,7 @@ const GetAEvent = () => {
 
     return (
         <div className='event-container'>
-        {event && group && (
+        {event && group && Object.values(members).length >= 1 && (
             <div className='event-wrapper'>
                 <div className='event-upper-div'>
                     <div className='event-name'>{event.name}</div>
@@ -98,6 +127,9 @@ const GetAEvent = () => {
                                         <Link className='EGLink' to={`/events/${event.id}/edit`}>Edit Event</Link>
                                         <Link className='EGLink' to={`/events/${event.id}/delete`}>Delete Event</Link>
                                     </div>
+                                )}
+                                {checkIfMember(sessionUser.id, members, groupId) && checkAttendance(sessionUser.id, attendances, eventId) && (
+                                    <RequestAttendance user={sessionUser} eventId={eventId}/>
                                 )}
                                 </div>   
                             )}

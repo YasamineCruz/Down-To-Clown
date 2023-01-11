@@ -12,13 +12,16 @@ export default function RequestMembership({groupName, groupId, memberId, setShow
    
 
     return (
-        <div>
-            <div>Would you like to requst a membership to {groupName}?</div>
-            <div>
-                <button onClick={() => setShowModal(false)} type='button'>Cancel</button>
-                <button onClick={(e)=> request(e)}>
+        <div className='request-membership-container'>
+            <div className='request-wrapper'>
+            <div className='request-text'>Would you like to requst a membership to {groupName}?</div>
+            <div className='button-container3'>
+                <button className='request-cancel-button' onClick={() => setShowModal(false)} type='button'>Cancel</button>
+                <button  className='request-yes-button' onClick={(e)=> request(e)}>
                     Request Membership
                 </button>
+            </div>
+
             </div>
         </div>
     )
