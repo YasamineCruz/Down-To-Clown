@@ -211,8 +211,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const { eventId } = req.params;
     const { userId, status } = req.body;
     const { user } = req;
-    console.log('---------------USER ID DIS NUTZZ_-------------------', userId)
-    console.log('stats', status)
 
     let currentUser = user.toSafeObject();
     let currentUserId = currentUser.id;
@@ -230,7 +228,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     let checkAttendance = await Attendance.findOne({ where: { [Op.and]: [{ userId }, { eventId }] } })
 
     if (checkAttendance) {
-        console.log('SKEKKEKEKKEKK')
         if (checkAttendance.status === "pending") {
             res.status = 400;
             return res.json({
@@ -240,7 +237,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
         }
 
         if (checkAttendance.status === "member") {
-            console.log('BLACK AND YELLOW BLACK AND YELLOW BLACK AND YELLOW')
             res.status = 400;
             return res.json({
                 message: "User is already an attendee of the event",
@@ -252,7 +248,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
 
 
     if (checkAuthorization) {
-        console.log('AUTHORIZED IN THE HOUSESSSSSS')
         let newAtt = await Attendance.create({ eventId, userId, status: "pending" })
         return res.json({
             id: newAtt.id,
@@ -273,6 +268,8 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
 router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const { eventId } = req.params;
     const { userId, status } = req.body;
+
+    console.log('yeeeeeeeeeeeeeeeeeet', userId)
     const { user } = req;
 
     let currentUser = user.toSafeObject();
@@ -351,7 +348,6 @@ router.get('/:eventId/attendees', async (req, res, next) => {
         attributes: ['id', 'firstName', 'lastName'],
         raw: true
     },)
-    console.log('AAAAAAAAAAAAAAAAAAAAWEEWEEWEW', attendees)
 
     let currentUserStatus = await User.findByPk(currentUserId)
 
@@ -373,7 +369,6 @@ router.get('/:eventId/attendees', async (req, res, next) => {
         for (let i = 0; i < attendees.length; i++) {
             let attendee = attendees[i];
             let attendance = await Attendance.findOne({ where: { [Op.and]: [{ eventId }, { userId: attendee.id }] }, attributes: ['status'] })
-            console.log('yeet yeet', attendance)
             if (attendance) {
                 payload.push({
                     id: attendee.id,
@@ -407,9 +402,6 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
     let currentUserId = currentUser.id;
 
     let eventCheck = await Event.findByPk(eventId);
-    // I have added a 1 because extraUserId is used in postman and never requested
-    // I could have also just passed in currentUserId
-    memberId += 1
 
     if (!eventCheck) {
         res.status = 404;
