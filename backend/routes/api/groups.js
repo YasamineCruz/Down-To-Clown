@@ -39,23 +39,6 @@ const validateGroup = [
     handleValidationErrors
 ]
 
-<<<<<<< HEAD
-const checkErrors = async(res, err) => {
-        let errorList = err.errors;
-        let errors = {};
-
-        for(let i = 0; i < errorList.length; i++){
-            let err = errorList[i]
-            let name = err.path
-            let msg = err.message
-            errors[name] = msg 
-        }
-        res.json({
-            message: "Validation Error",
-            statusCode: 400,
-            errors: errors
-        })
-=======
 const checkErrors = async (res, err) => {
     let errorList = err.errors;
     let errors = {};
@@ -70,7 +53,6 @@ const checkErrors = async (res, err) => {
         statusCode: 400,
         errors: errors
     })
->>>>>>> dev
 }
 
 
