@@ -6,9 +6,9 @@ const HomePage = () => {
     return (
         <div className='homepage-wrapper'>
         <div className='image-wrapper'>
-        <img className='homepageRedBlob'src='https://uploads-ssl.webflow.com/5d70235e8fe3986874a24e3c/630d1398589a5199765c0618_blob-green.svg' alt='text'/>
-        <img className='homepageYellowBlob' src='https://uploads-ssl.webflow.com/5d70235e8fe3986874a24e3c/630d1398f807c98fd81523fb_blob-red.svg' alt='text' />
-        <img className='homepageGreenBlob' src='https://uploads-ssl.webflow.com/5d70235e8fe3986874a24e3c/630d1398c5d00b109adcab3d_blob-orange.svg' alt='text' />
+        <img className='homepageRedBlob'src='https://secure.meetupstatic.com/next/images/blobs/red-blob.svg' alt='text'/>
+        <img className='homepageYellowBlob' src='https://secure.meetupstatic.com/next/images/blobs/yellow-blob.svg' alt='text' />
+        <img className='homepageGreenBlob' src='	https://secure.meetupstatic.com/next/images/blobs/green-blob.svg' alt='text' />
         <img className='homepageScreenImg' src='https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=640' alt='text'/>
         </div>
         <div className='homepageContent'>
