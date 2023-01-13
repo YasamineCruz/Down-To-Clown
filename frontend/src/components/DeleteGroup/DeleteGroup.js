@@ -32,7 +32,7 @@ const DeleteGroup = () => {
             {group && (
                 <div className='edit-grouptext-wrapper'>
                     <div className='edit-group-div-wrapper'>
-                        <h1 className='delete-group-h1-text'>Are you sure you want to delete "{group.name}"?</h1> 
+                        <h1 className='delete-group-h1-text'>Are you sure you want to delete "{group.name.slice(0,35)}"?</h1> 
                     </div>
                 </div>
             )}

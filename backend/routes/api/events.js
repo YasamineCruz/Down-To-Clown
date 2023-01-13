@@ -269,7 +269,6 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const { eventId } = req.params;
     const { userId, status } = req.body;
 
-    console.log('yeeeeeeeeeeeeeeeeeet', userId)
     const { user } = req;
 
     let currentUser = user.toSafeObject();
@@ -393,9 +392,8 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 
 })
 
-router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
-    const { eventId } = req.params;
-    let { memberId } = req.body;
+router.delete('/:eventId/attendance/:memberId', requireAuth, async (req, res, next) => {
+    const { eventId, memberId } = req.params;
     const { user } = req;
 
     let currentUser = user.toSafeObject();

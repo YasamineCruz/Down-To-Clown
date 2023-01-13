@@ -12,6 +12,9 @@ import { GroupProvider } from './context/GroupContext';
 import { ImageModalProvider } from "./context/ImageModal";
 import { IndividualImageModalProvider } from "./context/IndividualImageModal";
 import { MembershipModalProvider } from "./context/Membership";
+import { AttendanceApprovalModalProvider } from "./context/AttendanceApprovalModal";
+import { ViewMembershipsModalProvider } from "./context/ViewMembershipsModal";
+import { DeleteAttendanceModalProvider } from "./context/DeleteAttendanceModal";
 
 
 
@@ -29,17 +32,23 @@ function Root() {
   return (
     <Provider store={store}>
       <GroupProvider>
-        <MembershipModalProvider>
-          <ImageModalProvider>
-            <IndividualImageModalProvider>
-              <ModalProvider>
-                <BrowserRouter>
-                  <App />
-                </BrowserRouter>
-              </ModalProvider>
-            </IndividualImageModalProvider>
-          </ImageModalProvider>
-        </MembershipModalProvider>
+        <DeleteAttendanceModalProvider>
+          <AttendanceApprovalModalProvider>
+            <ViewMembershipsModalProvider>
+              <MembershipModalProvider>
+                <ImageModalProvider>
+                  <IndividualImageModalProvider>
+                    <ModalProvider>
+                      <BrowserRouter>
+                        <App />
+                      </BrowserRouter>
+                    </ModalProvider>
+                  </IndividualImageModalProvider>
+                </ImageModalProvider>
+              </MembershipModalProvider>
+            </ViewMembershipsModalProvider>
+          </AttendanceApprovalModalProvider>
+        </DeleteAttendanceModalProvider>
       </GroupProvider>
     </Provider>
   );

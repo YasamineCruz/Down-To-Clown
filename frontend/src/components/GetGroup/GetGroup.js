@@ -9,6 +9,7 @@ import GetEventsByGroup from '../GetEventByGroup';
 import CreateGroupImageModal from "../CreateGroupImage";
 import GroupImages from "../GroupImages/GroupImages";
 import CreateGroupMembershipModal from "../RequestMembership";
+import ViewApprovedMembers from "../ViewMemberships";
 
 const check = (id, id2) => {
     if (id === id2) return true;
@@ -61,6 +62,15 @@ const GroupPage = () => {
                                 <div className='EGCreator info'>
                                     <i className="fa-regular fa-user icon"></i>
                                     Organized By<b className='please-give-space'>{organizer?.firstName} {organizer?.lastName}</b>
+                                </div>
+                                <div>
+                                    {sessionUser && (
+                                        <div>
+                                            {check(sessionUser.id, group.organizerId) && (
+                                                <ViewApprovedMembers memberships={Object.values(members)} groupId={groupId} />
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -123,26 +133,26 @@ const GroupPage = () => {
                                                             return <div></div>
                                                         })
                                                     )}
-                                                    </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                            )}
-                                        {info === 'events' && (
-                                            <GetEventsByGroup />
-                                        )}
-                                        {info === 'images' && (
-                                            <GroupImages />
-                                        )}
                                     </div>
                                 </div>
                             )}
+                            {info === 'events' && (
+                                <GetEventsByGroup />
+                            )}
+                            {info === 'images' && (
+                                <GroupImages />
+                            )}
                         </div>
                     </div>
-                )
+                )}
+            </div>
+        </div>
+    )
 
-                }
+}
 
-                export default GroupPage;
+export default GroupPage;
 

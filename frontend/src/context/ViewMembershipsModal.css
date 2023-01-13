@@ -1,0 +1,54 @@
+#view-memberships-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+#view-memberships-modal-background {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#view-memberships-modal-content {
+    position: absolute;
+    background-color: white;
+    border-radius: .25rem;
+    justify-content: center;
+    max-height: 1000px;
+    width: 300px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 1%;
+    min-height: 300px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.delete-membership-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.view-membership-edit {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 20px;
+    cursor: pointer;
+}

@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 const GET_MEMBERS = 'members/getMembers'
 const EDIT_MEMBERSHIP = 'members/editMembership'
+const DELETE_MEMBERSHIP = 'members/deleteMembership'
 
 const getMembers = (members, groupId) => {
     return {
@@ -18,6 +19,27 @@ const editMembership = (member, groupId) => {
         groupId
     }
 }
+
+const deleteMembership = (groupId, memberId) => {
+    return {
+        type: DELETE_MEMBERSHIP,
+        memberId,
+        groupId
+    }
+}
+
+export const deleteAMembership = (groupId, memberId) => async(dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/membership/${memberId}`, {
+        method: 'DELETE'
+    })
+
+    if(response.ok){
+        let msg = await response.json()
+        dispatch(deleteMembership(groupId, memberId))
+        return msg
+    }
+}
+
 
 
 export const requestAMembership = (groupId, memberId) => async(dispatch) => {
@@ -75,6 +97,11 @@ const membersReducer = ( state = initialState, action) => {
             newState = {...state, members: {...state.members}};
             newState.members[action.groupId] = {...state.members[action.groupId]}
             newState.members[action.groupId][action.payload.memberId].Membership.status = action.payload.status
+            return newState
+        case DELETE_MEMBERSHIP:
+            newState = {...state, members: {...state.members}};
+            newState.members[action.groupId] = {...state.members[action.groupId]}
+            delete newState.members[action.groupId][action.memberId]
             return newState
         default:
             return state;

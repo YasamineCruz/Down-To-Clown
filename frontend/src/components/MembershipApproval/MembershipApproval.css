@@ -8,7 +8,7 @@
     margin-left: 75px;
     display: flex;
     flex-direction: row;
-    width: 40px;
+    width: 45px;
     padding-left: 5%;
     padding-right: 1%;
     justify-content: space-between;
@@ -45,5 +45,14 @@
 }
 
 .member-name {
-    width: fit-content;
+    display: -webkit-box !important;
+    flex-direction: row;
+    min-width: 50px;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3em;
+    max-width: 50px;
 }
+

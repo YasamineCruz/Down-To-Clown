@@ -1,7 +1,8 @@
 import { useDispatch } from "react-redux"
 import { requestAAttendance } from "../../store/attendances"
+import './RequestAttendance.css'
 
-export default function RequestAttendance({eventId, user}) {
+export default function RequestAttendance({eventId, user, type}) {
     const dispatch = useDispatch()
 
     const requestAttendance = async(eventId, userId) => {
@@ -9,8 +10,8 @@ export default function RequestAttendance({eventId, user}) {
     }
 
     return (
-        <div>
-            <button onClick={()=> requestAttendance(eventId, user.id)}></button>
+        <div className='attendance-wrapper'>
+            <div className='attendance-button' onClick={()=> requestAttendance(eventId, user.id)}>Attend {type}</div>
         </div>
     )
 }

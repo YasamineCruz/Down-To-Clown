@@ -1,0 +1,33 @@
+.attendance-button {
+    display: flex;
+    flex-direction: row;
+    background-color:#f65858;
+    border: 1px solid #f65858;
+    color: #ffff;
+    padding: 10px;
+    border-radius: .6rem;
+    cursor: pointer;
+}
+
+.attendance-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.attendance-button:hover {
+    background-color:#f57474;
+    border: 1px solid #f57474;
+}
+
+.attendance-button-no-hover {
+    display: flex;
+    flex-direction: row;
+    background-color:#f65858;
+    border: 1px solid #f65858;
+    color: #ffff;
+    padding: 10px;
+    border-radius: .6rem;
+}

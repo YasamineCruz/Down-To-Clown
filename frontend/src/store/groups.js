@@ -128,9 +128,11 @@ export const deleteGroup = (groupId) => async(dispatch) => {
     const response = await csrfFetch(`/api/groups/${groupId}`, {
         method: 'DELETE'
     })
-    await response.json();
-    dispatch(removeGroup());
-    return response;
+    if(response.ok){
+        let msg = await response.json();
+        dispatch(removeGroup());
+        return msg;
+    }
 }
 
 
