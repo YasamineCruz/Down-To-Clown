@@ -46,7 +46,6 @@ export const requestAAttendance = (eventId, userId) => async(dispatch) => {
 }
 
 export const editAAttendance = (attendanceId, eventId, status) => async(dispatch) => {
-    console.log('SKEET SKEET', attendanceId)
     const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
         method: 'PUT',
         body: JSON.stringify({

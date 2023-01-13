@@ -711,7 +711,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     const { groupId } = req.params
     const { memberId, status } = req.body;
     const { user } = req;
-    console.log('HITTING THIS PUT REQUEST', status)
 
     let currentUser = user.toSafeObject();
     let currentUserId = currentUser.id;
@@ -881,8 +880,6 @@ router.get('/:groupId/members', async (req, res, next) => {
 router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, next) => {
     const { groupId, memberId } = req.params;
     const { user } = req;
-    console.log('HIT THIS SHIT')
-
 
     let currentUser = user.toSafeObject();
     let currentUserId = currentUser.id;

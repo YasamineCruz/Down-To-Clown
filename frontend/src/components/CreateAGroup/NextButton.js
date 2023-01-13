@@ -3,7 +3,6 @@ import './CreateAGroup.css'
 
 const NextButton = ({clickable}) => {
     const { page, setPage} = useGroupContext();
-    console.log(clickable)
 
     if(page === 5) {
         return (

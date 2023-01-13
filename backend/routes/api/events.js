@@ -134,8 +134,6 @@ router.get('/:eventId', async (req, res, next) => {
         attributes: { exclude: ['createdAt', 'updatedAt'] }
     })
 
-    console.log('This is the event from the back', event)
-
     if (event) {
         let numAttending = await Attendance.count({ where: { eventId: event.id } })
         res.json({
@@ -354,7 +352,6 @@ router.get('/:eventId/attendees', async (req, res, next) => {
         for (let i = 0; i < attendees.length; i++) {
             let attendee = attendees[i];
             let attendance = await Attendance.findOne({ where: { [Op.and]: [{ eventId }, { userId: attendee.id }] }, attributes: ['status'] })
-            console.log('skeet skeet', attendance)
             if (attendance) {
                 payload.push({
                     id: attendee.id,
@@ -416,7 +413,6 @@ router.delete('/:eventId/attendance/:memberId', requireAuth, async (req, res, ne
 
     if (checkAuthorization || memberId === currentUserId) {
         let member = await Attendance.findOne({ where: { [Op.and]: [{ eventId }, { userId: memberId }] } });
-        console.log(member)
         if (member) {
             await member.destroy()
             return res.json({
