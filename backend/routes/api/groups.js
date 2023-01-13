@@ -172,7 +172,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
     let memberships = [];
 
-    let currentMemberships = await Membership.findAll({ where: { userId: currentUserId }, raw: true })
+    let currentMemberships = await Membership.findAll({ where: { [Op.and]: [{ userId: currentUserId }, { status: { [Op.or]: [ 'member', 'co-host', 'organizer' ]}}] }, raw: true })
     if (currentMemberships) {
         for (let i = 0; i < currentMemberships.length; i++) {
             let membership = currentMemberships[i];
