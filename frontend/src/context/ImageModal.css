@@ -1,0 +1,55 @@
+#ImageModal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+  }
+  
+  #ImageModal-background {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  #ImageModal-content {
+    position: absolute;
+    background-color:white;
+    border-radius: 6px;
+    justify-content: center;
+    max-height: 1000px;
+    width: 475px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 1%;
+    min-height: 400px;
+  }
+
+.exit-button2 {
+    position: absolute;
+    left: 1.5%;
+    top: 1.5%;
+    background-color: #f65858;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    height: 30px;
+    width: 40px;
+    cursor: pointer;
+  }
+
+.imageButton {
+  margin-top: 70px;
+  margin-bottom: 20px;;
+}
+
+.urlText {
+  margin-top: 50px;
+}

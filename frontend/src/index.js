@@ -9,6 +9,14 @@ import configureStore from "./store";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
 import { GroupProvider } from './context/GroupContext';
+import { ImageModalProvider } from "./context/ImageModal";
+import { IndividualImageModalProvider } from "./context/IndividualImageModal";
+import { MembershipModalProvider } from "./context/Membership";
+import { AttendanceApprovalModalProvider } from "./context/AttendanceApprovalModal";
+import { ViewMembershipsModalProvider } from "./context/ViewMembershipsModal";
+import { DeleteAttendanceModalProvider } from "./context/DeleteAttendanceModal";
+
+
 
 const store = configureStore();
 
@@ -24,11 +32,23 @@ function Root() {
   return (
     <Provider store={store}>
       <GroupProvider>
-        <ModalProvider>
-            <BrowserRouter>
-              <App />
-          </BrowserRouter>
-      </ModalProvider>
+        <DeleteAttendanceModalProvider>
+          <AttendanceApprovalModalProvider>
+            <ViewMembershipsModalProvider>
+              <MembershipModalProvider>
+                <ImageModalProvider>
+                  <IndividualImageModalProvider>
+                    <ModalProvider>
+                      <BrowserRouter>
+                        <App />
+                      </BrowserRouter>
+                    </ModalProvider>
+                  </IndividualImageModalProvider>
+                </ImageModalProvider>
+              </MembershipModalProvider>
+            </ViewMembershipsModalProvider>
+          </AttendanceApprovalModalProvider>
+        </DeleteAttendanceModalProvider>
       </GroupProvider>
     </Provider>
   );

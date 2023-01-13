@@ -18,17 +18,29 @@
     flex-direction: row;
     justify-content: center;
     margin-top: .5%;
-    height: 380px;
+    width: 70%;
+    padding-left: 320px;
 }
+
 
 .EGImgDiv {
     display: flex;
     flex-direction: row;
-    margin-left: 20.5%;
-    margin-right: 2%;
     padding-top: 20px;
     height: 400px;
     width: 50%;
+}
+
+.EGName {
+    display: -webkit-box !important;
+    flex-direction: row;
+    min-width: 50px;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3em;
+    max-width: 550px;
 }
 
 .EGImg {
@@ -37,6 +49,8 @@
     border-radius: .5rem;
     height: 340px;
     width: 610px;
+    min-width: 200px;
+    min-height: 200px;
 }
 
 .EG-state-city-container {
@@ -59,10 +73,10 @@
     display: flex;
     flex-direction: column;
     height: 400px;
-    max-width: 600px;
-    min-width: 300px;
-    width: 60%;
-    margin-right: 5%;
+    max-width: 525px;
+    min-width: 200px;
+    width: 100%;
+    margin-left: 2%;
 }
 
 .EGLowerDiv {
@@ -100,6 +114,10 @@
     color: #00a2c7;
 }
 
+.EGLink:hover {
+    color: #00a2c7;
+}
+
 .aboutText {
     color: #00a2c7;
 }
@@ -129,9 +147,8 @@
 .memberStuff {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     width: 50%;
-    margin-right: 25%;
     font-family: 'Lato', sans-serif;
 }
 
@@ -149,7 +166,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .organizer {
@@ -187,7 +204,7 @@
 .memberInfo {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     font-size: 16px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: 500;
@@ -227,13 +244,45 @@
 .EGCreatorInfo {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .EGMembers {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.Link-holder {
+    display: flex;
+    flex-direction: row;
+}
+
+.members-container {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
+    max-width: 400px;
+    max-height: fit-content;
+    flex-wrap: wrap;
+    max-height: fit-content
+}
+
+.member-member {
+    margin-right: 10px;
+}
+
+@media only screen and (max-width: 1250px) {
+    .EGUpperDiv {
+        padding-left: 2%;
+        width: 100%;
+    }
+    .aboutDiv {
+        margin-left: 3%;
+    }
+    .EGLinkContainer {
+        margin-left: 3%;
+    }
 }

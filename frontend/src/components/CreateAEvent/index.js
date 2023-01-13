@@ -5,8 +5,8 @@ import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import './CreateAEvent.css';
 import * as groupActions from '../../store/groups'
-
-
+import { Link } from 'react-router-dom';
+import { addZero } from '../EditEvent';
 
 const CreateEvent = () => {
     const [ venueId, setVenueId] = useState('');
@@ -22,21 +22,13 @@ const CreateEvent = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const { groupId } = params;
-    const [ startDay, setStartDay] = useState('');
-    const [ startMonth, setStartMonth] = useState('');
-    const [ startYear, setStartYear] = useState('');
-    const [ startHour, setStartHour] = useState('');
-    const [ startMinutes, setStartMinutes] = useState('')
-    const [ endDay, setEndDay] = useState('');
-    const [ endMonth, setEndMonth] = useState('');
-    const [ endYear, setEndYear] = useState('');
-    const [ endHour, setEndHour] = useState('');
-    const [ endMinutes, setEndMinutes] = useState('');
-    const [ submitted, setSubmitted] = useState(false);
+    const [ submitted, setSubmitted] = useState(false)
 
     const sessionUser = useSelector(state => state.session.user)
     const group = useSelector(state => state.group.group);
     const fullDate = useMemo(() => { return new Date()}, [])
+    const minStartDate = `${fullDate.getFullYear()}-${addZero(fullDate.getMonth() + 1)}-${addZero(fullDate.getDate() + 1)}T${addZero(fullDate.getHours())}:00`
+
 
     if(!sessionUser) history.push('/')
 
@@ -98,30 +90,14 @@ const CreateEvent = () => {
         setValidationErrors(errors)
     }
 
-  
-    let year = fullDate.getFullYear();
-    let month = fullDate.getMonth();
-    let day = fullDate.getDate() + 1;
-    let hour = fullDate.getHours();
-    let minutes = fullDate.getMinutes()
-    
-    if(month < 10) month = `0${month}`
-    if(day < 10) month = `0${day}`
-    if(minutes < 10 && minutes !== 0) minutes = `00`
-    if(minutes === 0) minutes = `00`
-    if(hour < 10) hour = `0${hour}`
 
-    if(fullDate){
-      if(!startYear) setStartYear(year);
-      if(!startMonth) setStartMonth(month);
-      if(!startDay) setStartDay(day);
-      if(!startHour) setStartHour(hour);
-      if(!startMinutes) setStartMinutes(minutes);
-      if(!endYear) setEndYear(startYear)
-      if(!endMonth) setEndMonth(startMonth)
-      if(!endDay) setEndDay(startDay) 
-      if(!endHour && startHour) setEndHour(+startHour + 1)
-      if(!endMinutes && startMinutes) setEndMinutes(+startMinutes + 1)   
+
+    let inPersonVenues = [];
+    if(group) {
+       for(let i = 0; i < group.Venues.length; i++){
+        let venue = group.Venues[i];
+        if(venue.address !== 'Online') inPersonVenues.push(venue)
+       }
     }
 
     // let inPersonVenues = [];
@@ -203,62 +179,28 @@ const CreateEvent = () => {
             <label className='create-event-label-text'>Start Date</label>
             <input 
             className='create-event-startDate-input'
-            type='date' 
-            value={`${startYear}-${startMonth}-${startDay}`}
-            min={`${startYear}-${startMonth}-${startDay}`} 
+            type='datetime-local' 
+            value={startDate}
+            min={minStartDate} 
             onChange={(e) => { 
-                let dateArr = e.target.value.split('-'); 
-                setStartYear(dateArr[0]);
-                setStartMonth(dateArr[1]);
-                setStartDay(dateArr[2])
-                if(startHour && startMinutes) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
+                setStartDate(e.target.value)
             }} 
             required/>
-                <label className='create-event-label-text'> Start Time</label>
-                <input
-                className='create-event-startDate-input' 
-                type='time' 
-                min={`${startHour}:${startMinutes}`} 
-                value={`${startHour}:${startMinutes}`}
-                onChange={(e) => {
-                    let timeArr = e.target.value.split(':')
-                    setStartHour(timeArr[0]);
-                    setStartMinutes(timeArr[1]);
-                    if(startYear && startMonth && startDay) setStartDate(new Date(startYear, startMonth, startDay, startHour, startMinutes));
-                }} 
-                required/>
         </div>
         <div className='create-event-date'>
          <label className='create-event-label-text'> End Date</label>
-            <input type='date'
+            <input type='datetime-local'
             className='create-event-startDate-input' 
-            value={`${endYear}-${endMonth}-${endDay}`} 
-            min={`${endYear}-${endMonth}-${endDay}`}
-            onChange={(e) => {
-                let dateArr = e.target.value.split('-'); 
-                setEndYear(dateArr[0]);
-                setEndMonth(dateArr[1]);
-                setEndDay(dateArr[2])
-                if(endHour && endMinutes) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));  
+            value={endDate}
+            min={startDate} 
+            onChange={(e) => { 
+                setEndDate(e.target.value)
             }} 
             required/>
-            <label className='create-event-label-text'> EndTime </label>
-            <input
-            className='create-event-startDate-input' 
-            type='time' 
-            min={`${hour}:${minutes + 1}`}
-            value={`${endHour}:${endMinutes}`} 
-            onChange={(e) => {
-                let timeArr = e.target.value.split(':');
-                setEndHour(timeArr[0]);
-                setEndMinutes(timeArr[1]);
-                if(endYear && endMonth && endDay) setEndDate(new Date(endYear, endMonth, endDay, endHour, endMinutes));
-            }}
-            required/>
         </div>
-        
         </div>
         <div className='button-container'>
+            <button className='BackButton' type='button' onClick={() =>  history.push(`/groups/${groupId}`)}>Exit</button>
            <button className='nextButton-selected' type='submit'>
             Submit
             </button> 

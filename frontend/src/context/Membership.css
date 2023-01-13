@@ -1,0 +1,109 @@
+#MembershipModal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+#MembershipModal-background {
+  position: fixed;
+  display: flex;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+#MembershipModal-content {
+  display: flex;
+  position: fixed;
+  background-color: white;
+  border-radius: 25px;
+  justify-content: center;
+  width: 525px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.request-membership-container {
+  max-width: 500px;
+  max-height: 225px;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.request-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.button-container3 {
+  display: flex;
+  flex-direction: row;
+  min-width: 100%;
+  justify-content: space-between;
+  margin-top: 10%;
+  margin-bottom: 2.5%;
+}
+
+.request-text {
+  margin-top: 5%;
+}
+
+.request-cancel-button {
+  height: 40px;
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border-color: rgb(180, 176, 176);
+  fill: rgb(180, 176, 176);
+  color: rgb(145, 142, 142);
+  border-radius: 8px;
+  border-width: 1px;
+  font-size: 15px;
+  font-weight: bold;
+  align-items: center;
+}
+
+.request-yes-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #f65858;
+  border-color: #f65858;
+  fill: #ffff;
+  color: #ffff;
+  border-radius: 8px;
+  height: 40px;
+  width: 90px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: bolder;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.request-yes-button:hover {
+  background-color: #eb6c6c;
+  border-color: #f87979;
+  cursor: pointer;
+}
+
+.request-cancel-button:hover {
+  border-color: rgb(133, 131, 131);
+  fill: rgb(155, 151, 151);
+  color: rgb(107, 106, 106);
+  cursor: pointer;
+}

@@ -1,0 +1,51 @@
+.images-container {
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    background-color: white;
+    border: 10px solid white;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    max-width: 1200px;
+    min-width: 1200px;
+    margin-left: 20%;
+    min-height: 300px;
+    max-height: fit-content;
+    height: fit-content;
+    max-height: fit-content;
+    border-radius: 8px;
+}
+
+.GroupsImages2 {
+    display: flex;
+    width: 180px;
+    height: 100px;
+    box-sizing: border-box;
+    border: 0 solid;
+    border-radius: .5rem;
+    text-decoration: none;
+}
+
+.fix-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    min-width: 1000px;
+    max-height: fit-content;
+    height: fit-content;
+}
+
+.images-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 180px;
+    margin: 2%;
+    justify-content: flex-start;
+    max-height: 125px;
+}
+
+.EGLink {
+    max-height: 100px;
+}

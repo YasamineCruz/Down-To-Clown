@@ -4,8 +4,8 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Attendances', [
       { eventId: 1, userId: 1, status: 'member'},
-      { eventId: 2, userId: 2, status: 'waitlist'},
-      { eventId: 3, userId: 3, status: 'pending'}
+      { eventId: 2, userId: 2, status: 'member'},
+      { eventId: 3, userId: 3, status: 'member'}
     ], {});
   },
 

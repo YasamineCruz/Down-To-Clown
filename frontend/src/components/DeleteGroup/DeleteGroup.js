@@ -32,11 +32,12 @@ const DeleteGroup = () => {
             {group && (
                 <div className='edit-grouptext-wrapper'>
                     <div className='edit-group-div-wrapper'>
-                        <h1 className='delete-group-h1-text'>Are you sure you want to delete "{group.name}"?</h1> 
+                        <h1 className='delete-group-h1-text'>Are you sure you want to delete "{group.name.slice(0,35)}"?</h1> 
                     </div>
                 </div>
             )}
             <div className='button-container'>
+                <button className='BackButton' type='button' onClick={() =>  history.push(`/groups/${groupId}`)}>Exit</button>
                 <button className='nextButton-selected' type='submit'>Delete Group</button>   
             </div>
         </form>  
