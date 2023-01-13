@@ -26,6 +26,7 @@ const EditGroup = () => {
     const [private_key, setPrivate_key] = useState(null)
     const [organizerId, setOrganizerId] = useState(null)
     const [submitted, setSubmitted] = useState(false);
+    const [loaded, setLoaded] = useState(false)
 
     
     if(!sessionUser) history.push('/')
@@ -58,7 +59,6 @@ const EditGroup = () => {
 
     useEffect(()=> {
         let errors = [];
-        console.log(name, 'name in useEffect')
         if(!description || description.length < 50) errors.push('Description must be atleast 50 characters');
         if(!state) errors.push('You must enter a state');
         if(!city) errors.push('You must enter a city');
