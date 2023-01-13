@@ -4,7 +4,7 @@ import { IndividualImageModal } from '../../context/IndividualImageModal';
 import GetAGroupImage from './GetAGroupImage';
 
 
-function GetIndividualGroupImageModal({image, groupId}) {
+function GetIndividualGroupImageModal({image, groupId, organizerId}) {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
@@ -15,7 +15,7 @@ function GetIndividualGroupImageModal({image, groupId}) {
         View</div>
       {showModal && (
         <IndividualImageModal onClose={() => setShowModal(false)}>
-          <GetAGroupImage url={image.url} setShowModal={setShowModal} groupId={groupId} id={image.id}/>
+          <GetAGroupImage url={image.url} setShowModal={setShowModal} groupId={groupId} id={image.id} organizerId={organizerId}/>
         </IndividualImageModal>
       )}
     </>

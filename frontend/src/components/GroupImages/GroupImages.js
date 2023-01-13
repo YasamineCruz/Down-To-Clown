@@ -5,7 +5,8 @@ import * as groupActions from '../../store/groups'
 import './GroupImages.css'
 import GetIndividualGroupImageModal from "../IndividualGroupImageModal";
 
-const GroupImages = () => {
+const GroupImages = ({organizerId}) => {
+    console.log("YEYEYEYYE", organizerId)
     const params = useParams();
     const { groupId } = params;
     const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const GroupImages = () => {
                       <div className='fix-flex'>
                         {group.GroupImages.map(image => (
                             <div className='images-wrapper'>
-                            <GetIndividualGroupImageModal image={image} groupId={groupId}/>
+                            <GetIndividualGroupImageModal image={image} groupId={groupId} organizerId={organizerId}/>
                             </div>
                         ))}
                       </div>  

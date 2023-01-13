@@ -11,7 +11,7 @@ import GroupImages from "../GroupImages/GroupImages";
 import CreateGroupMembershipModal from "../RequestMembership";
 import ViewApprovedMembers from "../ViewMemberships";
 
-const check = (id, id2) => {
+export const check = (id, id2) => {
     if (id === id2) return true;
     return false
 }
@@ -143,7 +143,7 @@ const GroupPage = () => {
                                 <GetEventsByGroup />
                             )}
                             {info === 'images' && (
-                                <GroupImages />
+                                <GroupImages organizerId={group?.organizerId}/>
                             )}
                         </div>
                     </div>
