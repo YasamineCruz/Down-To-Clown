@@ -838,31 +838,10 @@ router.get('/:groupId/members', async (req, res, next) => {
     }
     let members = await User.findAll({ attributes: ['id', 'firstName', 'lastName'] })
 
-<<<<<<< HEAD
-
-    if(currentUserMembership === null){
-    
-        for(let i = 0; i < members.length; i++){
-            let member = members[i];
-            let membership = await Membership.findOne({ where: { [Op.and]: [{userId: member.id}, {groupId} ] }, attributes: ['status']})
-
-            if(membership !== null){
-                payload.push({
-                id: member.id,
-                firstName: member.firstName,
-                lastName: member.lastName,
-                Membership: membership
-            }) 
-            }
-        }
-        return res.json({Members: payload})
-     } else if(currentUserMembership.status === 'organizer' || currentUserMembership.status === 'co-host') {
-=======
     if (currentUserMembership === null) {
 
         for (let i = 0; i < members.length; i++) {
             let member = members[i];
->>>>>>> dev
 
             let membership = await Membership.findOne({ where: { [Op.and]: [{ userId: member.id }, { groupId },] }, attributes: ['status'] })
 

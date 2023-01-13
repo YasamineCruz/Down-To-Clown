@@ -410,17 +410,6 @@ router.delete('/:eventId/attendance/:memberId', requireAuth, async (req, res, ne
         where: { organizerId: currentUserId },
     })
 
-<<<<<<< HEAD
-    if(checkAuthorization ||  memberId === currentUserId){
-         let member = await Attendance.findOne({ where: { [Op.and]: [ {eventId}, {userId: memberId } ] } });
-
-        if(member){
-        await member.destroy()
-        return res.json({
-            message: "Successfully deleted attendance from event"
-        })
-         } else {
-=======
 
     if (checkAuthorization || memberId === currentUserId) {
         let member = await Attendance.findOne({ where: { [Op.and]: [{ eventId }, { userId: memberId }] } });
@@ -430,7 +419,6 @@ router.delete('/:eventId/attendance/:memberId', requireAuth, async (req, res, ne
                 message: "Successfully deleted attendance from event"
             })
         } else {
->>>>>>> dev
             res.status = 404;
             return res.json({
                 message: "Attendance does not exist for this User",
