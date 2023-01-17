@@ -31,7 +31,12 @@ function LoginForm() {
   
   const handleSubmitDemoUser = (e) => {
     return dispatch(sessionActions.login({credential: 'demo@user.io', password: 'password'}))
+  }
+  
+  const handleSubmitDemoUser2 = (e) => {
+    return dispatch(sessionActions.login({credential: 'user1@user.io', password: 'password2'}))
   } 
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -43,6 +48,9 @@ function LoginForm() {
         <i className="fas fa-user-circle fa-2x login-fa" />
         <button type='submit' onClick={(e) => handleSubmitDemoUser(e)} className='DemoUserButton'>
         Demo User
+       </button>
+       <button type='submit' onClick={(e) => handleSubmitDemoUser2(e)} className='DemoUserButton'>
+        Demo User2
        </button>
        </div>
        {errors && (
